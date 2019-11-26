@@ -25,8 +25,8 @@ public class map
 	/** 그 맵의 이미지 */
 	private ImageIcon image;
 	
-	/** flag for thread */
-	private boolean flag = false;
+	/** flag for thread true 면 안닫긴거고 false면 닫김*/
+	private boolean flag = true;
 	
 			
 	/** map을 setting 하는 map의 생성자
@@ -104,7 +104,7 @@ public class map
 		flag=!flag;
 	}
 	
-	/**
+	/** false면 위험 장소고 true면 안전 장소
 	 * @return 진리값 반환
 	 */
 	public boolean getFlag()

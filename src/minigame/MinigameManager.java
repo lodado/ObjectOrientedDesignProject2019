@@ -1,24 +1,14 @@
 package minigame;
 
-import java.awt.AWTException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,16 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import Map.Mapmanager;
 import Map.map;
-import jdk.nashorn.internal.runtime.linker.JavaAdapterFactory;
-
-
 /**
  * 미니게임을 관리하는 클래스.
  *
@@ -45,11 +30,12 @@ import jdk.nashorn.internal.runtime.linker.JavaAdapterFactory;
 
 public class MinigameManager extends JFrame implements Runnable {
 
-	/**  이 매니저 관련 쓰레드. */
-	private Thread myThread;
 	
 	/** 타이머에 쓰이는 정수. */
-	private int timer = 15;
+	private int timer = 150;
+	
+	/**  이 매니저 관련 쓰레드. */
+	private Thread myThread;
 	
 	/** 이 클래스의 frame. */
 	private JFrame frame = new JFrame();
@@ -75,7 +61,6 @@ public class MinigameManager extends JFrame implements Runnable {
 	/** 타이머 출력용 라벨. */
 	JLabel times = new JLabel(timer +" 초");
 
-	
 	/** 제출 버튼 */
 	private JButton bt = new JButton("제출");
 	
@@ -84,6 +69,12 @@ public class MinigameManager extends JFrame implements Runnable {
 	
 	/** The hp */
 	private JProgressBar HP = new JProgressBar(0,100);
+
+	/** 클릭시 마우스 좌표 x축 */
+	private int x;
+	
+	/** 클릭시 마우스 좌표 y축 */
+	private int y;
 	
 	/**  게임 정답. */
 	private String answer = "답";
@@ -91,18 +82,13 @@ public class MinigameManager extends JFrame implements Runnable {
 	/**  장소 출력. */
 	private map currentMap;
 	
-	/** 클릭시 마우스 좌표 x축 */
-	private int x;
-	
-	/** 클릭시 마우스 좌표 y축 */
-	private int y;
-	
 	/**  게임들. */
 	public static Minigame mini[];
 
 	/**  선택된 게임. */
 	private Minigame currentMinigame;
 	
+	private Mapmanager manager;
 	/**
 	 * 게임의 정답을 맞추면 true, 틀리면 false 반환, 그리고 시간초가 끝나면 false 반환.
 	 * @return 게임의 정답을 맞추면 true, 틀리면 false 반환
@@ -152,7 +138,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	/**
 	 *  게임들 생성함, mini[] 사용.
 	 */
-	void gamesGenerator() {
+	private void gamesGenerator() {
 
 		currentMinigame = new Minigame(new ImageIcon("image1.PNG"), "답",
 				new String[]{"더미 파일! ","이렇게 ","플레이","하는것 "}
@@ -161,25 +147,34 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 		// Minigame(img,answer);
 	}
-
-
+	
 	@Override
 	public void run() {
 
 		try {
-		
+			
+			int count = 0; //count
+			int currentHP = 89;  //Character의 HP를 여기다 대입
+			
+			int arr[] = new int[] {count,currentHP};  //앞은 count=0, 뒤는 chracter HP를 넣을것
+
 			while (timer >= 0 && !myThread.isInterrupted()) {
+
+				System.out.println("minigame manager thread");
 				
-				System.out.println("keep going");
+	
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행
 					times.setText(timer--+" 초"); // 1초마다 타이머 1초씩 감소
-					
+					manager.IsClosedMap(arr,HP,1);	
 				}
+				
+				
+				
 				Thread.sleep(1000); // 1초씩 sleep. 딜레이때문에 정확하진 않지만 게임 진행엔 큰 무리가 없음
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
-			// Interrupted catch
+			
+			// Interrupted catch - while문 종료
 
 		} catch (Exception e) {
 			e.printStackTrace(); // 그외 오류면 출력
@@ -199,8 +194,10 @@ public class MinigameManager extends JFrame implements Runnable {
 	 *
 	 * @param map
 	 */
-	public MinigameManager(map m,Mapmanager manager) {
+	public MinigameManager(map m,Mapmanager Manager) {
 		
+		
+		manager = Manager;
 		
 		final int ROW = 1000; // The row. 	 	
 		final int COL = 900; // The col.
@@ -234,10 +231,12 @@ public class MinigameManager extends JFrame implements Runnable {
 		times.setBounds(870,120,70,70);
 		frame.add(times);	
 		
+	
 		HP.setStringPainted(true);
-		HP.setForeground(Color.RED);
+		if(m.getFlag()) HP.setForeground(Color.RED);
+		else  HP.setForeground(Color.MAGENTA);
 		HP.setBounds(597,194,201,24);
-		HP.setValue(74); // 스텟의 hp를 여기에 넣음
+		HP.setValue(74); // 여기에 Character HP 대입
 		HP.setStringPainted(true);
 		frame.add(HP); //show progressbar
 		
@@ -300,12 +299,14 @@ public class MinigameManager extends JFrame implements Runnable {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		
+		
 		int result = JOptionPane.showConfirmDialog(null, "미니게임 시작 !\n 게임 방법은 상단을 확인하세요.\n"
 				+ "확인을 누르면 시작합니다.","확인", JOptionPane.CLOSED_OPTION);
 			
 			if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {	
 				frame.add(middle);	//확인을 눌러야 미니게임이 보임 
 				myThread.start();
+			
 			}
 		
 		//마우스 클릭을 인식하는 addMouseListener
@@ -366,14 +367,8 @@ public class MinigameManager extends JFrame implements Runnable {
 					manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
 					/**/
 					
-					try{
-						
-						//manager.getThread().resume();  //resume?
-					}
-					catch(Exception e1)
-					{
-						e1.printStackTrace();
-					}
+				
+					
 					// 나중 아이 매니저 실행
 				}
 

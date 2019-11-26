@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
@@ -25,7 +26,7 @@ import minigame.*;
 
 
 /**
- * 맵 관리 매니저 클래스
+ * 맵 관리 매니저 클래스. Thread는 launcher와 함께 게임 플레이동안 계속 돌아간다.
  * @author Chungheon Yi
  */
 
@@ -43,7 +44,7 @@ public class Mapmanager extends JFrame implements Runnable{
 	private int myLocation = 0; //자신의 위치숫자로 구별  
 	
 	/** 맵 이름들. 맵 생성용으로 사용. */
-	private String str[] = {"농대","공대","자연대","사회대","인문대","봉지","경영대","용지","예대"};
+	private String mapsName[] = {"농대","공대","자연대","사회대","인문대","봉지","경영대","용지","예대"};
 	
 	/** 타이머  */
 	private int timer = 0; // 
@@ -70,7 +71,7 @@ public class Mapmanager extends JFrame implements Runnable{
 	private JLabel forDef = new JLabel(" 방어력 :");
 	
 	/** 현재위치 출력  */
-	private JLabel forLoc = new JLabel(" 현재 위치 :   "+str[myLocation]);	
+	private JLabel forLoc = new JLabel(" 현재 위치 :   "+mapsName[myLocation]);	
 	
 	private JLabel Mytime =new JLabel("                   "+timer);
 	/**
@@ -99,10 +100,10 @@ public class Mapmanager extends JFrame implements Runnable{
 		 * 이동  둘중 택 fight or startMinigame
 		 * @param mv 클릭한 버튼의 map을 인자로 받음 
 		 */
-		@SuppressWarnings("static-access")
 		public void moving(map mv) 
 		{
-			
+			myLocation = mv.getLoc();  //자신의 위치 이곳으로 이동
+			forLoc.setText(" 현재 위치 :   "+mapsName[myLocation]);
 			if(mv.getUserNumber()<=1) // start minigame 
 			{
 				new MinigameManager(mv,Mapmanager.this);
@@ -111,7 +112,7 @@ public class Mapmanager extends JFrame implements Runnable{
 			{
 				//fight manager();
 			}
-			myThread.yield(); //맵의 쓰레드를 yield 시키고 다음으로 넘어감.
+			
 	
 		}
 		/**
@@ -125,11 +126,7 @@ public class Mapmanager extends JFrame implements Runnable{
 			    int screenHeight = screenSize.height;
 			    int screenWidth = screenSize.width;
 			   
-			   
-			
 			thisframe.setTitle(M.getMapName()+"로 이동?");
-			
-			
 			thisframe.setContentPane(new JLabel(M.getMapImage()));
 			
 			Bt1.addActionListener(
@@ -142,6 +139,7 @@ public class Mapmanager extends JFrame implements Runnable{
 					thisframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					thisframe.setVisible(false);
 					frame.setVisible(false);
+					
 					moving(m[num]);
 				}
 			});
@@ -193,10 +191,11 @@ public class Mapmanager extends JFrame implements Runnable{
 	 * Sets the thread.
 	 * @param the thread를 인자로 받음.
 	 */
-	void setThread(Thread th)  
-	{
-		
-		this.myThread = th;
+	void setThread(Thread T1)  
+	{   
+		 myThread = T1 = new Thread(this);
+		 
+		 // myThread == launcher의 Thread T1
 	}
 	
 	/**
@@ -227,44 +226,135 @@ public class Mapmanager extends JFrame implements Runnable{
 		return timer;
 	}
 	
+	/**
+	 * Gets the map frame.
+	 * @return the map frame
+	 */
 	public JFrame getMapFrame()
 	{
 		return frame;
 	}
 	
+	/**
+	 * Sets the map frame.
+	 * @param frame the new map frame
+	 */
 	public void setMapFrame(JFrame frame)
 	{
 		this.frame = frame;
 	}
 	
+	/**
+	 * Sets the hp bar. map, fight, minigame 매니저에서 사용
+	 * @param CharHP the new hp
+	 */
+	public void setHP(int CharHP,JProgressBar HPBar)
+	{
+		HPBar.setValue(CharHP);
+	}
+	
+	
+	/**
+	 * 맵이 닫겼으면 쓰레드와 연동하여서 지속적으로 체력을 깎는다.
+	 *
+	 * @param count the count. C++의 인자 참조(&)를 구현하기 위하여 배열을 사용하였다. 칸은 총 1칸(count)
+	 * @param HPBar 이 객체에서 쓰는 JProgressBar
+	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
+	 */
+	public void IsClosedMap(int count[],JProgressBar HPBar,double Threadspeed)  //
+	{
+		// count = a[0];
+		
+		if(!this.m[myLocation].getFlag())  //flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
+		{
+			HPBar.setForeground(Color.magenta);  //자기장 안에 있다고 표시해줌
+			
+			if(count[0]++>4*Threadspeed) {   // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
+				
+					count[0] = 0;
+					setHP(--count[1],HPBar);  //현재 HP에 characterHP 대입	
+			}
+		}
+		else
+		{
+			HPBar.setForeground(Color.RED); // 보통 상태
+		}
+	}
+
 	@Override
 	public void run()
 	{
-		while(true)
+		try
 		{
-			try
-			{	
-				System.out.println(timer+"변경");
+			int count = 0; //count
+			int currentHP = 89;  //Character의 HP를 여기다 대입
+			int whattime = 0; //시간 launcher timer와 상관 없이 따로재는 타이머 
+			boolean weneedyou = true; // 모든 맵이 닫긴경우 오버헤드 방지
+			
+			int[] arr = new int[]{count,currentHP};  // C++의 참조(&) 구현
+			
+			while(true)
+			{
+
+				//System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   "+timer);  //시간초 계속 갱신
-				Thread.sleep(1000);							//쓰레드 sleep
+				
+				IsClosedMap(arr,HP,(double)10); // arr = 참조를 통한 인자 변경(C++의 &)을 위한 배열, HP는 HP바, 쓰레드 speed(500millsec*10)
+				
+				if(weneedyou) //  모든 맵이 닫긴경우 오버헤드 방지용으로 false
+				{
+					
+					whattime++;
+					if(whattime>9000) //80초마다 닫김
+						{
+						
+							int num = 0;
+							int array[] = new int[9]; // 맵 0~8을 담는 배열
+							int ptr = 0; //pointer
+							for(int i=0; i<9; i++)
+							{
+								if(m[i].getFlag())
+								{
+									array[ptr++] = i;
+								}
+							}
+								try
+								{
+									num =array[((int)(Math.random()*10)%ptr)]; //array 안에 있는거 랜덤값 주입. [0,ptr)
+									System.out.println(num+"F"); //확인용 print
+									m[num].setFlag();   //이곳을 닫음
+									int result = JOptionPane.showConfirmDialog(null, m[num].getMapName()+"이 곧 자기장의 영향에 듭니다!\n"
+									 		+ "어서 도망치세요 !!",
+											 "!!", JOptionPane.CLOSED_OPTION);
+								}
+								catch(ArithmeticException e) //모든 공간이 닫혀있음
+								{
+									weneedyou=false;
+								}
+								
+								whattime = 0; //타이머 재기 초기화
+							}					
+				}	
+					
+				
+				Thread.sleep(100); //쓰레드 sleep 0.1초	
+				}
 			}
 			catch(InterruptedException e)
 			{
-				break;             //인터럽트 일어나면 while문 종료
+				 //인터럽트 일어나면 while문 종료
 			}
 			catch(Exception e)
 			{
 				e.printStackTrace(); //그외 에러 체크
 			}
-		}
+		
 	}
-	
-	
-	
+
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager()
+	public Mapmanager(Thread T1)
 	{
 		
 		final  int ROW = 1000; //크기 나중에 삭제
@@ -272,7 +362,7 @@ public class Mapmanager extends JFrame implements Runnable{
 		
 		for(int i=0; i<9; i++)
 		{
-			m[i] = new map(i,str[i]);
+			m[i] = new map(i,mapsName[i]);
 		}
 		
 		
@@ -286,7 +376,7 @@ public class Mapmanager extends JFrame implements Runnable{
 		m[7].setImage(new ImageIcon("image.PNG"));
 		m[8].setImage(new ImageIcon("image.PNG"));
 		
-		setThread(new Thread(this));
+		setThread(T1);
 		
 		frame.setLayout(null);
 		
@@ -301,8 +391,8 @@ public class Mapmanager extends JFrame implements Runnable{
 		
 		top.setLayout(new BoxLayout(top,BoxLayout.Y_AXIS));
 		forHp.setBounds(200,20,40,30);
-		forDef.setBounds(200,50,100,30);
-		forLoc.setBounds(200,80,100,30);
+		forDef.setBounds(200,50,200,30);
+		forLoc.setBounds(200,80,200,30);
 		
 		HP.setStringPainted(true);
 		HP.setForeground(Color.RED);
@@ -310,28 +400,28 @@ public class Mapmanager extends JFrame implements Runnable{
 		HP.setStringPainted(true);
 		HP.setBounds(240,20,238,30);
 		
-		JLabel turns=Mytime;
-		JLabel skadmstlrks= new JLabel("                Time");
-		skadmstlrks.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
-		skadmstlrks.setBounds(479,0,140,61);
 		
-		turns.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
-		turns.setBounds(479,60,140,60);
+		JLabel timeTitle= new JLabel("                Time");
+		timeTitle.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
+		timeTitle.setBounds(479,0,140,61);
+		
+		Mytime.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
+		Mytime.setBounds(479,60,140,60);
 		
 		
 		frame.add(HP);
 		frame.add(forHp);
 		frame.add(forDef);
 		frame.add(forLoc);
-		frame.add(turns);
-		frame.add(skadmstlrks);
+		frame.add(Mytime);
+		frame.add(timeTitle);
 		frame.add(topright);
 		frame.add(top);
 		
 		
 		for(int i=0; i<9; i++)
 		{
-			b[i] = new JButton(str[i]);
+			b[i] = new JButton(mapsName[i]);
 		}
 		
 		JButton Item = new JButton("가방");
