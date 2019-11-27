@@ -1,22 +1,15 @@
-package minigame;
-
-
-
+package stat;
 
 
 import Map.Mapmanager;
-
 /**
  * 두개의 쓰레드를 작동시키는 launcher class. 하나는 총 플레이 시간 재기 및 객체. 하나는 여분
  * @author Chungheon Yi
  */
-public class launcher implements Runnable{
+public class launcher{
 
 	/** The timer. */
 	public int timer = 0 ;	
-	
-	/** The flag 1. */
-	public boolean flag1 = true ,flag2 = true;
 	
 	/** Map의 쓰레드를 작동시키는 T1 Thread. */
 	Thread T1;
@@ -24,12 +17,11 @@ public class launcher implements Runnable{
 	/** launcher가 소유하는 MapController. */
 	Mapmanager MapController;
 	
-	@Override
-	public void run()
+	
+	public void gameStart()
 	{
 		
-		T1 = null; // Mapmanager가 쓸 Thread
-		
+		T1 = null; // Mapmanager가 쓸 Thread	
 		MapController = new Mapmanager(T1);
 		
 		Thread T2 = new Thread(){	 //메인 쓰레드
@@ -37,7 +29,7 @@ public class launcher implements Runnable{
 			public void run(){
 				
 					//MinigameManager mini= new MinigameManager(new map(1,"농대"));
-				while(flag1)
+				while(true)
 				{
 				
 				try {
@@ -56,9 +48,6 @@ public class launcher implements Runnable{
 			}
 			}		
 		};
-		
-	
-					
 		T2.start();
 
 	}
@@ -68,9 +57,8 @@ public class launcher implements Runnable{
 	 */
 	public launcher()
 	{
-		Thread T = new Thread(this);
-		
-		T.run();
+		gameStart();
+
 		
 	}
 }

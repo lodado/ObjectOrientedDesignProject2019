@@ -153,11 +153,8 @@ public class MinigameManager extends JFrame implements Runnable {
 
 		try {
 			
-			int count = 0; //count
 			int currentHP = 89;  //Character의 HP를 여기다 대입
 			
-			int arr[] = new int[] {count,currentHP};  //앞은 count=0, 뒤는 chracter HP를 넣을것
-
 			while (timer >= 0 && !myThread.isInterrupted()) {
 
 				System.out.println("minigame manager thread");
@@ -165,7 +162,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행
 					times.setText(timer--+" 초"); // 1초마다 타이머 1초씩 감소
-					manager.IsClosedMap(arr,HP,1);	
+					manager.setHP(--currentHP,HP);   //currentHP에 캐릭터 HP를 넣을것
 				}
 				
 				

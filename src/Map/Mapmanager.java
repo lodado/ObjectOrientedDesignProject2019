@@ -20,6 +20,11 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+
 import minigame.*;
 
 
@@ -272,7 +277,8 @@ public class Mapmanager extends JFrame implements Runnable{
 			if(count[0]++>4*Threadspeed) {   // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 				
 					count[0] = 0;
-					setHP(--count[1],HPBar);  //현재 HP에 characterHP 대입	
+					int hp =100; // character.setHp(character.getHp()-1);
+					setHP(--hp,HPBar);  //현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
 			}
 		}
 		else
@@ -287,11 +293,15 @@ public class Mapmanager extends JFrame implements Runnable{
 		try
 		{
 			int count = 0; //count
-			int currentHP = 89;  //Character의 HP를 여기다 대입
 			int whattime = 0; //시간 launcher timer와 상관 없이 따로재는 타이머 
-			boolean weneedyou = true; // 모든 맵이 닫긴경우 오버헤드 방지
+			boolean notify = true; // notify = 미리 알람용 boolean
 			
-			int[] arr = new int[]{count,currentHP};  // C++의 참조(&) 구현
+			LinkedList<Integer> list = new LinkedList<Integer>(); //자기장 제어용 LinkedList
+			
+			for(int i=0; i<9;i++) list.add(i);      //[0,9]
+			Collections.shuffle(list);     //랜덤하게 섞음
+			
+			int[] arr = new int[]{count};  // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
 			
 			while(true)
 			{
@@ -299,43 +309,31 @@ public class Mapmanager extends JFrame implements Runnable{
 				//System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   "+timer);  //시간초 계속 갱신
 				
-				IsClosedMap(arr,HP,(double)10); // arr = 참조를 통한 인자 변경(C++의 &)을 위한 배열, HP는 HP바, 쓰레드 speed(500millsec*10)
+				IsClosedMap(arr,HP,(double)10); // arr = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+												//HP는 HP바, 쓰레드 speed(500millsec*10)
 				
-				if(weneedyou) //  모든 맵이 닫긴경우 오버헤드 방지용으로 false
-				{
+				if(!list.isEmpty()) //모두 닫겼다면 실행 하지 않음
+					{
+						if( notify && whattime>750) //75초후에, 15초후 이곳이 영향을 받는다고 알려줌
+						{
+							JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName()
+									+"에서 곧 자기장이 생성됩니다.\n","!!", JOptionPane.CLOSED_OPTION);
+						
+						notify = false;
+					}
 					
 					whattime++;
-					if(whattime>9000) //80초마다 닫김
-						{
-						
-							int num = 0;
-							int array[] = new int[9]; // 맵 0~8을 담는 배열
-							int ptr = 0; //pointer
-							for(int i=0; i<9; i++)
-							{
-								if(m[i].getFlag())
-								{
-									array[ptr++] = i;
-								}
-							}
-								try
-								{
-									num =array[((int)(Math.random()*10)%ptr)]; //array 안에 있는거 랜덤값 주입. [0,ptr)
-									System.out.println(num+"F"); //확인용 print
-									m[num].setFlag();   //이곳을 닫음
-									int result = JOptionPane.showConfirmDialog(null, m[num].getMapName()+"이 곧 자기장의 영향에 듭니다!\n"
-									 		+ "어서 도망치세요 !!",
-											 "!!", JOptionPane.CLOSED_OPTION);
-								}
-								catch(ArithmeticException e) //모든 공간이 닫혀있음
-								{
-									weneedyou=false;
-								}
-								
-								whattime = 0; //타이머 재기 초기화
-							}					
-				}	
 					
+					if(whattime>900) //90초마다 닫김
+						{
+									m[list.peekLast()].setFlag();   //이곳을 닫음
+									JOptionPane.showConfirmDialog(null, m[list.pollLast()].getMapName()+"(이)가 곧 자기장의 영향에 듭니다!\n"
+									 		+ "어서 도망치세요 !!",
+											 "!!", JOptionPane.CLOSED_OPTION);	
+							whattime = 0; //타이머 재기 초기화		
+							notify = true;
+						}	
+				}	
 				
 				Thread.sleep(100); //쓰레드 sleep 0.1초	
 				}

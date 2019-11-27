@@ -1,4 +1,4 @@
-package minigame;
+package stat;
 
 import Map.*;
 
