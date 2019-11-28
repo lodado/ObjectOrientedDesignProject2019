@@ -18,6 +18,10 @@ public class launcher{
 	Mapmanager MapController;
 	
 	
+	/**
+	 * Game start.
+	 * @author ChungHeon Yi
+	 */
 	public void gameStart()
 	{
 		

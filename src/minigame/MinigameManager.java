@@ -79,7 +79,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	/**  게임 정답. */
 	private String answer = "답";
 
-	/**  장소 출력. */
+	/**  지금 미니게임이 실행되는 맵의 장소. */
 	private map currentMap;
 	
 	/**  게임들. */
@@ -161,8 +161,9 @@ public class MinigameManager extends JFrame implements Runnable {
 				
 	
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행
+					
 					times.setText(timer--+" 초"); // 1초마다 타이머 1초씩 감소
-					manager.setHP(--currentHP,HP);   //currentHP에 캐릭터 HP를 넣을것
+					manager.setHP(--currentHP,currentMap,HP);   //currentHP에 캐릭터 HP를 넣을것
 				}
 				
 				
@@ -189,12 +190,14 @@ public class MinigameManager extends JFrame implements Runnable {
 	/**
 	 * 미니게임을 생성하고, 관리하는 매니저.
 	 *
-	 * @param map
+	 * @param m 지금 현재 장소
+	 * @param Mapmanager를 넘겨받음. association
 	 */
 	public MinigameManager(map m,Mapmanager Manager) {
 		
 		
 		manager = Manager;
+		currentMap = m;
 		
 		final int ROW = 1000; // The row. 	 	
 		final int COL = 900; // The col.
@@ -208,12 +211,11 @@ public class MinigameManager extends JFrame implements Runnable {
 		int screenHeight = screenSize.height;
 		int screenWidth = screenSize.width;
 
-		currentMap = m;
 
 		frame.setTitle("전대 그라운드 - Minigame"); //타이틀 설정 
 		frame.setLayout(null); //레이아웃 설정
 
-		JLabel img = new JLabel(m.getMapImage());
+		JLabel img = new JLabel(currentMap.getMapImage());
 		img.setBounds(2,40,196,178);
 		frame.add(img); //좌측 상단 맵 이미지 삽입
 		
@@ -230,14 +232,14 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 	
 		HP.setStringPainted(true);
-		if(m.getFlag()) HP.setForeground(Color.RED);
+		if(currentMap.getFlag()) HP.setForeground(Color.RED);
 		else  HP.setForeground(Color.MAGENTA);
 		HP.setBounds(597,194,201,24);
 		HP.setValue(74); // 여기에 Character HP 대입
 		HP.setStringPainted(true);
 		frame.add(HP); //show progressbar
 		
-		JLabel nameofMap = new JLabel(m.getMapName());
+		JLabel nameofMap = new JLabel(currentMap.getMapName());
 		nameofMap.setBounds(85,0,60,60);
 		frame.add(nameofMap);
 		
@@ -321,14 +323,26 @@ public class MinigameManager extends JFrame implements Runnable {
         		  
         		  if(x>=2 && x<=198 && y>=70 && y<=246) // 좌측 상단 그림을 누르면 pause되게 설정 , 맵 name이 그림을 약간 미는걸로 보임
         			 {
-        		 currentMinigame.setisStop(!currentMinigame.getisStop());
-        		 middle.setVisible(!currentMinigame.getisStop());  //그림 누르면 pause 되고 미니게임이 안보임
-        		 int result = JOptionPane.showConfirmDialog(null, "PAUSE", "재실행", JOptionPane.CLOSED_OPTION);
+        			  
+        			  if(!currentMinigame.getisStop())
+        			  {
+        				  if(currentMap.getFlag())
+        				  {
+        					  currentMinigame.setisStop(!currentMinigame.getisStop());
+        		        		 middle.setVisible(!currentMinigame.getisStop());  //그림 누르면 pause 되고 미니게임이 안보임
+        		        		 int result = JOptionPane.showConfirmDialog(null, "PAUSE", "재실행", JOptionPane.CLOSED_OPTION);
 
- 				if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {
- 					currentMinigame.setisStop(!currentMinigame.getisStop());
- 	        		middle.setVisible(!currentMinigame.getisStop());
- 					}
+        		 				if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {
+        		 					currentMinigame.setisStop(!currentMinigame.getisStop());
+        		 	        		middle.setVisible(!currentMinigame.getisStop());
+        		 						}
+        				  }
+        				  else
+            			  {
+            				  JOptionPane.showConfirmDialog(null, "자기장에 튀겨지고 있는동안에는\nPause할수 없습니다.", "XD", JOptionPane.CLOSED_OPTION);
+            			  }
+        			  }
+        			
         		} //팝업 확인 혹은 취소 누르면 재실행
         		  
         						 

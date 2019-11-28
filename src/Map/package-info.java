@@ -1,6 +1,6 @@
 
 /**
- * Map 관련 패키지
+ * For Map package 
  * @author Chungheon Yi
  *
  */

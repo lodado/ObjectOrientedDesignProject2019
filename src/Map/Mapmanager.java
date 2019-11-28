@@ -78,6 +78,7 @@ public class Mapmanager extends JFrame implements Runnable{
 	/** 현재위치 출력  */
 	private JLabel forLoc = new JLabel(" 현재 위치 :   "+mapsName[myLocation]);	
 	
+	/** 총 게임 플레이 시간 출력 */
 	private JLabel Mytime =new JLabel("                   "+timer);
 	/**
 	 * 맵 장소 이동할때 확인 혹은 취소를 누르는 팝업창을 위한 inner class, JDialog로 교체 가능
@@ -253,9 +254,12 @@ public class Mapmanager extends JFrame implements Runnable{
 	 * Sets the hp bar. map, fight, minigame 매니저에서 사용
 	 * @param CharHP the new hp
 	 */
-	public void setHP(int CharHP,JProgressBar HPBar)
+	public void setHP(int CharHP,map m,JProgressBar HPBar)
 	{
-		HPBar.setValue(CharHP);
+		if(!m.getFlag())	HPBar.setForeground(Color.magenta);  //자기장 안에 있다고 표시해줌
+		else HPBar.setForeground(Color.RED); // 보통 상태
+	
+		HPBar.setValue(CharHP); //체력 set
 	}
 	
 	
@@ -266,24 +270,18 @@ public class Mapmanager extends JFrame implements Runnable{
 	 * @param HPBar 이 객체에서 쓰는 JProgressBar
 	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
 	 */
-	public void IsClosedMap(int count[],JProgressBar HPBar,double Threadspeed)  //
+	public void IsClosedMap(int count[],map m,JProgressBar HPBar,double Threadspeed)  //
 	{
 		// count = a[0];
 		
-		if(!this.m[myLocation].getFlag())  //flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
-		{
-			HPBar.setForeground(Color.magenta);  //자기장 안에 있다고 표시해줌
-			
+		if(!m.getFlag())  //flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
+		{	
 			if(count[0]++>4*Threadspeed) {   // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 				
 					count[0] = 0;
 					int hp =100; // character.setHp(character.getHp()-1);
-					setHP(--hp,HPBar);  //현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
+					setHP(--hp,m,HPBar);  //현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
 			}
-		}
-		else
-		{
-			HPBar.setForeground(Color.RED); // 보통 상태
 		}
 	}
 
@@ -292,7 +290,6 @@ public class Mapmanager extends JFrame implements Runnable{
 	{
 		try
 		{
-			int count = 0; //count
 			int whattime = 0; //시간 launcher timer와 상관 없이 따로재는 타이머 
 			boolean notify = true; // notify = 미리 알람용 boolean
 			
@@ -301,7 +298,7 @@ public class Mapmanager extends JFrame implements Runnable{
 			for(int i=0; i<9;i++) list.add(i);      //[0,9]
 			Collections.shuffle(list);     //랜덤하게 섞음
 			
-			int[] arr = new int[]{count};  // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
+			int[] count = new int[]{0};  // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
 			
 			while(true)
 			{
@@ -309,7 +306,7 @@ public class Mapmanager extends JFrame implements Runnable{
 				//System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   "+timer);  //시간초 계속 갱신
 				
-				IsClosedMap(arr,HP,(double)10); // arr = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+				IsClosedMap(count,m[myLocation],HP,(double)10); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
 												//HP는 HP바, 쓰레드 speed(500millsec*10)
 				
 				if(!list.isEmpty()) //모두 닫겼다면 실행 하지 않음

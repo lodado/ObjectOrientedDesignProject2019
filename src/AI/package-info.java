@@ -1,6 +1,6 @@
 
 /**
- * AI 관련 패키지
+ * For AI package 
  * @author Chungheon Yi
 
  */

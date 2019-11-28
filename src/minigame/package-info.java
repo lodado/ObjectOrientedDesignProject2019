@@ -1,6 +1,6 @@
 
 /**
- * 미니게임 관련 패키지
+ * For Minigame package 
  * @author Chungheon Yi
  *
  */
