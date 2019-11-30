@@ -324,7 +324,8 @@ public class Mapmanager extends JFrame implements Runnable{
 					if(whattime>900) //90초마다 닫김
 						{
 									m[list.peekLast()].setFlag();   //이곳을 닫음
-									JOptionPane.showConfirmDialog(null, m[list.pollLast()].getMapName()+"(이)가 곧 자기장의 영향에 듭니다!\n"
+									JOptionPane.showConfirmDialog(null, m[list.pollLast()].getMapName()+
+											"(이)가 곧 자기장의 영향에 듭니다!\n"
 									 		+ "어서 도망치세요 !!",
 											 "!!", JOptionPane.CLOSED_OPTION);	
 							whattime = 0; //타이머 재기 초기화		
@@ -352,8 +353,8 @@ public class Mapmanager extends JFrame implements Runnable{
 	public Mapmanager(Thread T1)
 	{
 		
-		final  int ROW = 1000; //크기 나중에 삭제
-		final  int COL = 1000;
+		final  int ROW = 920; //크기 나중에 삭제
+		final  int COL = 920;
 		
 		for(int i=0; i<9; i++)
 		{
@@ -361,15 +362,15 @@ public class Mapmanager extends JFrame implements Runnable{
 		}
 		
 		
-		m[0].setImage(new ImageIcon("image.PNG"));
-		m[1].setImage(new ImageIcon("image.PNG"));
-		m[2].setImage(new ImageIcon("image.PNG"));
-		m[3].setImage(new ImageIcon("image.PNG"));
-		m[4].setImage(new ImageIcon("image.PNG"));
-		m[5].setImage(new ImageIcon("image.PNG"));
-		m[6].setImage(new ImageIcon("image.PNG"));
-		m[7].setImage(new ImageIcon("image.PNG"));
-		m[8].setImage(new ImageIcon("image.PNG"));
+		m[0].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[1].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[2].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[3].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[4].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[5].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[6].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[7].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[8].setImage(new ImageIcon("./image/mapImage/image.PNG"));
 		
 		setThread(T1);
 		
@@ -381,7 +382,7 @@ public class Mapmanager extends JFrame implements Runnable{
 		
 		topright.add(new JLabel(" 캐릭터 이름"),BorderLayout.CENTER);
 		
-		top.setBounds(200,0,(ROW)/20+ROW-770,120);
+		top.setBounds(200,0,350,120);
 		top.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
 		
 		top.setLayout(new BoxLayout(top,BoxLayout.Y_AXIS));
@@ -393,15 +394,15 @@ public class Mapmanager extends JFrame implements Runnable{
 		HP.setForeground(Color.RED);
 		HP.setValue(74); // 스텟의 hp를 여기에 넣음
 		HP.setStringPainted(true);
-		HP.setBounds(240,20,238,30);
+		HP.setBounds(240,20,260,30);
 		
 		
 		JLabel timeTitle= new JLabel("                Time");
 		timeTitle.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
-		timeTitle.setBounds(479,0,140,61);
+		timeTitle.setBounds(550,0,140,61);
 		
 		Mytime.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
-		Mytime.setBounds(479,60,140,60);
+		Mytime.setBounds(550,60,140,60);
 		
 		
 		frame.add(HP);
@@ -421,16 +422,13 @@ public class Mapmanager extends JFrame implements Runnable{
 		
 		JButton Item = new JButton("가방");
 		
-		Item.setBounds((13*ROW)/20,20,ROW-770,100);
-		b[0].setBounds(ROW/20,150,ROW-770,ROW-770);
-		b[1].setBounds((7*ROW)/20,150,ROW-770,ROW-770);
-		b[2].setBounds((13*ROW)/20,150,ROW-770,ROW-770);
-		b[3].setBounds(ROW/20,400,ROW-770,ROW-770);
-		b[4].setBounds(ROW/20,650,ROW-770,ROW-770);
-		b[5].setBounds((7*ROW)/20,400,ROW-770,ROW-770);
-		b[6].setBounds((7*ROW)/20,650,ROW-770,ROW-770);
-		b[7].setBounds((13*ROW)/20,400,ROW-770,ROW-770);
-		b[8].setBounds((13*ROW)/20,650,ROW-770,ROW-770);
+		Item.setBounds(730,20,ROW-770,100);
+		
+		for(int i=0; i<3; i++)
+		{
+			for(int j=0; j<3; j++)	b[i*3+j].setBounds(50+280*j,200+250*i,230,ROW-770);
+		}
+		
 		frame.add(Item);
 		for(int i=0; i<9; i++)  
 		{

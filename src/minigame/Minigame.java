@@ -2,12 +2,28 @@ package minigame;
 
 import javax.swing.ImageIcon;
 
-/** 미니게임을 담아두는 class. 만약 클릭이 필요한 경우와 안 필요한 경우를 구분하기 위하여(두 클래스를 합치면 너무 정신없으니) 사용하였다.
+/** 미니게임을 담아두는 class. 클릭해서 푸는 문제와 이미지를 보고 답을 제출하는 문제 2가지
  * @author Chungheon Yi
  *
  */
-public class Minigame extends SuperClassMinigame {
+public class Minigame {
+		
+	/** 게임 이미지 */
+	private ImageIcon image;
 
+	/** 게임 답 */
+	private String str;
+
+	/** 미니게임 pause 체크 하는데 쓰는 boolean 값 */
+	private boolean isStop = false;
+	
+	/** 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름 */
+	private String[] list = new String[4];
+	
+	/** 게임 제한 초 */
+	private int timer =30;
+	
+	
 		/** The x. */
 		private int x;
 		
@@ -16,19 +32,37 @@ public class Minigame extends SuperClassMinigame {
 		
 		/** 좌표를 4개 담아놓는 박스(클릭해서 그 좌표들이 만든 사각형 안에 포함되있다면 정답) */
 		private int Point[];
-		
-		//private boolean reqClick;
-
+	
 	/**
-		 * Instantiates a new minigame.
+		 * 이 게임의 퀴즈와 정답을 설정한다. (좌표 x)
 		 * @param ima 이미지
 		 * @param strings 게임 정답
-		 * @param howtoplay 미니게임 설명 
+		 * @param howtoplay 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름
 		 */
-		Minigame(ImageIcon ima, String strings,String[] howtoplay) // 게임 생성
+	public Minigame(ImageIcon ima, String strings,String[] howtoplay) // 게임 생성
 	{
-		super(ima,strings,howtoplay);
+		this.image = ima;
+
+		str = new String(strings);
+		setList(howtoplay);
+		
+	}
+	
+	/**
+	 * 이 게임의 퀴즈와 정답을 설정한다.클릭용 (좌표O)
+	 * @param ima 퀴즈의 이미지
+	 * @Param XY (x,y) 좌표 4가지 for answer
+	 * @param howtoplay 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름
+	 *  
+	 */
+	public Minigame(ImageIcon ima,int XY[], String[] howtoplay) // 게임 생성
+	{
+		this.image = ima;
+		setList(howtoplay);
+		
 		Point = new int[4];
+		setPoint(XY);
+		
 	}
 	
 	/**
@@ -50,7 +84,7 @@ public class Minigame extends SuperClassMinigame {
 	}
 	
 	/**
-	 * Sets X and Y.
+	 * Sets X and Y. + 덤으로 클릭 미니게임시 답 유무도 지정함.
 	 *
 	 * @param num1 x값 인자로 받음
 	 * @param num2 y값 인자로 받음
@@ -58,6 +92,16 @@ public class Minigame extends SuperClassMinigame {
 	void setXY(int num1,int num2) {
 		x = num1;
 		y=  num2;
+		
+		if(Point !=null)
+		{  //(x최소,x최대,y최소,y최대)
+			if(Point[0]<=x && Point[1]>=x && Point[2]<=y && Point[3]>=y)
+			{
+				str = "클릭후 제출 누르기"; //누른 좌표가 답 사각형 안이라면 제출시 true
+			}
+			else
+				str = "you are wrong"; //그외 
+		}
 	}
 	
 	/**
@@ -105,22 +149,93 @@ public class Minigame extends SuperClassMinigame {
 		return Point[index];
 	}
 	
-	/*
-	
-	 * 클릭이 필요한지 안 필요한지에 대하여 반환 
+	/**
+	 * 게임 이미지 반환
 	 * 
-	 * @return reqClick 반환
-	 
-	public boolean getreqclick() {
-		return reqClick;
+	 * @return image 이미지 반환
+	 */
+	public ImageIcon getImage() {
+		return image;
+	}
+	
+	/**
+	 * Sets the image.
+	 * @param ima the new image
+	 */
+	public void setImage(ImageIcon ima) {
+		 image = ima;
+	}
+	
+	
+	/**
+	 * Gets the timer.
+	 * @return the timer
+	 */
+	public int getTimer() {
+		return timer;
+	}
+	
+	/**
+	 * Sets the timer.
+	 * @param timer the new timer
+	 */
+	public void setTimer(int timer) {
+		this.timer = timer;
+	}
+	
+	/**
+	 * 게임 답 반환
+	 * 
+	 * @return str 정답 반환
+	 */
+	public String getAnswer() {
+		return str;
+	}
+
+	public void setAnswer(String strings) {
+		this.str = new String(strings);
+	}
+	/**
+	 * 미니게임 pause 체크 하는데 쓰는 boolean 값 반환
+	 * @return isstop 반환
+	 */
+	public boolean getisStop() {
+		return isStop;
 	}
 
 	
-	/**	reqClick이 클릭이 필요한지 안필요한지 setting
+	/**	미니게임 pause 체크 하는데 쓰는 boolean 값 setting
 	 * @param bool = setting할 boolean값
-	 
-	public void setreqClick(boolean bool) {
-		reqClick = bool;
+	 */
+	public void setisStop(boolean bool) {
+		isStop = bool;
 	}
-	*/
+	
+	/**
+	 * Sets the list.
+	 *
+	 * @param getstring the new list, list[0]은 이 게임 이름
+	 */
+	public void setList(String[] getstring) // 게임 설명을 적어놓는다.
+	{
+		try{
+			for(int i=0; i<4; i++) list[i] = getstring[i]; 
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			e.printStackTrace();  //실수방지
+		}
+	}
+	
+	/**
+	 * Gets the list. list[0]는 이 미니게임 이름
+	 *
+	 * @param 인덱스 번호
+	 * @return the list
+	 */
+	public String getList(int i)
+	{
+		return list[i];
+	}
+	
 }
