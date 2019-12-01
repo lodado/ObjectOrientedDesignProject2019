@@ -101,8 +101,14 @@ public class MinigameManager extends JFrame implements Runnable {
 	 */
 	public boolean gameresult() {
 		
-		answer = answer.replaceAll(" ", "");  //제출된 문자열 빈칸제거
-		currentMinigame.setAnswer(currentMinigame.getAnswer().replaceAll(" ", ""));  //정답 빈칸제거. 안전장치
+		try {
+			answer = answer.replaceAll(" ", "");  //제출된 문자열 빈칸제거
+			currentMinigame.setAnswer(currentMinigame.getAnswer().replaceAll(" ", ""));  //정답 빈칸제거. 안전장치
+		}
+			catch(NullPointerException e) //그냥 제출하기 바로 누르면 에러뜨는데 이때 false 반납
+		{
+				return false;
+		}
 		
 		while(!answer.isEmpty() && answer.charAt(0) == '0') answer = answer.substring(1); //000012 == 12, 0은 답사용불가
 		
@@ -197,15 +203,21 @@ public class MinigameManager extends JFrame implements Runnable {
 				));	// 게임7
 		miniGames.getLast().setTimer(85); //시간초 
 		
+		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/willy3.PNG"),
+				new int[] {740,775,480,533},         //이건 답 사각형 좌표 (x최소,x최대,y최소,y최대)
+				new String[]{"윌리를 찾아라! ","윌리(빨간 줄무늬)를 찾은후에 클릭하세요!","클릭후 제출 누르기",""}
+				));	// 게임8
+		miniGames.getLast().setTimer(85); //시간초 
+		
 		}
 		
 		
 		
 		
-		int currentgame = (int)(Math.random()*10)%(miniGames.size());
+		int currentgame = 7;//(int)(Math.random()*10)%(miniGames.size());
 		
 		currentMinigame = (miniGames.get(currentgame));
-		if(currentgame<5)
+		if(currentgame<=5)
 		{
 		
 		}	
@@ -406,7 +418,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 		middle.setVisible(false);//확인을 눌러야 미니게임이 보임 
 		frame.setSize(ROW, COL);
-
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(("./image/chonnam.png")));//전대 로고
 		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		frame.setResizable(false);
 		frame.setVisible(true);
@@ -440,7 +452,7 @@ public class MinigameManager extends JFrame implements Runnable {
         		   
         		   currentMinigame.setXY(x, y); //클릭 쓸경우 답 유무 판정
         		   xy.setText("좌표 : ("+currentMinigame.getX()+","+currentMinigame.getY()+")");//좌표출력
-        		   System.out.println(x+" "+y);
+        		 
         		  
         		  if(x>=2 && x<=198 && y>=70 && y<=246) // 좌측 상단 그림을 누르면 pause되게 설정 , 맵 name이 그림을 약간 미는걸로 보임
         			 {
@@ -492,7 +504,7 @@ public class MinigameManager extends JFrame implements Runnable {
 				int result = JOptionPane.showConfirmDialog(null, ans, "확인", JOptionPane.CLOSED_OPTION);
 
 				if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {
-
+					
 					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					frame.setVisible(false);
 					
