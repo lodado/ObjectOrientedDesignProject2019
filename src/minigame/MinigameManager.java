@@ -4,6 +4,7 @@ package minigame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,10 +63,10 @@ public class MinigameManager extends JFrame implements Runnable {
 	private JPanel topleft = new JPanel();
 	
 	/** 타이머 출력용 라벨. */
-	JLabel times = new JLabel(timer +" 초");
-
+	JLabel times = new JLabel(timer+"초");
+	
 	/** 제출 버튼 */
-	private JButton bt = new JButton("제출");
+	private JButton bt = new JButton(new ImageIcon("./image/button/button1.png"));
 	
 	/** 텍스트 필드 */
 	private JTextField jp = new JTextField(20);
@@ -92,6 +93,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	/**  선택된 게임. */
 	private Minigame currentMinigame;
 	
+	/** 맵매니저 manager. */
 	private Mapmanager manager;
 	/**
 	 * 게임의 정답을 맞추면 true, 틀리면 false 반환, 그리고 시간초가 끝나면 false 반환.
@@ -140,6 +142,10 @@ public class MinigameManager extends JFrame implements Runnable {
 	 */
 	private void gamesGenerator() {
 		
+		bt.setBorderPainted(false);
+		bt.setFocusPainted(false);
+		bt.setContentAreaFilled(false); //버튼 테두리, 색칠 등 지움
+		
 		xy.setVisible(false); //클릭 좌표 보여주는 유무 
 		
 		if(miniGames == null)  // 객체 생성 시간을 아끼기 위해서 이미 만들어져 있으면 게임 생성 시간을 건너뜀
@@ -150,17 +156,17 @@ public class MinigameManager extends JFrame implements Runnable {
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/game1.PNG"), "96",
 				new String[]{"논리 퀴즈! ","다음을 보고 ","답을 추론해 보세요!",""}
 				));	// 게임0
-		miniGames.getLast().setTimer(95); //시간초 - 직관적으로 보기 힘들어서 생성자에 넣지 않고 따로 설정함
+		miniGames.getLast().setTimer(45); //시간초 - 직관적으로 보기 힘들어서 생성자에 넣지 않고 따로 설정함
 		
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/game2.PNG"), "12",
 				new String[]{"가운데에 올 수는? ","어떤 규칙으로 색칠한 세수를 이용하여 ","가운데 수를 구해 보세요!",""}
 				));	// 게임1
-		miniGames.getLast().setTimer(95); //시간초 
+		miniGames.getLast().setTimer(45); //시간초 
 		
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/game3.PNG"), "검문소",
 				new String[]{"넌센스 퀴즈 ! ","이 소의 이름은?","(3글자)",""}
 				));	// 게임2
-		miniGames.getLast().setTimer(95); //시간초 
+		miniGames.getLast().setTimer(55); //시간초 
 		
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/game4.PNG"), "샴푸",
 				new String[]{"넌센스 퀴즈 ! ","이 곰의 이름은?","(2글자)",""}
@@ -175,7 +181,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/game6.PNG"), "이유식",
 				new String[]{"아재 개그 ","People live in EU like eating this","(한글로 3글자)",""}
 				));	// 게임5
-		miniGames.getLast().setTimer(65); //시간초 
+		miniGames.getLast().setTimer(40); //시간초 
 		/* 이미지 문제 끝 */
 		
 		miniGames.add(new Minigame(new ImageIcon("./image/minigameImage/willy1.PNG"),
@@ -234,6 +240,9 @@ public class MinigameManager extends JFrame implements Runnable {
 
 				//System.out.println("minigame manager thread");
 				
+				if(timer<10) times.setForeground(Color.RED);
+				
+				
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행
 					
 					times.setText(timer--+" 초"); // 1초마다 타이머 1초씩 감소
@@ -270,7 +279,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	 */
 	public MinigameManager(map m,Mapmanager Manager) {
 		
-		
+		frame.setContentPane(new JLabel(new ImageIcon("./image/mapImage/back11.jpg")));
 		manager = Manager;
 		currentMap = m;
 		
@@ -292,7 +301,7 @@ public class MinigameManager extends JFrame implements Runnable {
 
 		try {
 		
-		JLabel img = new JLabel(currentMap.getMapImage());
+		JLabel img = new JLabel(currentMap.getIconImage());
 		img.setBounds(2,40,196,178);
 		frame.add(img); //좌측 상단 맵 이미지 삽입
 		middle = new JLabel(currentMinigame.getImage());
@@ -305,9 +314,9 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 		JLabel timelimit = new JLabel("남은 시간");
 		
-		timelimit.setBounds(815,10,70,70);
+		timelimit.setBounds(815,0,70,70);
 		frame.add(timelimit);
-		times.setBounds(830,120,70,70);
+		times.setBounds(815,120,70,70);
 		frame.add(times);	
 		times.setVisible(false);        //times가 확인을 누르면 보이게함
 	
@@ -325,7 +334,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		frame.add(showhp); //HP : 상단에 add
 		
 		JLabel nameofMap = new JLabel(currentMap.getMapName());
-		nameofMap.setBounds(85,0,60,60);
+		nameofMap.setBounds(55,0,120,60);
 		frame.add(nameofMap);
 		
 		JLabel[] howtoplay = new JLabel[5]; //지금 미니게임에 대한 설명,
@@ -348,33 +357,48 @@ public class MinigameManager extends JFrame implements Runnable {
 		{
 			if(i!=4)	howtoplay[i] = new JLabel(currentMinigame.getList(i));  
 			howtoplay[i].setBounds(220,70+i*20,250,25);
+			howtoplay[i].setFont(new Font("Serif",Font.ITALIC,13));
 			frame.add(howtoplay[i]);
 		}
 		
 		bot.add(new JLabel("정답"));
 		bot.add(jp);
 		bot.add(bt, BorderLayout.LINE_END);
+	
+		/*폰트*/
+		times.setFont(new Font("Serif",Font.ITALIC,20));
+		jp.setFont(new Font("Serif",Font.ITALIC,18));
+		nameofMap.setFont(new Font("Serif",Font.PLAIN,24));
 		
-		top.setBounds(0, 0, 200, 220);
+		
+		
+		top.setBounds(0,48, 200, 172);
 		topright.setBounds(770, 0, 200, 100);
 		topright1.setBounds(770,100,200,120);
 		topleft.setBounds(200,0,600,220);
 		middle.setBounds(0, 220, 920, 500);
 		bot.setBounds(240, 800, 450, 300);
 		
+		bot.setBackground(new Color(255,182,193));
+		top.setBackground(Color.WHITE);
+		topright.setBackground(new Color(255,182,193));
+		topleft.setBackground(new Color(255,182,193));
+		topright1.setBackground(Color.WHITE);
 		frame.setBounds(280,700,300,300);
+		
 		
 		top.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
 		topright.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
 		topleft.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
 		topright1.setBorder(new TitledBorder(new LineBorder(Color.black,2)));
-		middle.setBorder(new TitledBorder(new LineBorder(Color.black,1)));
+		//middle.setBorder(new TitledBorder(new LineBorder(Color.black,1)));
+		
 		
 		frame.add(top);
 		frame.add(topright);
 		frame.add(topright1);
 		frame.add(topleft);
-		frame.add(bot);
+		frame.add(bot,0);
 		frame.add(middle);	
 		
 		xy.setBounds(800,850,200,30);
@@ -395,7 +419,7 @@ public class MinigameManager extends JFrame implements Runnable {
 				 currentMinigame.getList(1)+"\n"+
 				 currentMinigame.getList(2)+"\n"+
 				 currentMinigame.getList(3)+"\n",
-				 currentMinigame.getList(0)
+				 "미니게임 - "+currentMinigame.getList(0)
 				 ,JOptionPane.CLOSED_OPTION);
 			
 			if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {	

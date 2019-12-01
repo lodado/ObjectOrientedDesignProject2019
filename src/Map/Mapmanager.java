@@ -3,6 +3,8 @@ package Map;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -57,20 +59,27 @@ public class Mapmanager extends JFrame implements Runnable{
 	/** 맵 9개  */
 	private map m[] = new map[9];
 	
+	JLabel ping = new JLabel(new ImageIcon("./image/mapImage/ping.png")); //자기위치 가리킴 
+	
+	JLabel text[] = new JLabel[9];
+	
+	
 	/** 버튼 9개*/
 	private JButton[] b= new JButton[9]; 
 	
 	/**타이머 관리용 쓰레드*/
 	private Thread myThread; 
 	
-	/** 이 클래스의 Jframe. */
+	/** 이 클래스의 Frame. */
 	private JFrame frame = new JFrame();
-	
+     
 	/** 좌측 상단 패널 */
 	private JPanel top = new JPanel();
 	
 	/** hp 출력 */
 	private JLabel forHp = new JLabel(" HP :");
+	
+	//nameofMap.setForeground(Color.BLUE);
 	
 	/** 방어력 출력 */
 	private JLabel forDef = new JLabel(" 방어력 :");
@@ -80,6 +89,10 @@ public class Mapmanager extends JFrame implements Runnable{
 	
 	/** 총 게임 플레이 시간 출력 */
 	private JLabel Mytime =new JLabel("                   "+timer);
+	
+	/** 자기장이 여닫겼는지 확인할때 쓰이는 linkedlist*/
+	LinkedList<Integer> list;
+	
 	/**
 	 * 맵 장소 이동할때 확인 혹은 취소를 누르는 팝업창을 위한 inner class, JDialog로 교체 가능
 	 * @author Chungheon Yi
@@ -110,7 +123,9 @@ public class Mapmanager extends JFrame implements Runnable{
 		{
 			myLocation = mv.getLoc();  //자신의 위치 이곳으로 이동
 			forLoc.setText(" 현재 위치 :   "+mapsName[myLocation]);
-			if(mv.getUserNumber()<=1) // start minigame 
+			
+			ping.setBounds(50+280*(myLocation%3),200+250*(myLocation/3),230,920-770);
+			if(mv.getUserNumber()<=0) // start minigame 
 			{
 				new MinigameManager(mv,Mapmanager.this);
 			}		
@@ -127,6 +142,8 @@ public class Mapmanager extends JFrame implements Runnable{
 		 */
 		public MapLocationPopup(map M,int num)
 		{
+				
+			
 			    Toolkit tk = Toolkit.getDefaultToolkit();
 			    Dimension screenSize = tk.getScreenSize();
 			    int screenHeight = screenSize.height;
@@ -293,11 +310,6 @@ public class Mapmanager extends JFrame implements Runnable{
 			int whattime = 0; //시간 launcher timer와 상관 없이 따로재는 타이머 
 			boolean notify = true; // notify = 미리 알람용 boolean
 			
-			LinkedList<Integer> list = new LinkedList<Integer>(); //자기장 제어용 LinkedList
-			
-			for(int i=0; i<9;i++) list.add(i);      //[0,9]
-			Collections.shuffle(list);     //랜덤하게 섞음
-			
 			int[] count = new int[]{0};  // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
 			
 			while(true)
@@ -312,10 +324,10 @@ public class Mapmanager extends JFrame implements Runnable{
 				if(!list.isEmpty()) //모두 닫겼다면 실행 하지 않음
 					{
 						if( notify && whattime>750) //75초후에, 15초후 이곳이 영향을 받는다고 알려줌
-						{
+						{	text[m[list.peekLast()].getLoc()].setForeground(Color.MAGENTA); //보라색으로 맵이름변경
 							JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName()
 									+"에서 곧 자기장이 생성됩니다.\n","!!", JOptionPane.CLOSED_OPTION);
-						
+							
 						notify = false;
 					}
 					
@@ -323,11 +335,14 @@ public class Mapmanager extends JFrame implements Runnable{
 					
 					if(whattime>900) //90초마다 닫김
 						{
+							text[m[list.peekLast()].getLoc()].setForeground(Color.RED); //레드로 맵이름변경
 									m[list.peekLast()].setFlag();   //이곳을 닫음
 									JOptionPane.showConfirmDialog(null, m[list.pollLast()].getMapName()+
 											"(이)가 곧 자기장의 영향에 듭니다!\n"
 									 		+ "어서 도망치세요 !!",
 											 "!!", JOptionPane.CLOSED_OPTION);	
+									
+									
 							whattime = 0; //타이머 재기 초기화		
 							notify = true;
 						}	
@@ -362,6 +377,11 @@ public class Mapmanager extends JFrame implements Runnable{
 		}
 		
 		
+		list = new LinkedList<Integer>(); //자기장 제어용 LinkedList 설정
+		
+		for(int i=0; i<9;i++) list.add(i);      //[0,9]
+		Collections.shuffle(list);     //랜덤하게 섞음
+	
 		m[0].setImage(new ImageIcon("./image/mapImage/image.PNG"));
 		m[1].setImage(new ImageIcon("./image/mapImage/image.PNG"));
 		m[2].setImage(new ImageIcon("./image/mapImage/image.PNG"));
@@ -370,8 +390,17 @@ public class Mapmanager extends JFrame implements Runnable{
 		m[5].setImage(new ImageIcon("./image/mapImage/image.PNG"));
 		m[6].setImage(new ImageIcon("./image/mapImage/image.PNG"));
 		m[7].setImage(new ImageIcon("./image/mapImage/image.PNG"));
-		m[8].setImage(new ImageIcon("./image/mapImage/image.PNG"));
+		m[8].setImage(new ImageIcon("./image/mapImage/image.PNG"));  //이미지 삽입
 		
+		m[0].setIconImage(new ImageIcon("./image/mapImage/icon1.PNG"));
+		m[1].setIconImage(new ImageIcon("./image/mapImage/icon2.PNG"));
+		m[2].setIconImage(new ImageIcon("./image/mapImage/icon3.PNG"));
+		m[3].setIconImage(new ImageIcon("./image/mapImage/icon4.PNG"));
+		m[4].setIconImage(new ImageIcon("./image/mapImage/icon5.PNG"));
+		m[5].setIconImage(new ImageIcon("./image/mapImage/icon6.PNG"));
+		m[6].setIconImage(new ImageIcon("./image/mapImage/icon7.PNG"));
+		m[7].setIconImage(new ImageIcon("./image/mapImage/icon8.PNG"));
+		m[8].setIconImage(new ImageIcon("./image/mapImage/icon9.PNG"));
 		setThread(T1);
 		
 		frame.setLayout(null);
@@ -405,6 +434,8 @@ public class Mapmanager extends JFrame implements Runnable{
 		Mytime.setBounds(550,60,140,60);
 		
 		
+		
+		
 		frame.add(HP);
 		frame.add(forHp);
 		frame.add(forDef);
@@ -417,19 +448,45 @@ public class Mapmanager extends JFrame implements Runnable{
 		
 		for(int i=0; i<9; i++)
 		{
-			b[i] = new JButton(mapsName[i]);
+			b[i] = new JButton(m[i].getIconImage());
+			b[i].setBorderPainted(false);
+			b[i].setFocusPainted(false);
+			b[i].setContentAreaFilled(false); //버튼 테두리, 색칠 등 지움
+			
+			b[i].setFont(new Font("Serif",Font.ITALIC,24));
+			b[i].setForeground(Color.BLUE);
 		}
 		
-		JButton Item = new JButton("가방");
 		
-		Item.setBounds(730,20,ROW-770,100);
+		
+		JButton Item = new JButton(new ImageIcon("./image/button/gabang.png"));//가방사진
+		Item.setBorderPainted(false);
+		Item.setFocusPainted(false);
+		Item.setContentAreaFilled(false); //버튼 테두리, 색칠 등 지움
+		
+		
+		Item.setBounds(730,10,140,120);
+		
 		
 		for(int i=0; i<3; i++)
 		{
-			for(int j=0; j<3; j++)	b[i*3+j].setBounds(50+280*j,200+250*i,230,ROW-770);
+			for(int j=0; j<3; j++)	{
+					if(i*3+j ==myLocation) ping.setBounds(50+280*j,200+250*i,230,ROW-770);
+					
+					text[i*3+j]   =	new JLabel(mapsName[i*3+j]); //맵 이름 텍스트
+					b[i*3+j].setBounds(50+280*j,200+250*i,230,ROW-770);
+					
+					
+					text[i*3+j].setBounds(70+280*j,230+250*i,200,30); //이름 텍스트 고정!
+					//text[i*3+j].setFont(new Font("Serif",Font.BOLD,20)); 폰트안건드는게 나음 
+					frame.add(text[i*3+j]); //프레임에 추가
+			}
 		}
 		
+		
+		
 		frame.add(Item);
+		frame.add(ping);
 		for(int i=0; i<9; i++)  
 		{
 			b[i].addActionListener(new ActionListener() //장소를 누르면 시작되는 이벤트
@@ -448,8 +505,10 @@ public class Mapmanager extends JFrame implements Runnable{
 		        }
 			}
 		);
+			
 	
 		frame.add(b[i]);
+		
 		}
 		
 		Item.addActionListener(new ActionListener()  //가방을 누르면 시작되는 이벤트
@@ -472,7 +531,7 @@ public class Mapmanager extends JFrame implements Runnable{
 		    frame.setVisible(true);
 		    frame.setResizable(false);
 			frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-			
+			//아이콘 frame.setIconImage(Toolkit.getDefaultToolkit().getImage(("./image/mapImage/background.PNG")));
 			
 			myThread.setDaemon(true);
 			myThread.start();

@@ -25,6 +25,9 @@ public class map
 	/** 그 맵의 이미지 */
 	private ImageIcon image;
 	
+	/** 그 맵의 아이콘 이미지 */
+	private ImageIcon iconImage;
+	
 	/** flag for thread true 면 안닫긴거고 false면 닫김*/
 	private boolean flag = true;
 	
@@ -41,7 +44,7 @@ public class map
 	}
 	
 	
-	/** @return 자기 위치 반환 */
+	/** @return 맵에서 자기 위치 반환 */
 	public int getLoc()
 	{
 		
@@ -56,12 +59,10 @@ public class map
 	
 	/** 자기 장소를 setting 하는 메소드 
 	 * @param setlocation 자기 장소(위치) 샛팅
-	 * @param name 자기 이름 샛팅
 	 */
-	public void setLoc(int setlocation,String name)
+	public void setLoc(int setlocation)
 	{
-		this.location = setlocation;
-		this.mapName = name;
+		this.location = setlocation;	
 	}
 	
 	/** 그 맵 안의 유저수를 반환하는 메소드 
@@ -88,12 +89,28 @@ public class map
 		image = (ima);
 	}
 	
+	/** 맵의 아이콘 이미지를 설정하는 메소드 
+	 * @param ima 자기 아이콘 이미지 지정
+	 */
+	public void setIconImage(ImageIcon ima)
+	{
+		iconImage = (ima);
+	}
+	
 	/** 자신의 이미지를 반환하는 메소드
 	 * @return 자기 이미지 반환
 	 */
 	public ImageIcon getMapImage()
 	{
 		return image;
+	}
+	
+	/** 자신의 아이콘 이미지를 반환하는 메소드
+	 * @return 자기 아이콘 이미지 반환
+	 */
+	public ImageIcon getIconImage()
+	{
+		return iconImage;
 	}
 	
 	/**
