@@ -2,6 +2,7 @@ package Map;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -23,6 +24,8 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,9 +41,8 @@ import minigame.*;
 
 public class Mapmanager extends JFrame implements Runnable {
 
-	// private statusManager Man; -> 나중 stat 받으면 생성
-	String statue;
-
+	//private statusManager Man; -> 나중 stat 받으면 생성
+	
 	// prvaite AImanager AI -> 나중 AI매니저 생성하면 생성
 
 	/** The hp */
@@ -58,7 +60,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** 맵 9개 */
 	private map m[] = new map[9];
 
-	JLabel ping = new JLabel(new ImageIcon("./image/mapImage/ping.png")); // 자기위치 가리킴
+	JLabel ping = new JLabel(new ImageIcon("./src/image/mapImage/ping.png")); // 자기위치 가리킴
 
 	JLabel text[] = new JLabel[9];
 
@@ -99,10 +101,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	private class MapLocationPopup extends JDialog {
 
 		/** 이동 버튼 */
-		private JButton Bt1 = new JButton(new ImageIcon("./image/button/buttonYES.png"));
+		private JButton Bt1 = new JButton(new ImageIcon("./src/image/button/buttonYES.png"));
 
 		/** 취소 버튼 */
-		private JButton Bt2 = new JButton(new ImageIcon("./image/button/buttonNO.png"));
+		private JButton Bt2 = new JButton(new ImageIcon("./src/image/button/buttonNO.png"));
 
 		/** 하단 패널 */
 		private JPanel bottom = new JPanel();
@@ -156,7 +158,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 			thisframe.setTitle(M.getMapName() + "로 이동?");
 
-			thisframe.setIconImage(Toolkit.getDefaultToolkit().getImage(("./image/chonnam.png")));// 전대 로고
+			thisframe.setIconImage(Toolkit.getDefaultToolkit().getImage(("./src/image/chonnam.png")));// 전대 로고
 			Bt1.addActionListener(
 
 					new ActionListener() {
@@ -383,25 +385,25 @@ public class Mapmanager extends JFrame implements Runnable {
 			list.add(i); // [0,9]
 		Collections.shuffle(list); // 랜덤하게 섞음
 
-		m[0].setImage(new ImageIcon("./image/mapImage/map1.png"));
-		m[1].setImage(new ImageIcon("./image/mapImage/map2.png"));
-		m[2].setImage(new ImageIcon("./image/mapImage/map3.png"));
-		m[3].setImage(new ImageIcon("./image/mapImage/map4.png"));
-		m[4].setImage(new ImageIcon("./image/mapImage/map5.png"));
-		m[5].setImage(new ImageIcon("./image/mapImage/map6.png"));
-		m[6].setImage(new ImageIcon("./image/mapImage/map7.png"));
-		m[7].setImage(new ImageIcon("./image/mapImage/map8.png"));
-		m[8].setImage(new ImageIcon("./image/mapImage/map9.jpg")); // 이미지 삽입
+		m[0].setImage(new ImageIcon("./src/image/mapImage/map1.png"));
+		m[1].setImage(new ImageIcon("./src/image/mapImage/map2.png"));
+		m[2].setImage(new ImageIcon("./src/image/mapImage/map3.png"));
+		m[3].setImage(new ImageIcon("./src/image/mapImage/map4.png"));
+		m[4].setImage(new ImageIcon("./src/image/mapImage/map5.png"));
+		m[5].setImage(new ImageIcon("./src/image/mapImage/map6.png"));
+		m[6].setImage(new ImageIcon("./src/image/mapImage/map7.png"));
+		m[7].setImage(new ImageIcon("./src/image/mapImage/map8.png"));
+		m[8].setImage(new ImageIcon("./src/image/mapImage/map9.jpg")); // 이미지 삽입
 
-		m[0].setIconImage(new ImageIcon("./image/mapImage/icon1.PNG"));
-		m[1].setIconImage(new ImageIcon("./image/mapImage/icon2.PNG"));
-		m[2].setIconImage(new ImageIcon("./image/mapImage/icon3.PNG"));
-		m[3].setIconImage(new ImageIcon("./image/mapImage/icon4.PNG"));
-		m[4].setIconImage(new ImageIcon("./image/mapImage/icon5.PNG"));
-		m[5].setIconImage(new ImageIcon("./image/mapImage/icon6.PNG"));
-		m[6].setIconImage(new ImageIcon("./image/mapImage/icon7.PNG"));
-		m[7].setIconImage(new ImageIcon("./image/mapImage/icon8.PNG"));
-		m[8].setIconImage(new ImageIcon("./image/mapImage/icon9.PNG"));
+		m[0].setIconImage(new ImageIcon("./src/image/mapImage/icon1.PNG"));
+		m[1].setIconImage(new ImageIcon("./src/image/mapImage/icon2.PNG"));
+		m[2].setIconImage(new ImageIcon("./src/image/mapImage/icon3.PNG"));
+		m[3].setIconImage(new ImageIcon("./src/image/mapImage/icon4.PNG"));
+		m[4].setIconImage(new ImageIcon("./src/image/mapImage/icon5.PNG"));
+		m[5].setIconImage(new ImageIcon("./src/image/mapImage/icon6.PNG"));
+		m[6].setIconImage(new ImageIcon("./src/image/mapImage/icon7.PNG"));
+		m[7].setIconImage(new ImageIcon("./src/image/mapImage/icon8.PNG"));
+		m[8].setIconImage(new ImageIcon("./src/image/mapImage/icon9.PNG"));
 		setThread(T1);
 
 		frame.setLayout(null);
@@ -450,9 +452,12 @@ public class Mapmanager extends JFrame implements Runnable {
 
 			b[i].setFont(new Font("Serif", Font.ITALIC, 24));
 			b[i].setForeground(Color.BLUE);
+			
+			
+			
 		}
 
-		JButton Item = new JButton(new ImageIcon("./image/button/gabang.png"));// 가방사진
+		JButton Item = new JButton(new ImageIcon("./src/image/button/gabang.png"));// 가방사진
 		Item.setBorderPainted(false);
 		Item.setFocusPainted(false);
 		Item.setContentAreaFilled(false); // 버튼 테두리, 색칠 등 지움
@@ -493,7 +498,22 @@ public class Mapmanager extends JFrame implements Runnable {
 					}
 				}
 			});
+			
+			b[i].addMouseListener(new MouseAdapter(){
+			      
+			      @Override
+			      public void mouseEntered(MouseEvent e){
+			         
+			         b[mynum].setCursor(new Cursor(Cursor.HAND_CURSOR)); //버튼에 손 올리면 핸드커서
 
+			      }
+			    
+			      public void mouseExited(MouseEvent e){
+			       
+			         b[mynum].setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); //기본 커서
+
+			      }
+			});
 			frame.add(b[i]);
 
 		}
@@ -518,7 +538,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(("./image/chonnam.png")));// 전대 로고
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(("./src/image/chonnam.png")));// 전대 로고
 
 		myThread.setDaemon(true);
 		myThread.start();
