@@ -27,7 +27,7 @@ public class GameCharacter {
    	 * @param agi - 캐릭터 민첩
    	 * @param image - 캐릭터 이미지
    	 */
-	GameCharacter(String name, int hp, int off, int def, int agi, String image) {
+	public GameCharacter(String name, int hp, int off, int def, int agi, String image) {
 		this.name = name;
 		this.hp = hp;
 		this.off = off;

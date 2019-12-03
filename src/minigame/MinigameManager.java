@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 import Map.Mapmanager;
 import Map.map;
+import playground.GameCharacter;
 /**
  * 미니게임을 관리하는 클래스.
  *
@@ -34,6 +35,7 @@ import Map.map;
 
 public class MinigameManager extends JFrame implements Runnable {
 
+	private GameCharacter myMan;
 	
 	/** 타이머에 쓰이는 정수. */
 	private int timer = 999;
@@ -246,8 +248,6 @@ public class MinigameManager extends JFrame implements Runnable {
 
 		try {
 			
-			int currentHP = 89;  //Character의 HP를 여기다 대입
-			
 			while (timer >= 0 && !myThread.isInterrupted()) {
 
 				//System.out.println("minigame manager thread");
@@ -258,7 +258,7 @@ public class MinigameManager extends JFrame implements Runnable {
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행
 					
 					times.setText(timer--+" 초"); // 1초마다 타이머 1초씩 감소
-					manager.setHP(--currentHP,currentMap,HP);   //currentHP에 캐릭터 HP를 넣을것
+					manager.setHP(myMan.getHp(),currentMap,HP);   //currentHP에 캐릭터 HP를 넣을것
 					
 				}
 				
@@ -289,7 +289,9 @@ public class MinigameManager extends JFrame implements Runnable {
 	 * @param m 지금 현재 장소
 	 * @param Mapmanager를 넘겨받음. association
 	 */
-	public MinigameManager(map m,Mapmanager Manager) {
+	public MinigameManager(map m,Mapmanager Manager, GameCharacter cha) {
+		
+		myMan = cha; // 캐릭터 넘겨받음 
 		
 		frame.setContentPane(new JLabel(new ImageIcon("./src/image/mapImage/back11.jpg")));
 		manager = Manager;
@@ -337,7 +339,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		else  HP.setForeground(Color.MAGENTA);
 		
 		HP.setBounds(569,194,201,24);
-		HP.setValue(74); // 여기에 Character HP 대입
+		HP.setValue(myMan.getHp()); // 여기에 Character HP 대입
 		HP.setStringPainted(true);
 		frame.add(HP); //show progressbar
 		

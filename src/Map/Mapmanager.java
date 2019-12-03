@@ -83,7 +83,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	private JLabel forHp = new JLabel(" HP :");
 
 	/** 방어력 출력 */
-	private JLabel forDef = new JLabel(" 방어력 :");
+	private JLabel forDef;
 
 	/** 현재위치 출력 */
 	private JLabel forLoc = new JLabel(" 현재 위치 :   " + mapsName[myLocation]);
@@ -125,7 +125,7 @@ public class Mapmanager extends JFrame implements Runnable {
 			ping.setBounds(50 + 280 * (myLocation % 3), 200 + 250 * (myLocation / 3), 230, 920 - 770);
 			if (mv.getUserNumber() <= 0) // start minigame
 			{
-				new MinigameManager(mv, Mapmanager.this);
+				new MinigameManager(mv, Mapmanager.this,myMan);
 			} else {
 				// fight manager();
 			}
@@ -245,7 +245,6 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Sets the timer. 변경은 허용불가
-	 * 
 	 * @param time the new timer
 	 */
 	public void setTimer(final int time) {
@@ -304,14 +303,16 @@ public class Mapmanager extends JFrame implements Runnable {
 	private void IsClosedMap(int count[], map m, JProgressBar HPBar, double Threadspeed) //
 	{
 		// count = a[0];
-
+		
+		if(myMan.getHp()<5) return; // 체력 5 이하로는 안떨어짐
+		
 		if (!m.getFlag()) // flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
 		{
 			if (count[0]++ > 4 * Threadspeed) { // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 
 				count[0] = 0;
-				int hp = 100; // character.setHp(character.getHp()-1);
-				setHP(--hp, m, HPBar); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
+				myMan.setHp(myMan.getHp()-1);
+				setHP(myMan.getHp(), m, HPBar); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
 			}
 		}
 	}
@@ -334,11 +335,14 @@ public class Mapmanager extends JFrame implements Runnable {
 
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음
 				{
-					if (notify && whattime > 750) // 75초후에, 15초후 이곳이 영향을 받는다고 알려줌
+					if (notify && whattime > 750) // 75초후에, 대략 15초후 이곳이 영향을 받는다고 알려줌
 					{
 						text[m[list.peekLast()].getLoc()].setForeground(Color.MAGENTA); // 보라색으로 맵이름변경
-						JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName() + "에서 곧 자기장이 생성됩니다.\n",
-								"!!", JOptionPane.CLOSED_OPTION);
+						new Thread(()-> {						
+							JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName() + "에서 곧 자기장이 생성됩니다.\n",
+							"!!", JOptionPane.CLOSED_OPTION);
+							}).start(); //팝업
+							
 
 						notify = false;
 					}
@@ -349,9 +353,14 @@ public class Mapmanager extends JFrame implements Runnable {
 					{
 						text[m[list.peekLast()].getLoc()].setForeground(Color.RED); // 레드로 맵이름변경
 						m[list.peekLast()].setFlag(); // 이곳을 닫음
-						JOptionPane.showConfirmDialog(null,
-								m[list.pollLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
-								JOptionPane.CLOSED_OPTION);
+
+						new Thread( () -> {
+								JOptionPane.showConfirmDialog(null,
+										m[list.pollLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
+										JOptionPane.CLOSED_OPTION);
+							}).start(); //팝업
+							
+						
 
 						whattime = 0; // 타이머 재기 초기화
 						notify = true;
@@ -373,7 +382,15 @@ public class Mapmanager extends JFrame implements Runnable {
 	 */
 	public Mapmanager(Thread T1,GameCharacter cha) {
 
-		myMan=cha;
+		try{myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "j.png");//myMan=cha;
+		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		forDef = new JLabel(" 방어력 :  " +myMan.getDef());
+		myMan.setHp(100); //나중에 바꿈
 		
 		final int ROW = 920; // 크기 나중에 삭제
 		final int COL = 920;
@@ -415,7 +432,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		topright.setBounds(0, 90, 202, 30);
 		topright.setBorder(new TitledBorder(new LineBorder(Color.black, 2)));
 
-		topright.add(new JLabel(" 캐릭터 이름"), BorderLayout.CENTER);
+		topright.add(new JLabel(myMan.getName()), BorderLayout.CENTER);
 
 		top.setBounds(200, 0, 350, 120);
 		top.setBorder(new TitledBorder(new LineBorder(Color.black, 2)));
@@ -427,7 +444,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		HP.setStringPainted(true);
 		HP.setForeground(Color.RED);
-		HP.setValue(74); // 스텟의 hp를 여기에 넣음
+		HP.setValue(myMan.getHp()); // 스텟의 hp를 여기에 넣음
 		HP.setStringPainted(true);
 		HP.setBounds(240, 20, 260, 30);
 
@@ -488,12 +505,14 @@ public class Mapmanager extends JFrame implements Runnable {
 		//이게 없으면 팝업이 중복되는 문제가 생겨서 만든 코드입니다.. 팝업의 모든 frame을 없앨때 씁니다.
 		for (int i = 0; i < 9; i++) {
 			final int mynum = i;
-			b[i].addActionListener(new ActionListener() // 장소를 누르면 시작되는 이벤트
+			final int myLoc = myLocation; //자기위치는 못 이동
+			
+			 b[i].addActionListener(new ActionListener() // 장소를 누르면 시작되는 이벤트
 			{
 
 				public void actionPerformed(ActionEvent e) {
 
-					if (e.getSource() == b[mynum]) {
+					if ( myLoc != mynum && e.getSource() == b[mynum]) {
 						new MapLocationPopup(thisFrame, m[mynum], mynum);
 
 					} else {
