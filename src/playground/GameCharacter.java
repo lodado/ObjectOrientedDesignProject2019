@@ -3,7 +3,7 @@ package playground;
 import java.util.ArrayList;
 
 /**캐릭터의 정보를 담는 클래스 */
-class GameCharacter {
+public class GameCharacter {
 	/** 캐릭터의 이름 */
 	String name;
 	/** 캐릭터의 체력 */

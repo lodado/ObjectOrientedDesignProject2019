@@ -66,12 +66,12 @@ class WaitingRoomView extends JFrame{
 	 * 
 	 * @author ChungHeon Yi
 	 */
-	public void gameStart(Character cha) {
+	public void gameStart(GameCharacter cha) {
 
 		
 		
 		T1 = null; // Mapmanager가 쓸 Thread
-		MapController = new Mapmanager(T1,null);
+		MapController = new Mapmanager(T1,cha);
 
 		T2 = new Thread() { // 메인 쓰레드
 			@Override

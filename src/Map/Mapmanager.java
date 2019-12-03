@@ -44,7 +44,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	
 	/** 자신 캐릭터 스텟 */
-	private Character myMan;
+	private GameCharacter myMan;
 	
 	// prvaite AImanager AI -> 나중 AI매니저 생성하면 생성
 
@@ -371,7 +371,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(Thread T1,Character cha) {
+	public Mapmanager(Thread T1,GameCharacter cha) {
 
 		myMan=cha;
 		
