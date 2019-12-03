@@ -2,6 +2,7 @@ package Map;
 
 import java.awt.BorderLayout;
 import AI.*;
+import Item.Itemview;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -577,7 +578,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		Item.addActionListener(new ActionListener() // 가방을 누르면 시작되는 이벤트
 		{
 			public void actionPerformed(ActionEvent e) {
-				// new Item();
+				new Itemview(myMan,Mapmanager.this);
 			}
 		});
 

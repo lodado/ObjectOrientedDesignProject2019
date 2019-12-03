@@ -74,7 +74,8 @@ public class AIManager {
 		{
 			for(int b=0; b<worldMap[a].getAINumber(); b++)
 			{
-				targetAI.add(worldMap[a].getAI().get(b)); //모든 AI 수집
+				if(worldMap[a].getAI().get(b).getHp()>0)
+						targetAI.add(worldMap[a].getAI().get(b)); //모든 AI 수집
 			}
 			
 			worldMap[a].getAI().clear(); //수집후 제거
@@ -108,9 +109,11 @@ public class AIManager {
 		}
 		System.out.println();
 	}
-	
-	public void AttackAlgorithm()
+	/*
+	 * 
+	public void attackAlgorithm()
 	{
-		
+		fightManager로 이동
 	}
+	*/
 }
