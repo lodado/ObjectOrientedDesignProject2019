@@ -518,19 +518,19 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		LinkedList<JFrame> thisFrame = new LinkedList<>();
 		//이게 없으면 팝업이 중복되는 문제가 생겨서 만든 코드입니다.. 팝업의 모든 frame을 없앨때 씁니다.
+		
 		for (int i = 0; i < 9; i++) {
 			final int mynum = i;
-			final int myLoc = myLocation; //자기위치는 못 이동
 			
 			 b[i].addActionListener(new ActionListener() // 장소를 누르면 시작되는 이벤트
 			{
 
 				public void actionPerformed(ActionEvent e) {
-
-					AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
-					if ( myLoc != mynum && e.getSource() == b[mynum]) {
 					
-						new MapLocationPopup(thisFrame, m[mynum], mynum);	
+					AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
+					if (b[myLocation]!=e.getSource() && e.getSource() == b[mynum]) {
+					
+						new MapLocationPopup(thisFrame, m[mynum], mynum);	//이동 확인 팝업 띄움   
 						
 					} else {
 						
