@@ -12,19 +12,7 @@ import javax.swing.JPanel;
 import Map.Mapmanager;
 
 class WaitingRoomView extends JFrame{
-	
-	/** Map의 쓰레드를 작동시키는 T1 Thread. */
-	Thread T1;
 
-	/** 시간초를 세는 T2 Thread. */
-	Thread T2;
-	
-	/** The timer. */
-	public int timer = 0;
-
-	/** launcher가 소유하는 MapController. */
-	Mapmanager MapController;
-	
 	public WaitingRoomView() {
 		setVisible(false);
 		setTitle("Wait Playing");
@@ -42,7 +30,8 @@ class WaitingRoomView extends JFrame{
 				new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) // 확인 버튼을 누르면 맵 화면에서 전투 혹은 미니게임 화면으로 이동
 					{
-						/** * Instantiates a new launcher.*/
+						/** @author Chungheon Yi
+						 * Instantiates a new launcher.*/
 						gameStart(null);
 					}
 				});
@@ -60,7 +49,20 @@ class WaitingRoomView extends JFrame{
 		contentPane.add(panel);
 	}
 	
+	/** 
+	 * 이 밑은 @author ChungHeon YI
+	* Map의 쓰레드를 작동시키는 T1 Thread. */
+	Thread T1;
 
+	/** 시간초를 세는 T2 Thread. */
+	Thread T2;
+	
+	/** The timer. */
+	public int timer = 0;
+
+	/** launcher가 소유하는 MapController. */
+	Mapmanager MapController;
+	
 	/**
 	 * Game start.
 	 * 
@@ -81,7 +83,6 @@ class WaitingRoomView extends JFrame{
 
 					try {
 						MapController.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
-						System.out.println(timer);
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						break; // 인터럽트 캐치

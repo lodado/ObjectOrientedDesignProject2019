@@ -11,7 +11,7 @@ public class Main {
 		StatusManager player = new StatusManager(cv);
 		LaunchManager lm = new LaunchManager(cv);
 		
-		
+		wv.gameStart(null);
 		//WaitPlay w = new WaitPlay();
 		//w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//w.setVisible(true);

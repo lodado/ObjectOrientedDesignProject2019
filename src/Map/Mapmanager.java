@@ -1,6 +1,7 @@
 package Map;
 
 import java.awt.BorderLayout;
+import AI.*;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -46,8 +47,9 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** 자신 캐릭터 스텟 */
 	private GameCharacter myMan;
 	
-	// prvaite AImanager AI -> 나중 AI매니저 생성하면 생성
-
+	/** AI manager. */
+	private AIManager AI;
+	
 	/** The hp */
 	private JProgressBar HP = new JProgressBar(0, 100);
 
@@ -72,7 +74,10 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/** 타이머 관리용 쓰레드 */
 	private Thread myThread;
-
+	
+	/** 캐릭터의 이미지 */
+	private JLabel characterImage;
+	
 	/** 이 클래스의 Frame. */
 	private JFrame frame = new JFrame();
 
@@ -123,10 +128,11 @@ public class Mapmanager extends JFrame implements Runnable {
 			forLoc.setText(" 현재 위치 :   " + mapsName[myLocation]);
 
 			ping.setBounds(50 + 280 * (myLocation % 3), 200 + 250 * (myLocation / 3), 230, 920 - 770);
-			if (mv.getUserNumber() <= 0) // start minigame
+			if (mv.getAINumber() <= 0) // start minigame
 			{
 				new MinigameManager(mv, Mapmanager.this,myMan);
 			} else {
+					System.out.println(mv.getAINumber());
 				// fight manager();
 			}
 
@@ -338,12 +344,21 @@ public class Mapmanager extends JFrame implements Runnable {
 					if (notify && whattime > 750) // 75초후에, 대략 15초후 이곳이 영향을 받는다고 알려줌
 					{
 						text[m[list.peekLast()].getLoc()].setForeground(Color.MAGENTA); // 보라색으로 맵이름변경
-						new Thread(()-> {						
+						Thread th = new Thread() {
+							
+							public void run() {
 							JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName() + "에서 곧 자기장이 생성됩니다.\n",
 							"!!", JOptionPane.CLOSED_OPTION);
-							}).start(); //팝업
 							
-
+							try{
+								Thread.sleep(1);
+							}
+							catch(Exception e) {}
+							}
+							};
+								th.run();
+						
+						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
 						notify = false;
 					}
 
@@ -354,17 +369,26 @@ public class Mapmanager extends JFrame implements Runnable {
 						text[m[list.peekLast()].getLoc()].setForeground(Color.RED); // 레드로 맵이름변경
 						m[list.peekLast()].setFlag(); // 이곳을 닫음
 
-						new Thread( () -> {
-								JOptionPane.showConfirmDialog(null,
-										m[list.pollLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
-										JOptionPane.CLOSED_OPTION);
-							}).start(); //팝업
+						 new Thread(()->{
+										JOptionPane.showConfirmDialog(null,m[list.peekLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
+												JOptionPane.CLOSED_OPTION);
+										try{
+											Thread.sleep(1);
+											}
+										catch(Exception e) {}
+										}).run();
+										
+							 //팝업
 							
+							
+							
+						list.removeLast(); //자기장 구간 생성
 						
-
+						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
 						whattime = 0; // 타이머 재기 초기화
 						notify = true;
 					}
+					
 				}
 
 				Thread.sleep(100); // 쓰레드 sleep 0.1초
@@ -382,15 +406,19 @@ public class Mapmanager extends JFrame implements Runnable {
 	 */
 	public Mapmanager(Thread T1,GameCharacter cha) {
 
-		try{myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "j.png");//myMan=cha;
-		
+		try{
+			myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "./src/image/mapImage/map1.png");//myMan=cha;	
+			
+			forDef = new JLabel(" 방어력 :  " +myMan.getDef());
+			characterImage = new JLabel(new ImageIcon(myMan.getImage()));
+			myMan.setHp(100); //나중에 지움
+			
+			characterImage.setBounds(0,0,201,90);
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-		}
-		
-		forDef = new JLabel(" 방어력 :  " +myMan.getDef());
-		myMan.setHp(100); //나중에 바꿈
+		}	
 		
 		final int ROW = 920; // 크기 나중에 삭제
 		final int COL = 920;
@@ -425,7 +453,10 @@ public class Mapmanager extends JFrame implements Runnable {
 		m[7].setIconImage(new ImageIcon("./src/image/mapImage/icon8.PNG"));
 		m[8].setIconImage(new ImageIcon("./src/image/mapImage/icon9.PNG"));
 		setThread(T1);
-
+		
+		AI = new AIManager(m); //AImanager 셋팅
+		
+		
 		frame.setLayout(null);
 
 		JPanel topright = new JPanel();
@@ -455,6 +486,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		Mytime.setBorder(new TitledBorder(new LineBorder(Color.black, 2)));
 		Mytime.setBounds(550, 60, 140, 60);
 
+		frame.add(characterImage);
 		frame.add(HP);
 		frame.add(forHp);
 		frame.add(forDef);
@@ -512,11 +544,13 @@ public class Mapmanager extends JFrame implements Runnable {
 
 				public void actionPerformed(ActionEvent e) {
 
+					AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
 					if ( myLoc != mynum && e.getSource() == b[mynum]) {
-						new MapLocationPopup(thisFrame, m[mynum], mynum);
-
+					
+						new MapLocationPopup(thisFrame, m[mynum], mynum);	
+						
 					} else {
-
+						
 					}
 				}
 			});

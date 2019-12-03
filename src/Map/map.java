@@ -1,9 +1,15 @@
+/*
+ * 
+ */
 package Map;
 
 import java.awt.Image;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import playground.GameCharacter;
 
 /**
  * 맵에 관한 클래스
@@ -19,14 +25,13 @@ public class map
 	/**  맵 이름 */
 	private String mapName; 
 	
-	/** 그 대상 맵 안에 있는 유저들 수  */
-	private int UserNumber;
-	
 	/** 그 맵의 이미지 */
 	private ImageIcon image;
 	
 	/** 그 맵의 아이콘 이미지 */
 	private ImageIcon iconImage;
+	
+	LinkedList<GameCharacter> AI = new LinkedList<>();
 	
 	/** flag for thread true 면 안닫긴거고 false면 닫김*/
 	private boolean flag = true;
@@ -40,7 +45,6 @@ public class map
 	{
 		this.mapName = name;
 		this.location = mylocation;
-		UserNumber = 0;
 	}
 	
 	
@@ -66,19 +70,38 @@ public class map
 	}
 	
 	/** 그 맵 안의 유저수를 반환하는 메소드 
-	 * @return 지금 자기 자신 안의 총 유저수 반환
+	 * @return 지금 자기 맵 안의 총 유저수 반환
 	 */
-	public int getUserNumber()
+	public int getAINumber()
 	{
-		return UserNumber;
+		return AI.size();
 	}
 	
-	/** 맵 안의 유저수를 설정하는 메소드 
+	public LinkedList<GameCharacter> getAI(){
+		return AI;
+	}
+	
+	/** 맵 안의 AI를 더하는 메소드 
 	 * @param number  
 	 */
-	public void setUserNumber(int number)
+	public void addAI(GameCharacter AImove)
 	{
-		this.UserNumber = number;
+		this.AI.add(AImove);
+	}
+	
+	/**
+	 * Pop 맵안의 AI를 빼는 메소드.
+	 * @param name AI의 이름
+	 */
+	public void popAI(String name)
+	{
+		for(int i=0; i<AI.size(); i++)
+			{	
+				if(AI.get(i).getName() == name)
+					{	
+						AI.remove(AI.get(i));			
+					}
+			}
 	}
 	
 	/** 맵의 이미지를 설정하는 메소드 
