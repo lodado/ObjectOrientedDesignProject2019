@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 //캐릭터 선택 프레임
 class CharacterSelectView extends JFrame {
-	Character player;
+	GameCharacter player;
 	WaitingRoomView wv;
 	
 	CharacterSelectView(WaitingRoomView wv) {
@@ -79,18 +79,18 @@ class ButtonPanel extends JPanel implements ActionListener {
 	private JButton selectButton1;
 	private JButton selectButton2;
 	private JButton selectButton3;
-	private Character player;
+	private GameCharacter player;
 	WaitingRoomView wv;
 	
-	private Character cha1;
-	private Character cha2;
-	private Character cha3;
-	public ButtonPanel(Character player, WaitingRoomView wv) {
+	private GameCharacter cha1;
+	private GameCharacter cha2;
+	private GameCharacter cha3;
+	public ButtonPanel(GameCharacter player, WaitingRoomView wv) {
 		this.player = player;
 		this.wv = wv;
-		cha1 = new Character("디폴트", 100, 10, 10, 10, "default.jpg");
-		cha2 = new Character("공격형", 80, 15, 5, 10, "attacker.jpg");
-		cha3 = new Character("방어형", 120, 5, 15, 10, "tanker.jpg");
+		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "default.jpg");
+		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "attacker.jpg");
+		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "tanker.jpg");
 
 		// create buttons
 		selectButton1 = new JButton("Select");

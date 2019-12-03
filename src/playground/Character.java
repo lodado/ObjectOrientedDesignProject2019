@@ -3,7 +3,7 @@ package playground;
 import java.util.ArrayList;
 
 /**캐릭터의 정보를 담는 클래스 */
-class Character {
+class GameCharacter {
 	/** 캐릭터의 이름 */
 	String name;
 	/** 캐릭터의 체력 */
@@ -27,7 +27,7 @@ class Character {
    	 * @param agi - 캐릭터 민첩
    	 * @param image - 캐릭터 이미지
    	 */
-	Character(String name, int hp, int off, int def, int agi, String image) {
+	GameCharacter(String name, int hp, int off, int def, int agi, String image) {
 		this.name = name;
 		this.hp = hp;
 		this.off = off;

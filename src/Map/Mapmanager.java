@@ -1,6 +1,7 @@
 package Map;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -32,7 +33,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import minigame.*;
-
+import playground.*;
 /**
  * 맵 관리 매니저 클래스. Thread는 launcher와 함께 게임 플레이동안 계속 돌아간다.
  * 
@@ -41,7 +42,9 @@ import minigame.*;
 
 public class Mapmanager extends JFrame implements Runnable {
 
-	//private statusManager Man; -> 나중 stat 받으면 생성
+	
+	/** 자신 캐릭터 스텟 */
+	private Character myMan;
 	
 	// prvaite AImanager AI -> 나중 AI매니저 생성하면 생성
 
@@ -78,8 +81,6 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/** hp 출력 */
 	private JLabel forHp = new JLabel(" HP :");
-
-	// nameofMap.setForeground(Color.BLUE);
 
 	/** 방어력 출력 */
 	private JLabel forDef = new JLabel(" 방어력 :");
@@ -370,8 +371,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(Thread T1) {
+	public Mapmanager(Thread T1,Character cha) {
 
+		myMan=cha;
+		
 		final int ROW = 920; // 크기 나중에 삭제
 		final int COL = 920;
 

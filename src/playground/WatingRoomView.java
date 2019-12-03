@@ -43,7 +43,7 @@ class WaitingRoomView extends JFrame{
 					public void actionPerformed(ActionEvent arg0) // 확인 버튼을 누르면 맵 화면에서 전투 혹은 미니게임 화면으로 이동
 					{
 						/** * Instantiates a new launcher.*/
-						gameStart();
+						gameStart(null);
 					}
 				});
 		
@@ -66,18 +66,17 @@ class WaitingRoomView extends JFrame{
 	 * 
 	 * @author ChungHeon Yi
 	 */
-	public void gameStart() {
+	public void gameStart(Character cha) {
 
 		
 		
 		T1 = null; // Mapmanager가 쓸 Thread
-		MapController = new Mapmanager(T1);
+		MapController = new Mapmanager(T1,null);
 
 		T2 = new Thread() { // 메인 쓰레드
 			@Override
 			public void run() {
 
-				// MinigameManager mini= new MinigameManager(new map(1,"농대"));
 				while (true) {
 
 					try {
