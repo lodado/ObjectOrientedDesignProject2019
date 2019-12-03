@@ -51,9 +51,7 @@ class WaitingRoomView extends JFrame{
 	
 	/** 
 	 * 이 밑은 @author ChungHeon YI
-	* Map의 쓰레드를 작동시키는 T1 Thread. */
-	Thread T1;
-
+	
 	/** 시간초를 세는 T2 Thread. */
 	Thread T2;
 	
@@ -70,10 +68,9 @@ class WaitingRoomView extends JFrame{
 	 */
 	public void gameStart(GameCharacter cha) {
 
+		JFrame popup;
 		
-		
-		T1 = null; // Mapmanager가 쓸 Thread
-		MapController = new Mapmanager(T1,cha);
+		MapController = new Mapmanager(cha);
 
 		T2 = new Thread() { // 메인 쓰레드
 			@Override
@@ -92,6 +89,7 @@ class WaitingRoomView extends JFrame{
 				}
 			}
 		};
+		
 		T2.start();
 
 	}

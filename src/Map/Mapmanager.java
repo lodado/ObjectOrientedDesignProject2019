@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -58,7 +59,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	private int myLocation = 0; // 자신의 위치숫자로 구별
 
 	/** 맵 이름들. 맵 생성용으로 사용. */
-	private String mapsName[] = { "농대", "공대", "자연대", "사회대", "인문대", "봉지", "경영대", "용지", "예대" };
+	private String mapsName[] = { "농대", "공대", "자연대", "사회대", "봉지","인문대", "경영대", "용지", "예대" };
 
 	/** 타이머 */
 	private int timer = 0; //
@@ -236,9 +237,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	 * @param the thread를 인자로 받음.
 	 */
 	void setThread(Thread T1) {
-		myThread = T1 = new Thread(this);
-
-		// myThread == launcher의 Thread T1
+		T1 = new Thread(this);
 	}
 
 	/**
@@ -323,17 +322,17 @@ public class Mapmanager extends JFrame implements Runnable {
 			}
 		}
 	}
-
+	
 	@Override
 	public void run() {
 		try {
 			int whattime = 0; // 시간 launcher timer와 상관 없이 따로재는 타이머
 			boolean notify = true; // notify = 미리 알람용 boolean
-
+			
 			int[] count = new int[] { 0 }; // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
 
 			while (true) {
-
+				
 				// System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   " + timer); // 시간초 계속 갱신
 
@@ -342,53 +341,37 @@ public class Mapmanager extends JFrame implements Runnable {
 
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음
 				{
-					if (notify && whattime > 750) // 75초후에, 대략 15초후 이곳이 영향을 받는다고 알려줌
+					
+					if (notify && timer - whattime > 60) // 대략 60초후에, 대략 30초후 이곳이 영향을 받는다고 알려줌
 					{
-						text[m[list.peekLast()].getLoc()].setForeground(Color.MAGENTA); // 보라색으로 맵이름변경
-						Thread th = new Thread() {
-							
-							public void run() {
-							JOptionPane.showConfirmDialog(null, m[list.peekLast()].getMapName() + "에서 곧 자기장이 생성됩니다.\n",
-							"!!", JOptionPane.CLOSED_OPTION);
-							
-							try{
-								Thread.sleep(1);
-							}
-							catch(Exception e) {}
-							}
-							};
-								th.run();
 						
+					JOptionPane.showMessageDialog(null, m[list.peekLast()].getMapName() + "에서 곧 자기장이 생성됩니다.\n",
+							"!!", JOptionPane.CLOSED_OPTION);
+					
+						text[m[list.peekLast()].getLoc()].setForeground(Color.MAGENTA); // 보라색으로 맵이름변경
+						
+							
+							
+							
+							
 						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
 						notify = false;
 					}
-
-					whattime++;
-
-					if (whattime > 900) // 90초마다 닫김
+					else if (timer - whattime > 90) // 약 90초마다 닫김
 					{
+						
 						text[m[list.peekLast()].getLoc()].setForeground(Color.RED); // 레드로 맵이름변경
 						m[list.peekLast()].setFlag(); // 이곳을 닫음
-
-						 new Thread(()->{
-										JOptionPane.showConfirmDialog(null,m[list.peekLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
-												JOptionPane.CLOSED_OPTION);
-										try{
-											Thread.sleep(1);
-											}
-										catch(Exception e) {}
-										}).run();
-										
-							 //팝업
-							
-							
-							
-						list.removeLast(); //자기장 구간 생성
 						
+					
+							JOptionPane.showMessageDialog(null,m[list.pollLast()].getMapName() + "(이)가 곧 자기장의 영향에 듭니다!\n" + "어서 도망치세요 !!", "!!",
+									JOptionPane.WARNING_MESSAGE); //마지막꺼 반환하면서 pop
+					
 						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
-						whattime = 0; // 타이머 재기 초기화
+						whattime = timer; // 타이머 재기 초기화
 						notify = true;
 					}
+					else; //그외
 					
 				}
 
@@ -405,8 +388,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(Thread T1,GameCharacter cha) {
-
+	public Mapmanager(GameCharacter cha) {
+	
 		try{
 			myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "./src/image/mapImage/map1.png");//myMan=cha;	
 			
@@ -453,10 +436,9 @@ public class Mapmanager extends JFrame implements Runnable {
 		m[6].setIconImage(new ImageIcon("./src/image/mapImage/icon7.PNG"));
 		m[7].setIconImage(new ImageIcon("./src/image/mapImage/icon8.PNG"));
 		m[8].setIconImage(new ImageIcon("./src/image/mapImage/icon9.PNG"));
-		setThread(T1);
 		
 		AI = new AIManager(m); //AImanager 셋팅
-		
+		myThread = new Thread(this);
 		
 		frame.setLayout(null);
 
@@ -597,7 +579,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(("./src/image/chonnam.png")));// 전대 로고
 
-		myThread.setDaemon(true);
+		//myThread.setDaemon(true);
 		myThread.start();
 	}
 
