@@ -68,9 +68,9 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/** 맵 9개 */
 	private map m[] = new map[9];
+	
+	JLabel ping = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/ping.png"))); // 자기위치 가리킴
 
-	JLabel ping = new JLabel(new ImageIcon("image/mapImage/ping.png")); // 자기위치 가리킴
-	//new ImageIcon(getClass().getClassLoader().getResource("img/ping.png"))
 	JLabel text[] = new JLabel[9];
 
 	/** 버튼 9개 */
