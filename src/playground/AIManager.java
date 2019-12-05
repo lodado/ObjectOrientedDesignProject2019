@@ -1,9 +1,7 @@
-package AI;
+package playground;
 
 import java.util.LinkedList;
 
-import Map.*;
-import playground.map;
 
 /**
  * AI를 컨트롤 하는 클래스
@@ -15,7 +13,7 @@ public class AIManager {
 	/**
 	 * AI를 설정하는 AIManager 생성자 .
 	 */
-	public AIManager(map[] puthere)
+	public AIManager(M[] puthere)
 	{
 		String adj[]= {"똑똑한","유능한","부지런한","멍청한","귀여운","재빠른","얼빠진","키 큰"};
 		String name[]= {"조지","존","데이빗","홍길동","김범수","쯔위","주이","연우"};
@@ -43,7 +41,7 @@ public class AIManager {
 	 * @param worldMap the world map
 	 * @param list 맵이 움직여도 되는지 안되는지 확인
 	 */
-	public void MoveAlgorithm(map currentMap, map[] worldMap,final LinkedList<Integer> list) 
+	public void MoveAlgorithm(M currentMap, M[] worldMap,final LinkedList<Integer> list) 
 	{
 		int current = currentMap.getLoc(); //나중에 AI 위치도 바꾸기 설정할것
 		
