@@ -10,9 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 class WaitingRoomView extends JFrame{
-	Thread T2;
-	public WaitingRoomView(Thread T2) {
-		this.T2 = T2;
+	Mapmanager mm = null;
+	public WaitingRoomView(Mapmanager mm) {
+		this.mm = mm;
 		setVisible(false);
 		setTitle("Wait Playing");
 		setSize(500, 500);
@@ -29,8 +29,9 @@ class WaitingRoomView extends JFrame{
 				new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) // 확인 버튼을 누르면 맵 화면에서 전투 혹은 미니게임 화면으로 이동
 					{
+						
 						/** * Instantiates a new launcher.*/
-						gameStart();
+						gamestart();
 					}
 				});
 		
@@ -45,9 +46,33 @@ class WaitingRoomView extends JFrame{
 		panel.add(gameDes);
 		panel.add(startButton);
 		contentPane.add(panel);
+		
+	}
+	public void gamestart() {
+		Thread T1 = new Thread() { // 메인 쓰레드
+			@Override
+			public void run() {
+				int timer = 0;
+				// MinigameManager mini= new MinigameManager(new map(1,"농대"));
+				while (true) {
+					try {
+						mm.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
+						System.out.println(timer);
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						break; // 인터럽트 캐치
+					} catch (Exception e) {
+						e.printStackTrace(); // 오류 캐치
+					}
+				}
+			}
+		};
+		T1.start();
 	}
 	
-	public void gameStart() {
-		T2.start();
+	public void setPlayer(StatusManager player) {
+		System.out.println(player.getStatus().name);
+		mm.setPlayer(player);
 	}
+	
 }

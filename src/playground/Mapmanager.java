@@ -1,4 +1,5 @@
 package playground;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+
 /**
  * 맵 관리 매니저 클래스. Thread는 launcher와 함께 게임 플레이동안 계속 돌아간다.
  * 
@@ -36,7 +38,7 @@ import java.util.LinkedList;
  */
 
 public class Mapmanager extends JFrame implements Runnable {
-
+	StatusManager player;
 	//private statusManager Man; -> 나중 stat 받으면 생성
 	
 	// prvaite AImanager AI -> 나중 AI매니저 생성하면 생성
@@ -245,6 +247,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	 */
 	public void setTimer(final int time) {
 		this.timer = time;
+		System.out.println(player.getStatus().name);
 	}
 
 	/**
@@ -365,8 +368,8 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * map을 관리해주는 매니저 생성자.
+	 * @param player 
 	 */
-	StatusManager player;
 	public Mapmanager(Thread T1, StatusManager player) {
 		this.player = player;
 		final int ROW = 920; // 크기 나중에 삭제
@@ -540,5 +543,9 @@ public class Mapmanager extends JFrame implements Runnable {
 		myThread.setDaemon(true);
 		myThread.start();
 	}
-
+	
+	public void setPlayer(StatusManager player) {
+		this.player = player;
+	}
+	
 }
