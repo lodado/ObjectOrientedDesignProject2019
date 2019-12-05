@@ -3,17 +3,24 @@ package playground;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Map.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Map.Mapmanager;
-import Map.*;
 class WaitingRoomView extends JFrame{
-
-	public WaitingRoomView() {
+	StatusManager player;
+	
+	//public void setPlayer(StatusManager player)
+	//{
+	//	this.player=player;
+	//}
+	
+	public WaitingRoomView(StatusManager player) {
+		this.player = player;
+		
 		setVisible(false);
 		setTitle("Wait Playing");
 		setSize(500, 500);
@@ -30,9 +37,9 @@ class WaitingRoomView extends JFrame{
 				new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) // 확인 버튼을 누르면 맵 화면에서 전투 혹은 미니게임 화면으로 이동
 					{
-						/** @author Chungheon Yi
-						 * Instantiates a new launcher.*/
-						gameStart(null);
+						
+						/** * Instantiates a new launcher.*/
+						gamestart();
 					}
 				});
 		
@@ -47,39 +54,22 @@ class WaitingRoomView extends JFrame{
 		panel.add(gameDes);
 		panel.add(startButton);
 		contentPane.add(panel);
+		
 	}
 	
-	/** 
-	 * 이 밑은 @author ChungHeon YI
-
-	/** 시간초를 세는 T2 Thread. */
-	Thread T2;
 	
-	/** The timer. */
-	public int timer = 0;
-
-	/** launcher가 소유하는 MapController. */
-	Mapmanager MapController;
-	
-	/**
-	 * Game start.
-	 * 
-	 * @author ChungHeon Yi
-	 */
-	public void gameStart(GameCharacter cha) {
-
-		
-		
-		MapController = new Mapmanager(cha);
-
-		T2 = new Thread() { // 메인 쓰레드
+	public void gamestart() {
+		System.out.println(player.getStatus().getName());
+		final Mapmanager Mapcontroller = new Mapmanager(player);
+		Thread T1 = new Thread() { // 메인 쓰레드
 			@Override
 			public void run() {
-
+				int timer = 0;
+				// MinigameManager mini= new MinigameManager(new map(1,"농대"));
 				while (true) {
-
 					try {
-						MapController.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
+						Mapcontroller.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
+						System.out.println(timer);
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						break; // 인터럽트 캐치
@@ -89,9 +79,7 @@ class WaitingRoomView extends JFrame{
 				}
 			}
 		};
-		T2.start();
-
+		T1.start();
 	}
-	
 	
 }

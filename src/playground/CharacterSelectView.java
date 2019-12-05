@@ -13,17 +13,17 @@ import javax.swing.JPanel;
 
 //캐릭터 선택 프레임
 class CharacterSelectView extends JFrame {
-	GameCharacter player;
+	StatusManager player;
 	WaitingRoomView wv;
-	
-	CharacterSelectView(WaitingRoomView wv) {
+	CharacterSelectView(WaitingRoomView wv, StatusManager player) {
 		this.wv = wv;
+		this.player = player;
 		setTitle("Text Battle");
 		setSize(500, 500);
 		setResizable(false);
-		ImageIcon ic1 = new ImageIcon("cha1.jpg");
-		ImageIcon ic2 = new ImageIcon("cha2.jpg");
-		ImageIcon ic3 = new ImageIcon("cha3.jpg");
+		ImageIcon ic1 = new ImageIcon("./cha1.jpg");
+		ImageIcon ic2 = new ImageIcon("./cha2.jpg");
+		ImageIcon ic3 = new ImageIcon("./cha3.jpg");
 		Image im1 = ic1.getImage();
 		Image im2 = ic2.getImage();
 		Image im3 = ic3.getImage();
@@ -79,13 +79,13 @@ class ButtonPanel extends JPanel implements ActionListener {
 	private JButton selectButton1;
 	private JButton selectButton2;
 	private JButton selectButton3;
-	private GameCharacter player;
+	private StatusManager player;
 	WaitingRoomView wv;
 	
 	private GameCharacter cha1;
 	private GameCharacter cha2;
 	private GameCharacter cha3;
-	public ButtonPanel(GameCharacter player, WaitingRoomView wv) {
+	public ButtonPanel(StatusManager player, WaitingRoomView wv) {
 		this.player = player;
 		this.wv = wv;
 		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "default.jpg");
@@ -119,13 +119,14 @@ class ButtonPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(selectButton1)) {
-			player = cha1;
+			player.setStatus(cha1);
+			
 		}
 		if (e.getSource().equals(selectButton2)) {
-			player = cha2;
+			player.setStatus(cha2);
 		}
 		if (e.getSource().equals(selectButton3)) {
-			player = cha3;
+			player.setStatus(cha3);
 		}
 		wv.setVisible(true);
 	}

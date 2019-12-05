@@ -45,10 +45,9 @@ import playground.*;
  */
 
 public class Mapmanager extends JFrame implements Runnable {
-
 	
 	/** 자신 캐릭터 스텟 */
-	private GameCharacter myMan;
+	private StatusManager player;
 	
 	private GameCharacter pointer;
 	
@@ -70,8 +69,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** 맵 9개 */
 	private map m[] = new map[9];
 
-	JLabel ping = new JLabel(new ImageIcon("./src/image/mapImage/ping.png")); // 자기위치 가리킴
-
+	JLabel ping = new JLabel(new ImageIcon("image/mapImage/ping.png")); // 자기위치 가리킴
+	//new ImageIcon(getClass().getClassLoader().getResource("img/ping.png"))
 	JLabel text[] = new JLabel[9];
 
 	/** 버튼 9개 */
@@ -135,11 +134,11 @@ public class Mapmanager extends JFrame implements Runnable {
 			ping.setBounds(50 + 280 * (myLocation % 3), 200 + 250 * (myLocation / 3), 230, 920 - 770);
 			if (mv.getAINumber() <= 0) // start minigame
 			{
-				new MinigameManager(mv, Mapmanager.this,myMan);
+				new MinigameManager(mv, Mapmanager.this,player.getStatus());
 			} else {
 					System.out.println(mv.getAINumber());
 					pointer = m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber());
-				new FightManager(myMan, pointer,Mapmanager.this,m[myLocation]);// fight manager();
+				new FightManager(player.getStatus(), pointer,Mapmanager.this,m[myLocation]);// fight manager();
 			}
 
 		}
@@ -331,14 +330,14 @@ public class Mapmanager extends JFrame implements Runnable {
 		// count = a[0];
 		if(gamer == null) return; //상대가 없으면 그냥 메소드를 끝냄 
 		
-		if(myMan.getHp()<5) return; // 체력 5 이하로는 안떨어짐
+		if(player.getStatus().getHp()<5) return; // 체력 5 이하로는 안떨어짐
 		
 		if (!m.getFlag()) // flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
 		{
 			if (count[0]++ > 4 * Threadspeed) { // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 
 				count[0] = 0;
-				myMan.setHp(gamer.getHp()-1);
+				player.getStatus().setHp(gamer.getHp()-1);
 				
 			}
 		}
@@ -357,8 +356,8 @@ public class Mapmanager extends JFrame implements Runnable {
 				// System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   " + timer); // 시간초 계속 갱신
 
-				IsClosedMap(count, m[myLocation], (double) 10,	myMan); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
-				setHP(myMan.getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
+				IsClosedMap(count, m[myLocation], (double) 10,	player.getStatus()); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+				setHP(player.getStatus().getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
 				IsClosedMap(count, m[myLocation], (double)10,pointer);
 				// HP는 HP바, 쓰레드 speed(500millsec*10)
 
@@ -411,15 +410,19 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(GameCharacter cha) {
-	
+	public Mapmanager(StatusManager player) {
+		
+		this.player = player;
+		forDef = new JLabel(" 방어력 :  " +player.getStatus().getDef());
+		characterImage = new JLabel(new ImageIcon(player.getStatus().getImage()));
 		try{
+			/*
 			myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "./src/image/mapImage/map1.png");//myMan=cha;	
 			
-			forDef = new JLabel(" 방어력 :  " +myMan.getDef());
-			characterImage = new JLabel(new ImageIcon(myMan.getImage()));
-			myMan.setHp(100); //나중에 지움
 			
+			
+			myMan.setHp(100); //나중에 지움
+			*/
 			characterImage.setBounds(0,0,201,90);
 			
 		}catch(Exception e)
@@ -469,7 +472,8 @@ public class Mapmanager extends JFrame implements Runnable {
 		topright.setBounds(0, 90, 202, 30);
 		topright.setBorder(new TitledBorder(new LineBorder(Color.black, 2)));
 
-		topright.add(new JLabel(myMan.getName()), BorderLayout.CENTER);
+		
+		topright.add(new JLabel(player.getStatus().getName()), BorderLayout.CENTER);
 
 		top.setBounds(200, 0, 350, 120);
 		top.setBorder(new TitledBorder(new LineBorder(Color.black, 2)));
@@ -481,7 +485,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		HP.setStringPainted(true);
 		HP.setForeground(Color.RED);
-		HP.setValue(myMan.getHp()); // 스텟의 hp를 여기에 넣음
+		HP.setValue(player.getStatus().getHp()); // 스텟의 hp를 여기에 넣음
 		HP.setStringPainted(true);
 		HP.setBounds(240, 20, 260, 30);
 
@@ -583,7 +587,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		Item.addActionListener(new ActionListener() // 가방을 누르면 시작되는 이벤트
 		{
 			public void actionPerformed(ActionEvent e) {
-				new Itemview(myMan,Mapmanager.this);
+				new Itemview(player.getStatus(),Mapmanager.this);
 			}
 		});
 
@@ -604,6 +608,10 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		//myThread.setDaemon(true);
 		myThread.start();
+	}
+	
+	public void setPlayer(StatusManager player) {
+		this.player = player;
 	}
 
 }

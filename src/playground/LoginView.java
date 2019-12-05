@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 //·Î±×ÀÎ
@@ -28,7 +27,7 @@ class LoginView extends JFrame implements ActionListener {
 	static final String PASSWORD = "tester1234";
 	private CharacterSelectView cv;
 	private JTextField id;
-	private JPasswordField pw;
+	private JTextField pw;
 	private JButton login;
 	private JButton signUp;
 	private Container c;
@@ -49,7 +48,7 @@ class LoginView extends JFrame implements ActionListener {
 		panel.setLayout(null);
 
 		id = new JTextField();
-		pw = new JPasswordField();
+		pw = new JTextField();
 		id.setBounds(150, 150, 200, 30);
 		pw.setBounds(150, 200, 200, 30);
 

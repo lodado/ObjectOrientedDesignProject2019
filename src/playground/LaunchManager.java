@@ -1,7 +1,6 @@
 package playground;
 
 import javax.swing.JFrame;
-import Map.*;
 
 /** 로그인 및 캐릭터 선택을 관리하는 클래스 */
 public class LaunchManager {
@@ -11,13 +10,7 @@ public class LaunchManager {
 
 	LaunchManager(CharacterSelectView cv) {
 		lv = new LoginView(userInfo, cv);
-		
-		
-		
+
 	}
 
-
-
-	
-	 
 }
