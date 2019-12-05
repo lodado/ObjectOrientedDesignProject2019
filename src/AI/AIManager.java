@@ -109,6 +109,8 @@ public class AIManager {
 		}
 		System.out.println();
 	}
+	
+
 	/*
 	 * 
 	public void attackAlgorithm()

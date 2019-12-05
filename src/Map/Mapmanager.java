@@ -50,6 +50,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** 자신 캐릭터 스텟 */
 	private GameCharacter myMan;
 	
+	private GameCharacter pointer;
+	
 	/** AI manager. */
 	private AIManager AI;
 	
@@ -136,7 +138,7 @@ public class Mapmanager extends JFrame implements Runnable {
 				new MinigameManager(mv, Mapmanager.this,myMan);
 			} else {
 					System.out.println(mv.getAINumber());
-				new FightManager(myMan,m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber()),Mapmanager.this);// fight manager();
+				new FightManager(myMan,m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber()),Mapmanager.this,m[myLocation]);// fight manager();
 			}
 
 		}
@@ -287,6 +289,20 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
+	 * Gets the pointer. null 이면 null 반환 
+	 * @return pointer
+	 */
+	public GameCharacter getPointer()
+	{
+		return pointer;
+	}
+	
+	public void setPointer(GameCharacter pt)
+	{
+	  pointer = pt;
+	}
+	
+	/**
 	 * Sets the hp bar. map, fight, minigame 매니저에서 사용
 	 * 
 	 * @param CharHP the new hp
@@ -301,16 +317,18 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * 맵이 닫겼으면 쓰레드와 연동하여서 지속적으로 체력을 깎는다.
+	 * (private) 맵이 닫겼으면 쓰레드와 연동하여서 지속적으로 그맵 안의 체력을 깎는다.
 	 *
 	 * @param count       the count. C++의 인자 참조(&)를 구현하기 위하여 배열을 사용하였다. 칸은 총
 	 *                    1칸(count)
-	 * @param HPBar       이 객체에서 쓰는 JProgressBar
+	 * @param m the m
 	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
+	 * @param gamer 파이터시 싸우는 상대
 	 */
-	private void IsClosedMap(int count[], map m, JProgressBar HPBar, double Threadspeed) //
+	private void IsClosedMap(int count[], map m, double Threadspeed, GameCharacter gamer) //
 	{
 		// count = a[0];
+		if(gamer == null) return; //상대가 없으면 그냥 메소드를 끝냄 
 		
 		if(myMan.getHp()<5) return; // 체력 5 이하로는 안떨어짐
 		
@@ -319,8 +337,8 @@ public class Mapmanager extends JFrame implements Runnable {
 			if (count[0]++ > 4 * Threadspeed) { // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 
 				count[0] = 0;
-				myMan.setHp(myMan.getHp()-1);
-				setHP(myMan.getHp(), m, HPBar); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
+				myMan.setHp(gamer.getHp()-1);
+				
 			}
 		}
 	}
@@ -338,7 +356,9 @@ public class Mapmanager extends JFrame implements Runnable {
 				// System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   " + timer); // 시간초 계속 갱신
 
-				IsClosedMap(count, m[myLocation], HP, (double) 10); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+				IsClosedMap(count, m[myLocation], (double) 10,	myMan); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+				setHP(myMan.getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
+				IsClosedMap(count, m[myLocation], (double)10  ,pointer);
 				// HP는 HP바, 쓰레드 speed(500millsec*10)
 
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음

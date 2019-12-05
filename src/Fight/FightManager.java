@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
@@ -33,18 +34,51 @@ import Item.*;
 import playground.*;
 import Map.*;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class FightManager.
+ *
  * @author 박다원 파이트매니저 클래스
  */
-public class FightManager extends JFrame {
+public class FightManager extends JFrame{
+	
+	/** The A iturn. */
 	private int AIturn = 5; // AI turn
+	
+	/** The playerturn. */
 	private int playerturn = 5; // Player turn
+	
+	/** The equip. */
 	private Item[] equip = new Item[2];// 장비
+	
+	/** The effect. */
 	private int effect = 0; // 아이템, 공격효과
+	
+	/** The run result. */
 	private int run_result = 0; // 도망의 성공 실패
+	
+	/** The manager. */
 	private Mapmanager manager;
+	
+	/** The Player. */
+	private GameCharacter Player;
+	
+	/** The t1. */
+	Thread T1;
+	
+	
+	/** The des. */
 	JLabel des[] = new JLabel[11];
+	
+	/** The frame. */
 	JFrame frame = new JFrame("Fight Screen");
+	
+	/**
+	 * Player attack.
+	 *
+	 * @param Player the player
+	 * @return the int
+	 */
 	public int playerAttack(GameCharacter Player) {
 		equip = Player.getEquip();
 		effect = equip[0].getEffect();
@@ -55,15 +89,31 @@ public class FightManager extends JFrame {
 		return effect;
 	}
 
+	/**
+	 * A iattack.
+	 *
+	 * @return the int
+	 */
 	public int AIattack() {
 		int AIattack = (int) (Math.random() * 10) + 10;
 		return AIattack;
 	}
 
+	/**
+	 * A irun.
+	 *
+	 * @return the int
+	 */
 	public int AIrun() {
 		return -999;
 	}
 
+	/**
+	 * Defence.
+	 *
+	 * @param Player the player
+	 * @return the int
+	 */
 	public int defence(GameCharacter Player) {
 
 		int prob = (int) Math.random() * 10;
@@ -81,6 +131,12 @@ public class FightManager extends JFrame {
 		return effect;
 	}
 
+	/**
+	 * Run.
+	 *
+	 * @param player the player
+	 * @return the int
+	 */
 	public int run(GameCharacter player) {
 		int prob = (int) (Math.random() * 10);
 		int agi = player.getAgi();
@@ -92,6 +148,12 @@ public class FightManager extends JFrame {
 		return run_result;
 	}
 
+	/**
+	 * A ioperate.
+	 *
+	 * @param player the player
+	 * @param textarea the textarea
+	 */
 	public void AIoperate(GameCharacter player, JTextArea textarea) {
 		int random = (int) (Math.random() * 10);
 		if (random < 1) {
@@ -113,6 +175,13 @@ public class FightManager extends JFrame {
 		}
 	}
 
+	/**
+	 * A ioperate.
+	 *
+	 * @param player the player
+	 * @param defence the defence
+	 * @param textarea the textarea
+	 */
 	public void AIoperate(GameCharacter player, int defence, JTextArea textarea) {
 		int random = (int) (Math.random() * 10);
 		if (random < 1) {
@@ -134,11 +203,22 @@ public class FightManager extends JFrame {
 		}
 	}
 
+	/**
+	 * Checks if is end.
+	 *
+	 * @param player the player
+	 * @param AI the ai
+	 */
 	public void isEnd(GameCharacter player, GameCharacter AI) {
 		if (playerturn == 0) {
 			System.out.print("턴 끝");// mapManger 호출
+			
+			/*돌릴때 실행할 부분 */
 			manager.getMapFrame().setVisible(true);
 			manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
+			T1.interrupt();
+			/**/
+			
 			frame.dispose();
 		}
 		if (player.getHp() <= 0) {
@@ -156,6 +236,7 @@ public class FightManager extends JFrame {
 					System.exit(0);
 				}
 			});
+					
 			out.setLayout(null);
 			out.setBounds(50, 100, 100, 50);
 			frame.add(out);
@@ -191,8 +272,20 @@ public class FightManager extends JFrame {
 		}
 	}
 
-	public FightManager(GameCharacter player, GameCharacter AI, Mapmanager mana) {
+	/**
+	 * Instantiates a new fight manager.
+	 *
+	 * @param player the player
+	 * @param AI the ai
+	 * @param mana the mana
+	 * @param m the m
+	 */
+	public FightManager(GameCharacter player, GameCharacter AI, Mapmanager mana, map m) {
 
+		
+		
+		Player = player;
+		
 		manager = mana;
 		
 		ImageIcon bk = new ImageIcon("배경화면.PNG");
@@ -216,16 +309,72 @@ public class FightManager extends JFrame {
 		Image1.setLayout(null);
 		Image1.setBounds(690, 153, 230, 459);
 
+		
 		JLabel label1 = new JLabel("         체력 :" + player.getHp());
 		JLabel label2 = new JLabel("                        " + playerturn + "라운드");
 		JLabel label3 = new JLabel("         체력 :" + AI.getHp());
 
+		JProgressBar ChaHp = new JProgressBar(0,100);
+		
+		ChaHp.setStringPainted(true);
+		if(m.getFlag()) ChaHp.setForeground(Color.RED);
+		else  ChaHp.setForeground(Color.MAGENTA);
+		
+		ChaHp.setValue(Player.getHp()); // 여기에 Character HP 대입
+		ChaHp.setStringPainted(true);
+		
+		JProgressBar AIHp = new JProgressBar(0,100);
+		AIHp.setStringPainted(true);
+		if(m.getFlag()) AIHp.setForeground(Color.RED);
+		else  AIHp.setForeground(Color.MAGENTA);
+		
+		AIHp.setValue(Player.getHp()); // 여기에 Character HP 대입
+		AIHp.setStringPainted(true);
+		
+		T1 = new Thread()  //@author ChungHeon Yi
+				{
+			@Override
+			public void run() {
+					int i= 0;
+				try {
+					
+					while (true) {
+						
+						int PLAYERHP = Player.getHp();
+						int AIHP = AI.getHp(); // sync 오버헤드 방지 
+						
+						System.out.println("dd");
+						manager.setHP(PLAYERHP,m,ChaHp);   //currentHP에 캐릭터 HP를 넣을것
+						manager.setHP(AIHP, m, AIHp);
+						label1.setText("         체력 :" + PLAYERHP);
+						label3.setText("         체력 :" + AIHP);
+						
+						Thread.sleep(10); // 1초씩 sleep. 딜레이때문에 정확하진 않지만 게임 진행엔 큰 무리가 없음
+					}
+				} catch (InterruptedException e) {
+					
+					// Interrupted catch - while문 종료
+
+				} catch (Exception e) {
+					e.printStackTrace(); // 그외 오류면 출력
+				}	
+			}
+		};		
+		
+		T1.start();
+		
+		ChaHp.setBounds(0,0,230,80);
+		AIHp.setBounds(690,0,230,80);
+		
+		frame.add(ChaHp);
+		frame.add(AIHp);
+		
 		label1.setFont(f1);
 		label2.setFont(f1);
 		label3.setFont(f1);
-		label1.setBounds(0, 0, 230, 153);
+		label1.setBounds(0, 101, 230, 53);
 		label2.setBounds(230, 0, 460, 153);
-		label3.setBounds(690, 0, 230, 153);
+		label3.setBounds(690, 101, 230, 53);
 		label1.setBorder(lb);
 		label2.setBorder(lb);
 		label3.setBorder(lb);
