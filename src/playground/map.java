@@ -1,4 +1,4 @@
-package Map;
+package playground;
 
 import java.awt.Image;
 

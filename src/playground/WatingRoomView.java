@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Map.Mapmanager;
-
 class WaitingRoomView extends JFrame{
 	
 	/** Map의 쓰레드를 작동시키는 T1 Thread. */

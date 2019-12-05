@@ -3,6 +3,7 @@ package AI;
 import java.util.LinkedList;
 
 import Map.*;
+import playground.map;
 
 /**
  * AI를 컨트롤 하는 클래스

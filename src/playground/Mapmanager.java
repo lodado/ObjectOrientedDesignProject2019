@@ -1,4 +1,4 @@
-package Map;
+package playground;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -370,8 +370,9 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(Thread T1) {
-
+	StatusManager player;
+	public Mapmanager(Thread T1, StatusManager player) {
+		this.player = player;
 		final int ROW = 920; // 크기 나중에 삭제
 		final int COL = 920;
 
