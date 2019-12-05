@@ -10,20 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 class WaitingRoomView extends JFrame{
-	
-	/** Map의 쓰레드를 작동시키는 T1 Thread. */
-	Thread T1;
-
-	/** 시간초를 세는 T2 Thread. */
 	Thread T2;
-	
-	/** The timer. */
-	public int timer = 0;
-
-	/** launcher가 소유하는 MapController. */
-	Mapmanager MapController;
-	
-	public WaitingRoomView() {
+	public WaitingRoomView(Thread T2) {
+		this.T2 = T2;
 		setVisible(false);
 		setTitle("Wait Playing");
 		setSize(500, 500);
@@ -58,41 +47,7 @@ class WaitingRoomView extends JFrame{
 		contentPane.add(panel);
 	}
 	
-
-	/**
-	 * Game start.
-	 * 
-	 * @author ChungHeon Yi
-	 */
 	public void gameStart() {
-
-		
-		
-		T1 = null; // Mapmanager가 쓸 Thread
-		MapController = new Mapmanager(T1);
-
-		T2 = new Thread() { // 메인 쓰레드
-			@Override
-			public void run() {
-
-				// MinigameManager mini= new MinigameManager(new map(1,"농대"));
-				while (true) {
-
-					try {
-						MapController.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
-						System.out.println(timer);
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						break; // 인터럽트 캐치
-					} catch (Exception e) {
-						e.printStackTrace(); // 오류 캐치
-					}
-				}
-			}
-		};
 		T2.start();
-
 	}
-	
-	
 }

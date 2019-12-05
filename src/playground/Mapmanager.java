@@ -1,4 +1,5 @@
 package playground;
+import minigame.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,7 +59,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	private int timer = 0; //
 
 	/** 맵 9개 */
-	private map m[] = new map[9];
+	private M m[] = new M[9];
 
 	JLabel ping = new JLabel(new ImageIcon("./src/image/mapImage/ping.png")); // 자기위치 가리킴
 
@@ -117,7 +118,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		 * 
 		 * @param mv 클릭한 버튼의 map을 인자로 받음
 		 */
-		public void moving(map mv) {
+		public void moving(M mv) {
 			myLocation = mv.getLoc(); // 자신의 위치 이곳으로 이동
 			forLoc.setText(" 현재 위치 :   " + mapsName[myLocation]);
 
@@ -138,7 +139,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		 * @param M   맵 m
 		 * @param num 이곳 번지수(location)
 		 */
-		public MapLocationPopup(final LinkedList<JFrame> thisFrameList, map M, int num) {
+		public MapLocationPopup(final LinkedList<JFrame> thisFrameList, M M, int num) {
 			JFrame thisframe = new JFrame();
 
 			thisFrameList.add(thisframe); // 이 frame도 스텍에 담아둠
@@ -211,7 +212,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * @return 자기 자신 위치 받음
 	 */
-	public map getMyLoc() {
+	public M getMyLoc() {
 		return m[myLocation];
 	}
 
@@ -283,7 +284,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	 * 
 	 * @param CharHP the new hp
 	 */
-	public void setHP(int CharHP, map m, JProgressBar HPBar) {
+	public void setHP(int CharHP, M m, JProgressBar HPBar) {
 		if (!m.getFlag())
 			HPBar.setForeground(Color.magenta); // 자기장 안에 있다고 표시해줌
 		else
@@ -300,7 +301,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	 * @param HPBar       이 객체에서 쓰는 JProgressBar
 	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
 	 */
-	private void IsClosedMap(int count[], map m, JProgressBar HPBar, double Threadspeed) //
+	private void IsClosedMap(int count[], M m, JProgressBar HPBar, double Threadspeed) //
 	{
 		// count = a[0];
 
@@ -377,7 +378,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		final int COL = 920;
 
 		for (int i = 0; i < 9; i++) {
-			m[i] = new map(i, mapsName[i]);
+			m[i] = new M(i, mapsName[i]);
 		}
 
 		list = new LinkedList<Integer>(); // 자기장 제어용 LinkedList 설정

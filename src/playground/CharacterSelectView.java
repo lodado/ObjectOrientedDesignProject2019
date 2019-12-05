@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 class CharacterSelectView extends JFrame {
 	Character player;
 	WaitingRoomView wv;
-	
 	CharacterSelectView(WaitingRoomView wv) {
 		this.wv = wv;
 		setTitle("Text Battle");
