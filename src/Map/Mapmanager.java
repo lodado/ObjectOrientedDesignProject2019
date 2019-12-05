@@ -138,7 +138,8 @@ public class Mapmanager extends JFrame implements Runnable {
 				new MinigameManager(mv, Mapmanager.this,myMan);
 			} else {
 					System.out.println(mv.getAINumber());
-				new FightManager(myMan,m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber()),Mapmanager.this,m[myLocation]);// fight manager();
+					pointer = m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber());
+				new FightManager(myMan, pointer,Mapmanager.this,m[myLocation]);// fight manager();
 			}
 
 		}
@@ -358,7 +359,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 				IsClosedMap(count, m[myLocation], (double) 10,	myMan); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
 				setHP(myMan.getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
-				IsClosedMap(count, m[myLocation], (double)10  ,pointer);
+				IsClosedMap(count, m[myLocation], (double)10,pointer);
 				// HP는 HP바, 쓰레드 speed(500millsec*10)
 
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음

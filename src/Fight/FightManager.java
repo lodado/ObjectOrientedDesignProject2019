@@ -63,6 +63,9 @@ public class FightManager extends JFrame{
 	/** The Player. */
 	private GameCharacter Player;
 	
+	/** The AI player. */
+	private GameCharacter AIPlayer;
+	
 	/** The t1. */
 	Thread T1;
 	
@@ -214,6 +217,7 @@ public class FightManager extends JFrame{
 			System.out.print("턴 끝");// mapManger 호출
 			
 			/*돌릴때 실행할 부분 */
+			AIPlayer = null;
 			manager.getMapFrame().setVisible(true);
 			manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
 			T1.interrupt();
@@ -285,6 +289,7 @@ public class FightManager extends JFrame{
 		
 		
 		Player = player;
+		AIPlayer = AI;
 		
 		manager = mana;
 		
