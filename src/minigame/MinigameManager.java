@@ -298,11 +298,6 @@ public class MinigameManager extends JFrame implements Runnable {
 		characterImage = new JLabel(new ImageIcon(myMan.getImage()));
 		characterImage.setBounds(0,0,201,90);
 		
-		myMan.setHp(100); //나중에 지움
-		
-		
-		
-		
 		frame.setContentPane(new JLabel(new ImageIcon("./src/image/mapImage/back11.jpg")));
 		manager = Manager;
 		currentMap = m;

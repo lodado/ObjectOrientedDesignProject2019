@@ -103,7 +103,7 @@ public class AIManager {
 			for(int x=0; x<worldMap[j].getAINumber(); x++)
 		{
 				System.out.print(worldMap[j].getMapName()+" :");
-				System.out.print(worldMap[j].getAI().get(x).getName()+"\n");
+				System.out.print(worldMap[j].getAI().get(x).getName()+" " + worldMap[j].getAI().get(x).getHp()+"\n");
 			
 			} 
 		}
@@ -118,4 +118,24 @@ public class AIManager {
 		fightManager로 이동
 	}
 	*/
+	
+	/**
+	 * AI가 턴이 지날때마다 점점 쎄집니다.
+	 */
+	public void AIgetStronger()
+	{
+		for(int i=0; i<AI.size(); i++)
+		{
+			int HPbonus = (AI.get(i).getHp()+12);
+			if(HPbonus>=100);
+			else AI.get(i).setHp(HPbonus); //100을 넘진 않음 
+			
+			AI.get(i).setDef(AI.get(i).getDef()+1);
+			AI.get(i).setAgi(AI.get(i).getAgi()+1);
+			AI.get(i).setOff(AI.get(i).getOff()+2);
+			
+			//방어력 1,민첩1,공격력 2 증가
+		
+		}
+	}
 }

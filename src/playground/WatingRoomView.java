@@ -69,7 +69,7 @@ class WaitingRoomView extends JFrame{
 				while (true) {
 					try {
 						Mapcontroller.setTimer(timer++); // 딜레이로 인하여 오차가 발생하지만 게임플레이엔 지장없음
-						System.out.println(timer);
+						
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						break; // 인터럽트 캐치

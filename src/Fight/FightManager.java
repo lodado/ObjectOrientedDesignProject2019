@@ -190,7 +190,7 @@ public class FightManager extends JFrame{
 		if (random < 1) {
 			int run = AIrun();
 			if (run == -999) {
-				textarea.append("AI가 도망갔습니다. 싸움을 종료합니다\n"); // 도망성공 창 띄우고 나가기 버튼으로 맵매니저 호출
+				textarea.append(AIPlayer.getName()+"가 도망갔습니다. 싸움을 종료합니다\n"); // 도망성공 창 띄우고 나가기 버튼으로 맵매니저 호출
 			}
 		} else {
 			int AIattack = AIattack();
@@ -315,9 +315,9 @@ public class FightManager extends JFrame{
 		Image1.setBounds(690, 153, 230, 459);
 
 		
-		JLabel label1 = new JLabel("         체력 :" + player.getHp());
+		JLabel label1 = new JLabel(player.getName()+": " + player.getHp());
 		JLabel label2 = new JLabel("                        " + playerturn + "라운드");
-		JLabel label3 = new JLabel("         체력 :" + AI.getHp());
+		JLabel label3 = new JLabel(player.getName()+": " + AI.getHp());
 
 		JProgressBar ChaHp = new JProgressBar(0,100);
 		
@@ -348,11 +348,10 @@ public class FightManager extends JFrame{
 						int PLAYERHP = Player.getHp();
 						int AIHP = AI.getHp(); // sync 오버헤드 방지 
 						
-						System.out.println("dd");
 						manager.setHP(PLAYERHP,m,ChaHp);   //currentHP에 캐릭터 HP를 넣을것
 						manager.setHP(AIHP, m, AIHp);
-						label1.setText("         체력 :" + PLAYERHP);
-						label3.setText("         체력 :" + AIHP);
+						label1.setText(" "+player.getName()+": " + player.getHp());
+						label3.setText(" "+AI.getName()+": " + AI.getHp());
 						
 						Thread.sleep(10); // 1초씩 sleep. 딜레이때문에 정확하진 않지만 게임 진행엔 큰 무리가 없음
 					}

@@ -111,10 +111,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	private class MapLocationPopup extends JDialog {
 
 		/** 이동 버튼 */
-		private JButton Bt1 = new JButton(new ImageIcon("./src/image/button/buttonYES.png"));
+		private JButton Bt1 = new JButton(new ImageIcon(getClass().getClassLoader().getResource(("image/button/buttonYES.png"))));
 
 		/** 취소 버튼 */
-		private JButton Bt2 = new JButton(new ImageIcon("./src/image/button/buttonNO.png"));
+		private JButton Bt2 = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/button/buttonNO.png")));
 
 		/** 하단 패널 */
 		private JPanel bottom = new JPanel();
@@ -170,8 +170,8 @@ public class Mapmanager extends JFrame implements Runnable {
 			int screenWidth = screenSize.width;
 
 			thisframe.setTitle(M.getMapName() + "로 이동?");
-
-			thisframe.setIconImage(Toolkit.getDefaultToolkit().getImage(("./src/image/chonnam.png")));// 전대 로고
+			
+			thisframe.setIconImage(Toolkit.getDefaultToolkit().getImage(("image/chonnam.png")));// 전대 로고
 			Bt1.addActionListener(
 
 					new ActionListener() {
@@ -330,14 +330,14 @@ public class Mapmanager extends JFrame implements Runnable {
 		// count = a[0];
 		if(gamer == null) return; //상대가 없으면 그냥 메소드를 끝냄 
 		
-		if(player.getStatus().getHp()<5) return; // 체력 5 이하로는 안떨어짐
+		if(gamer.getHp()<5) return; // 체력 5 이하로는 안떨어짐
 		
 		if (!m.getFlag()) // flag가 0이면 맵이 닫겨있는것이고 1이면 체력 안깎임
 		{
 			if (count[0]++ > 4 * Threadspeed) { // 만약 닫힌곳에 들어가 있다면 4*Threadspeed초 이후에 체력이 1 깎임
 
 				count[0] = 0;
-				player.getStatus().setHp(gamer.getHp()-1);
+				gamer.setHp(gamer.getHp()-1);
 				
 			}
 		}
@@ -349,16 +349,16 @@ public class Mapmanager extends JFrame implements Runnable {
 			int whattime = 0; // 시간 launcher timer와 상관 없이 따로재는 타이머
 			boolean notify = true; // notify = 미리 알람용 boolean
 			
-			int[] count = new int[] { 0 }; // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
-
+			int[] count1 = new int[] { 0 }; // C++의 참조(&) 구현, 수정하다보니 굳이 참조를 쓸 필요가 없게 되었지만 그냥 놔둠
+			int[] count2 = new int[] { 0 };
 			while (true) {
 				
 				// System.out.println(timer+"변경 - mapmanager"); //확인용 print
 				Mytime.setText("                   " + timer); // 시간초 계속 갱신
 
-				IsClosedMap(count, m[myLocation], (double) 10,	player.getStatus()); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
+				IsClosedMap(count1, m[myLocation], (double) 10,	player.getStatus()); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
 				setHP(player.getStatus().getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
-				IsClosedMap(count, m[myLocation], (double)10,pointer);
+				IsClosedMap(count2, m[myLocation], (double)10,pointer);
 				// HP는 HP바, 쓰레드 speed(500millsec*10)
 
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음
@@ -390,6 +390,7 @@ public class Mapmanager extends JFrame implements Runnable {
 									JOptionPane.WARNING_MESSAGE); //마지막꺼 반환하면서 pop
 					
 						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
+						AI.AIgetStronger();
 						whattime = timer; // 타이머 재기 초기화
 						notify = true;
 					}
@@ -416,13 +417,6 @@ public class Mapmanager extends JFrame implements Runnable {
 		forDef = new JLabel(" 방어력 :  " +player.getStatus().getDef());
 		characterImage = new JLabel(new ImageIcon(player.getStatus().getImage()));
 		try{
-			/*
-			myMan = new GameCharacter("룰루", 100, 30, 5, 10 , "./src/image/mapImage/map1.png");//myMan=cha;	
-			
-			
-			
-			myMan.setHp(100); //나중에 지움
-			*/
 			characterImage.setBounds(0,0,201,90);
 			
 		}catch(Exception e)
@@ -443,25 +437,25 @@ public class Mapmanager extends JFrame implements Runnable {
 			list.add(i); // [0,9]
 		Collections.shuffle(list); // 랜덤하게 섞음
 
-		m[0].setImage(new ImageIcon("./src/image/mapImage/map1.png"));
-		m[1].setImage(new ImageIcon("./src/image/mapImage/map2.png"));
-		m[2].setImage(new ImageIcon("./src/image/mapImage/map3.png"));
-		m[3].setImage(new ImageIcon("./src/image/mapImage/map4.png"));
-		m[4].setImage(new ImageIcon("./src/image/mapImage/map5.png"));
-		m[5].setImage(new ImageIcon("./src/image/mapImage/map6.png"));
-		m[6].setImage(new ImageIcon("./src/image/mapImage/map7.png"));
-		m[7].setImage(new ImageIcon("./src/image/mapImage/map8.png"));
-		m[8].setImage(new ImageIcon("./src/image/mapImage/map9.jpg")); // 이미지 삽입
+		m[0].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map1.png")));
+		m[1].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map2.png")));
+		m[2].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map3.png")));
+		m[3].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map4.png")));
+		m[4].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map5.png")));
+		m[5].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map6.png")));
+		m[6].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map7.png")));
+		m[7].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map8.png")));
+		m[8].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map9.jpg"))); // 이미지 삽입
 
-		m[0].setIconImage(new ImageIcon("./src/image/mapImage/icon1.PNG"));
-		m[1].setIconImage(new ImageIcon("./src/image/mapImage/icon2.PNG"));
-		m[2].setIconImage(new ImageIcon("./src/image/mapImage/icon3.PNG"));
-		m[3].setIconImage(new ImageIcon("./src/image/mapImage/icon4.PNG"));
-		m[4].setIconImage(new ImageIcon("./src/image/mapImage/icon5.PNG"));
-		m[5].setIconImage(new ImageIcon("./src/image/mapImage/icon6.PNG"));
-		m[6].setIconImage(new ImageIcon("./src/image/mapImage/icon7.PNG"));
-		m[7].setIconImage(new ImageIcon("./src/image/mapImage/icon8.PNG"));
-		m[8].setIconImage(new ImageIcon("./src/image/mapImage/icon9.PNG"));
+		m[0].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon1.PNG")));
+		m[1].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon2.PNG")));
+		m[2].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon3.PNG")));
+		m[3].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon4.PNG")));
+		m[4].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon5.PNG")));
+		m[5].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon6.PNG")));
+		m[6].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon7.PNG")));
+		m[7].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon8.PNG")));
+		m[8].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon9.PNG")));
 		
 		AI = new AIManager(m); //AImanager 셋팅
 		myThread = new Thread(this);
@@ -519,7 +513,7 @@ public class Mapmanager extends JFrame implements Runnable {
 			
 		}
 
-		JButton Item = new JButton(new ImageIcon("./src/image/button/gabang.png"));// 가방사진
+		JButton Item = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/button/gabang.png")));// 가방사진
 		Item.setBorderPainted(false);
 		Item.setFocusPainted(false);
 		Item.setContentAreaFilled(false); // 버튼 테두리, 색칠 등 지움
