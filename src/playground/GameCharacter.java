@@ -33,8 +33,14 @@ public class GameCharacter {
       this.def = def;
       this.agi = agi;
       this.image = image;
-      Item I= new Item(3);
-      inventory.pushItem(I);
+      this.equip[0] = new Item(3);
+      this.equip[1] = new Item(-1);
+      Item I= new Item(7);
+      Item I2= new Item(3);
+      Item I3= new Item(6);
+      this.inventory.pushItem(I);
+      this.inventory.pushItem(I2);
+      this.inventory.pushItem(I3);
    }
 
    public String getName() {

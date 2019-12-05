@@ -1,6 +1,7 @@
 package Map;
 
 import java.awt.BorderLayout;
+import Fight.*;
 import AI.*;
 import Item.Itemview;
 
@@ -135,7 +136,7 @@ public class Mapmanager extends JFrame implements Runnable {
 				new MinigameManager(mv, Mapmanager.this,myMan);
 			} else {
 					System.out.println(mv.getAINumber());
-				// fight manager();
+				new FightManager(myMan,m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber()),Mapmanager.this);// fight manager();
 			}
 
 		}
@@ -151,7 +152,8 @@ public class Mapmanager extends JFrame implements Runnable {
 			JFrame thisframe = new JFrame();
 
 			thisFrameList.add(thisframe); // 이 frame도 스텍에 담아둠
-
+			
+			
 			Bt1.setBorderPainted(false);
 			Bt1.setFocusPainted(false);
 			Bt1.setContentAreaFilled(false); // 버튼 테두리, 색칠 등 지움

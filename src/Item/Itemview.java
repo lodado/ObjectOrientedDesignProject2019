@@ -27,7 +27,7 @@ public class Itemview extends JFrame {
 		JButton out = new JButton();
 		ImageIcon[] image= new ImageIcon[11];
 		ImageIcon[] manual = new ImageIcon[11];
- 		
+ 		final int[] id= new int[10];
 		ArrayList<Item> playerinventory = new ArrayList<Item>();
 		playerinventory= inventory.getItemlist();
 		for(int i= 0; i<playerinventory.size(); i++)
@@ -36,6 +36,8 @@ public class Itemview extends JFrame {
 			image[i]= temp.getImage();
 			manual[i]= temp.getManual();
 			String name= temp.getName();
+			id[i] =temp.getItemId();
+			System.out.println(id[i]);
 			button[i] = new JButton(name,image[i]);
 			button[i].setLayout(null);
 			if(i<=2)
@@ -49,10 +51,12 @@ public class Itemview extends JFrame {
 			frame.add(button[i]);
 			Font f1 = new Font("바탕", Font.PLAIN, 10);
 			final int mynum = i;
+			System.out.println(mynum);
+			if(id[mynum]==1||id[mynum]==2||id[mynum]==3||id[mynum]==4||id[mynum]==5||id[mynum]==9||id[mynum]==10||id[mynum]==11) {
 			button[i].addMouseListener(new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
                 	if(e.getClickCount()==2)
-					{	System.out.print("click");
+					{	System.out.println("click");
 						player.setEquip(temp);
 						JFrame frame= new JFrame("장착완료");
 						frame.setSize(200,200);
@@ -60,6 +64,7 @@ public class Itemview extends JFrame {
 						JLabel set = new JLabel("장착 완료했습니다");
 						set.setLayout(null);
 						set.setBounds(0,10,200,100);
+						frame.add(set);
 						JButton ok = new JButton("완료");
 						ok.setLayout(null);
 						ok.setBounds(50,100,100,50);
@@ -69,7 +74,7 @@ public class Itemview extends JFrame {
 								frame.dispose();
 							}
 						});
-						frame.add(set);
+						
 						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						frame.setVisible(true);
 						System.out.print(player.getEquip()[0].getName());
@@ -101,10 +106,10 @@ public class Itemview extends JFrame {
 				}
 
         });
-
+			}
 			button[i].addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 				public void actionPerformed(ActionEvent e) {
-					JLabel des = new JLabel(manual[mynum]);
+					JLabel des = new JLabel(manual[id[mynum]]);
 					des.setLayout(null);
 					des.setBounds(300, 0, 200, 400);
 					frame.add(des);
@@ -123,7 +128,7 @@ public class Itemview extends JFrame {
 		out.setLayout(null);
 		out.setBounds(300, 400, 200, 100);
 		frame.add(out);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 	}
 }

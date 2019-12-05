@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Map.Mapmanager;
-
+import Map.*;
 class WaitingRoomView extends JFrame{
 
 	public WaitingRoomView() {
@@ -51,7 +51,7 @@ class WaitingRoomView extends JFrame{
 	
 	/** 
 	 * 이 밑은 @author ChungHeon YI
-	
+
 	/** 시간초를 세는 T2 Thread. */
 	Thread T2;
 	
@@ -68,7 +68,7 @@ class WaitingRoomView extends JFrame{
 	 */
 	public void gameStart(GameCharacter cha) {
 
-		JFrame popup;
+		
 		
 		MapController = new Mapmanager(cha);
 
@@ -89,7 +89,6 @@ class WaitingRoomView extends JFrame{
 				}
 			}
 		};
-		
 		T2.start();
 
 	}

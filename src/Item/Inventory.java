@@ -13,16 +13,14 @@ public class Inventory {
 	}
 
 	/** 인벤토리 아이템 사용 메소드 */
-	public Item itemUse(Item I) {
+	public void itemUse(Item I) {
 		int i;
+		int id=I.getItemId();
 		for (i = 0; i < itemlist.size(); i++) {
-			if (itemlist.get(i) == I)
-				temp = itemlist.get(i);
-			if (I.getItemId() == 6 || I.getItemId() == 7 || I.getItemId() == 8)
+			if ((id==6&&itemlist.get(i)== I)||(id==7&&itemlist.get(i)== I)&&(id==8&&itemlist.get(i)== I))
 				itemlist.remove(i);
-
 		}
-		return temp;
+		
 	}
 	public ArrayList<Item> getItemlist(){
 		return itemlist;

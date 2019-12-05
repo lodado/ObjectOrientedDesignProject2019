@@ -18,8 +18,9 @@ import Map.Mapmanager;
 import playground.GameCharacter;
 
 public class ItemUseView extends JFrame {
-
-	public ItemUseView(GameCharacter player, int effect) {
+	int effect=0;
+	int item_id;
+	public ItemUseView(GameCharacter player) {
 		Inventory inventory= new Inventory();
 		inventory = player.getInventory();
 		JFrame frame = new JFrame("Inventory screen");
@@ -29,7 +30,7 @@ public class ItemUseView extends JFrame {
 		JButton out = new JButton();
 		ImageIcon[] image= new ImageIcon[11];
 		ImageIcon[] manual = new ImageIcon[11];
- 		
+		final int[] id= new int[10];
 		ArrayList<Item> playerinventory = new ArrayList<Item>();
 		playerinventory= inventory.getItemlist();
 		for(int i= 0; i<playerinventory.size(); i++)
@@ -38,6 +39,8 @@ public class ItemUseView extends JFrame {
 			image[i]= temp.getImage();
 			manual[i]= temp.getManual();
 			String name= temp.getName();
+			id[i] =temp.getItemId();
+			System.out.println(id[i]);
 			button[i] = new JButton(name,image[i]);
 			button[i].setLayout(null);
 			if(i<=2)
@@ -51,17 +54,20 @@ public class ItemUseView extends JFrame {
 			frame.add(button[i]);
 			Font f1 = new Font("바탕", Font.PLAIN, 10);
 			final int mynum = i;
+			System.out.println(mynum);
+			if(id[mynum]==1||id[mynum]==2||id[mynum]==3||id[mynum]==4||id[mynum]==5||id[mynum]==9||id[mynum]==10||id[mynum]==11) {
 			button[i].addMouseListener(new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
                 	if(e.getClickCount()==2)
-					{	System.out.print("click");
+					{	System.out.println("click");
 						player.setEquip(temp);
-						JFrame frame= new JFrame("사용완료");
+						JFrame frame= new JFrame("장착완료");
 						frame.setSize(200,200);
 						frame.setLayout(null);
-						JLabel set = new JLabel("사용 완료했습니다");
+						JLabel set = new JLabel("             장착 완료했습니다");
 						set.setLayout(null);
 						set.setBounds(0,10,200,100);
+						frame.add(set);
 						JButton ok = new JButton("완료");
 						ok.setLayout(null);
 						ok.setBounds(50,100,100,50);
@@ -71,7 +77,7 @@ public class ItemUseView extends JFrame {
 								frame.dispose();
 							}
 						});
-						frame.add(set);
+						
 						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						frame.setVisible(true);
 						System.out.print(player.getEquip()[0].getName());
@@ -103,7 +109,67 @@ public class ItemUseView extends JFrame {
 				}
 
         });
+			}
+			else if(id[mynum]==6||id[mynum]==7||id[mynum]==8) {
+				button[i].addMouseListener(new MouseListener() {
+	                public void mouseClicked(MouseEvent e) {
+	                	if(e.getClickCount()==2)
+						{	System.out.println("click");
+						if(id[mynum]==6) {
+						int hp=	player.getHp();
+						effect =30;
+						player.setHp(hp);
+						System.out.println("effect는 "+effect);
+						}
+							JFrame frame= new JFrame("사용완료");
+							frame.setSize(200,200);
+							frame.setLayout(null);
+							JLabel set = new JLabel("             사용했습니다");
+							set.setLayout(null);
+							set.setBounds(0,10,200,100);
+							frame.add(set);
+							JButton ok = new JButton("완료");
+							ok.setLayout(null);
+							ok.setBounds(50,100,100,50);
+							frame.add(ok);
+							ok.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
+								public void actionPerformed(ActionEvent e) {
+									frame.dispose();
+								}
+							});
+							
+							frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+							frame.setVisible(true);
+							System.out.print(player.getEquip()[0].getName());
+						}
+	                }
 
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+	        });
+				}
 			button[i].addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 				public void actionPerformed(ActionEvent e) {
 					JLabel des = new JLabel(manual[mynum]);
@@ -117,8 +183,6 @@ public class ItemUseView extends JFrame {
 		out = new JButton("나가기");
 		out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 			public void actionPerformed(ActionEvent e) {
-				manager.getMapFrame().setVisible(true);
-				manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
 				frame.dispose();
 			}
 		});
