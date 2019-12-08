@@ -68,7 +68,7 @@ public class MinigameManager extends JFrame implements Runnable {
 	JLabel times = new JLabel(timer+"초");
 	
 	/** 제출 버튼 */
-	private JButton bt = new JButton(new ImageIcon("./src/image/button/button1.png"));
+	private JButton bt = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/button/button1.png")));
 	
 	/** 텍스트 필드 */
 	private JTextField jp = new JTextField(20);
@@ -161,51 +161,51 @@ public class MinigameManager extends JFrame implements Runnable {
 		miniGames = new LinkedList<Minigame>(); //Minigame 객체 넣기 가능
 		
 		/*이미지 문제들*/
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game1.PNG"), "96",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game1.PNG")), "96",
 				new String[]{"논리 퀴즈! ","다음을 보고 ","답을 추론해 보세요!",""}
 				));	// 게임0
 		miniGames.getLast().setTimer(45); //시간초 - 직관적으로 보기 힘들어서 생성자에 넣지 않고 따로 설정함
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game2.PNG"), "12",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game2.PNG")), "12",
 				new String[]{"가운데에 올 수는? ","어떤 규칙으로 색칠한 세수를 이용하여 ","가운데 수를 구해 보세요!",""}
 				));	// 게임1
 		miniGames.getLast().setTimer(45); //시간초 
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game3.PNG"), "검문소",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game3.PNG")), "검문소",
 				new String[]{"넌센스 퀴즈 ! ","이 소의 이름은?","(3글자)",""}
 				));	// 게임2
 		miniGames.getLast().setTimer(55); //시간초 
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game4.PNG"), "샴푸",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game4.PNG")), "샴푸",
 				new String[]{"넌센스 퀴즈 ! ","이 곰의 이름은?","(2글자)",""}
 				));	// 게임3
 		miniGames.getLast().setTimer(55); //시간초 
 				
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game5.PNG"), "양반",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game5.PNG")), "양반",
 				new String[]{"넌센스 퀴즈 ! ","이 불쌍한 양의 이름은?","(2글자)",""}
 				));	// 게임4
 		miniGames.getLast().setTimer(55); //시간초 
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/game6.PNG"), "이유식",
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/game6.PNG")), "이유식",
 				new String[]{"아재 개그 ","People live in EU like eating this","(한글로 3글자)",""}
 				));	// 게임5
 		miniGames.getLast().setTimer(40); //시간초 
 		/* 이미지 문제 끝 */
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/willy1.PNG"),
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/willy1.PNG")),
 				new int[] {640,686,430,515}, //이건 답 사각형 좌표 (x최소,x최대,y최소,y최대)
 				new String[]{"윌리를 찾아라! ","윌리(빨간 줄무늬)를 찾은후에 클릭하세요!","클릭후 제출 누르기",""}
 				));	// 게임6
 		miniGames.getLast().setTimer(85); //시간초 
 		
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/willy2.jpg"),
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/willy2.jpg")),
 				new int[] {0,9000,0,9000},         //이건 답 사각형 좌표 (x최소,x최대,y최소,y최대)
 				new String[]{"윌리를 찾아라! ","윌리(빨간 줄무늬)를 찾은후에 클릭하세요!","클릭후 제출 누르기",""}
 				));	// 게임7
 		miniGames.getLast().setTimer(85); //시간초 
 		
-		miniGames.add(new Minigame(new ImageIcon("./src/image/minigameImage/willy3.PNG"),
+		miniGames.add(new Minigame(new ImageIcon(getClass().getClassLoader().getResource("image/minigameImage/willy3.png")),
 				new int[] {740,775,480,533},         //이건 답 사각형 좌표 (x최소,x최대,y최소,y최대)
 				new String[]{"윌리를 찾아라! ","윌리(빨간 줄무늬)를 찾은후에 클릭하세요!","클릭후 제출 누르기",""}
 				));	// 게임8
@@ -298,7 +298,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		characterImage = new JLabel(new ImageIcon(myMan.getImage()));
 		characterImage.setBounds(0,0,201,90);
 		
-		frame.setContentPane(new JLabel(new ImageIcon("./src/image/mapImage/back11.jpg")));
+		frame.setContentPane(new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/back11.jpg"))));
 		manager = Manager;
 		currentMap = m;
 		

@@ -2,6 +2,8 @@ package AI;
 
 import java.util.LinkedList;
 
+import javax.swing.ImageIcon;
+
 import Map.*;
 import playground.*;
 
@@ -22,10 +24,10 @@ public class AIManager {
 	public AIManager(map[] puthere)
 	{
 		String adj[]= {"똑똑한","유능한","부지런한","멍청한","귀여운","재빠른","얼빠진","키 큰"};
-		String name[]= {"조지","존","데이빗","홍길동","김범수","쯔위","주이","연우"};
+		String name[]= {"나연","정연","모모","사나","지효","미나","다현","채영","쯔위"};
 		
 		LinkedList<String> names = new LinkedList<>();
-		for(int i=0; i<8; i++) names.add(name[i]);                           
+		for(int i=0; i<9; i++) names.add(name[i]);                           
 
 		
 		for(int i=0; i<5; i++) //AIgenerator i의 한계 = ai의 갯수
@@ -33,6 +35,15 @@ public class AIManager {
 			int num =(int)(Math.random()*10)%names.size();
 			String Ainame = adj[(int)(Math.random()*10)%8]+" "+
 					names.get(num); //이름 설정  
+			
+			String path="image/AI/";
+			for(int j=0; j<9; j++)
+			{
+				if(name[j] == names.get(num))
+				{
+					path=path+j+".png";
+				}
+			}
 			
 			names.remove(num); //쓴 이름은 제거
 			
@@ -45,7 +56,8 @@ public class AIManager {
 		   	 * @param agi - 캐릭터 민첩
 		   	 * @param image - 캐릭터 이미지
 		   	 */
-				AI.add(new GameCharacter(Ainame,100,3,3,4,"1.jpg"));
+				AI.add(new GameCharacter(Ainame,100,3,3,4,path));
+				
 				int popAILocation = (int)(Math.random()*10)%9; //이곳에 넣음
 				
 				puthere[popAILocation].addAI(AI.getLast());

@@ -307,7 +307,7 @@ public class FightManager extends JFrame{
 		textarea.setFont(f1);
 		String playerimage = player.getImage();
 		String aiimage = AI.getImage();
-		ImageIcon ic = new ImageIcon("Ä³¸¯ÅÍ1.PNG");
+		ImageIcon ic = new ImageIcon("./src/image/cha1.png");
 		JLabel Image = new JLabel(ic);
 		Image.setBounds(0, 153, 230, 459);
 		JLabel Image1 = new JLabel(ic);
@@ -340,7 +340,6 @@ public class FightManager extends JFrame{
 				{
 			@Override
 			public void run() {
-					int i= 0;
 				try {
 					
 					while (true) {

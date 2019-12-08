@@ -168,7 +168,7 @@ public class Mapmanager extends JFrame implements Runnable {
 			Dimension screenSize = tk.getScreenSize();
 			int screenHeight = screenSize.height;
 			int screenWidth = screenSize.width;
-
+			
 			thisframe.setTitle(M.getMapName() + "로 이동?");
 			
 			thisframe.setIconImage(Toolkit.getDefaultToolkit().getImage(("image/chonnam.png")));// 전대 로고
@@ -390,7 +390,7 @@ public class Mapmanager extends JFrame implements Runnable {
 									JOptionPane.WARNING_MESSAGE); //마지막꺼 반환하면서 pop
 					
 						AI.MoveAlgorithm(m, list); //AI 이동 알고리즘 
-						AI.AIgetStronger();
+						AI.AIgetStronger(); //AI가 점점 쎄짐
 						whattime = timer; // 타이머 재기 초기화
 						notify = true;
 					}
@@ -447,15 +447,15 @@ public class Mapmanager extends JFrame implements Runnable {
 		m[7].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map8.png")));
 		m[8].setImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/map9.jpg"))); // 이미지 삽입
 
-		m[0].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon1.PNG")));
-		m[1].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon2.PNG")));
-		m[2].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon3.PNG")));
-		m[3].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon4.PNG")));
-		m[4].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon5.PNG")));
-		m[5].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon6.PNG")));
-		m[6].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon7.PNG")));
-		m[7].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon8.PNG")));
-		m[8].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon9.PNG")));
+		m[0].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon1.png")));
+		m[1].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon2.png")));
+		m[2].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon3.png")));
+		m[3].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon4.png")));
+		m[4].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon5.png")));
+		m[5].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon6.png")));
+		m[6].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon7.png")));
+		m[7].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon8.png")));
+		m[8].setIconImage(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/icon9.png")));
 		
 		AI = new AIManager(m); //AImanager 셋팅
 		myThread = new Thread(this);
