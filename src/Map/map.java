@@ -16,7 +16,6 @@ import playground.GameCharacter;
  * @author Chungheon Lee(이충헌)
  *
  */
-
 public class map
 {
 	/**맵 로케이션 위치(번호) 범위는 정수 {x ∈  Z , 0<=x<=8} */
@@ -31,6 +30,7 @@ public class map
 	/** 그 맵의 아이콘 이미지 */
 	private ImageIcon iconImage;
 	
+	/** 맵 안의 AI들을 담아두는 리스트 */
 	LinkedList<GameCharacter> AI = new LinkedList<>();
 	
 	/** flag for thread true 면 안닫긴거고 false면 닫김*/

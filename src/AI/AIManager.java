@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package AI;
 
 import java.util.LinkedList;
@@ -14,12 +17,13 @@ import playground.*;
  */
 public class AIManager {
 
+	/** 전체 AI를 담아두는 LinkedList */
 	LinkedList<GameCharacter> AI = new LinkedList<>();
 	
 	/**
 	 * AI를 설정하는 AIManager 생성자 .
 	 *
-	 * @param 맵 전체를 여기에 넣음 
+	 * @param puthere 전체 맵을 인자로 받음
 	 */
 	public AIManager(map[] puthere)
 	{
@@ -56,7 +60,7 @@ public class AIManager {
 		   	 * @param agi - 캐릭터 민첩
 		   	 * @param image - 캐릭터 이미지
 		   	 */
-				AI.add(new GameCharacter(Ainame,10,3,3,4,path));
+				AI.add(new GameCharacter(Ainame,100,4,3,4,path));
 				
 				int popAILocation = (int)(Math.random()*10)%9; //이곳에 넣음
 				
@@ -74,7 +78,7 @@ public class AIManager {
 	/**
 	 * AI를 움직이는 Move algorithm.
 	 *
-	 * @param 맵 전체를 이곳에 넣음
+	 * @param worldMap 맵 전체를 이곳에 넣음
 	 * @param list 맵이 움직여도 되는지 안되는지 확인
 	 */
 	
@@ -86,7 +90,7 @@ public class AIManager {
 		{
 			for(int b=0; b<worldMap[a].getAINumber(); b++)
 			{
-				if(worldMap[a].getAI().get(b).getHp()>0)
+				if(worldMap[a].getAI().get(b).getHp()>0) //체력 0이면 수집되지 않음 
 						targetAI.add(worldMap[a].getAI().get(b)); //모든 AI 수집
 			}
 			

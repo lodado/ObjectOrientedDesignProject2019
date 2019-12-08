@@ -36,6 +36,7 @@ import playground.GameCharacter;
 
 public class MinigameManager extends JFrame implements Runnable {
 
+	/** 미니게임을 실행하는 자신 캐릭터 */
 	private GameCharacter myMan;
 	
 	/** 타이머에 쓰이는 정수. */
@@ -219,7 +220,7 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 		int currentgame = (int)(Math.random()*10)%(miniGames.size());
 		
-		currentMinigame = (miniGames.get(currentgame));
+		currentMinigame = (miniGames.get(currentgame)); //지금게임 Pointer
 		if(currentgame<=5)
 		{
 		
@@ -237,11 +238,6 @@ public class MinigameManager extends JFrame implements Runnable {
 		//currentMinigame = new Minigame(new ImageIcon("./image/minigameImage/image1.PNG"), "답",
 				//new String[]{"더미 파일! ","이렇게 ","플레이","하는것 "}
 				//);// 더미임!
-		
-		
-		
-		
-		// Minigame(img,answer);
 	}
 	
 	@Override
@@ -253,7 +249,7 @@ public class MinigameManager extends JFrame implements Runnable {
 
 				//System.out.println("minigame manager thread");
 				
-				if(timer<10) times.setForeground(Color.RED);
+				if(timer<10) times.setForeground(Color.RED); //시간제한10초이하면 뻘개짐
 				
 				
 				if (!currentMinigame.getisStop()) { // 멈췄다 다시 플레이하면 재실행

@@ -38,17 +38,21 @@ import java.util.LinkedList;
 
 import minigame.*;
 import playground.*;
+
 /**
  * 맵 관리 매니저 클래스. Thread는 launcher와 함께 게임 플레이동안 계속 돌아간다.
  * 
  * @author Chungheon Yi
  */
-
 public class Mapmanager extends JFrame implements Runnable {
 	
-	/** 자신 캐릭터 스텟 */
+	/**  자신 캐릭터 스텟. */
 	private StatusManager player;
+	
+	/** The userInfo */
 	private UserInfo user;
+	
+	/** The pointer. */
 	private GameCharacter pointer;
 	
 	/** AI manager. */
@@ -71,6 +75,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	
 	JLabel ping = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/ping.png"))); // 자기위치 가리킴
 
+	/** 맵이름 text */
 	JLabel text[] = new JLabel[9];
 
 	/** 버튼 9개 */
@@ -123,8 +128,8 @@ public class Mapmanager extends JFrame implements Runnable {
 		private JPanel top = new JPanel();
 
 		/**
-		 * 이동 둘중 택 fight or startMinigame
-		 * 
+		 * 이동 둘중 택 fight or startMinigame.
+		 *
 		 * @param mv 클릭한 버튼의 map을 인자로 받음
 		 */
 		public void moving(map mv) {
@@ -304,8 +309,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	
 	/**
 	 * Sets the hp bar. map, fight, minigame 매니저에서 사용
-	 * 
-	 * @param CharHP the new hp
+	 *
+	 * @param CharHP 자신 HP
+	 * @param m 맵 m
+	 * @param HPBar the JPrgressBar
 	 */
 	public void setHP(int CharHP, map m, JProgressBar HPBar) {
 		if (!m.getFlag())
@@ -321,7 +328,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	 *
 	 * @param count       the count. C++의 인자 참조(&)를 구현하기 위하여 배열을 사용하였다. 칸은 총
 	 *                    1칸(count)
-	 * @param m the m
+	 * @param m the map
 	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
 	 * @param gamer 파이터시 싸우는 상대
 	 */
@@ -343,6 +350,9 @@ public class Mapmanager extends JFrame implements Runnable {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * 60마다 경고, 90초후 맵 한곳을 닫음 
+	 */
 	@Override
 	public void run() {
 		try {
@@ -410,6 +420,9 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * map을 관리해주는 매니저 생성자.
+	 *
+	 * @param user UserInfo를 받음 
+	 * @param player 정보를 받음
 	 */
 	public Mapmanager(UserInfo user, StatusManager player) {
 		this.user = user;
@@ -608,6 +621,10 @@ public class Mapmanager extends JFrame implements Runnable {
 		myThread.start();
 	}
 	
+	/**
+	 * Sets the player.
+	 * @param player를 set
+	 */
 	public void setPlayer(StatusManager player) {
 		this.player = player;
 	}
