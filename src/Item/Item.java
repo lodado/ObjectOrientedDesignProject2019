@@ -26,11 +26,8 @@ public class Item {
 	 * @param int 아이템 생성자
 	 */
 	public Item(int result) {
-		if(result ==-1) {
-			itemId = -1;
-			effect = 0;
-		}
-		else if(result ==0) {
+		
+	 if(result ==-3) {
 			itemId = 0;
 			effect = 5;
 			prob = 5;
@@ -40,71 +37,71 @@ public class Item {
 			name = "M16";
 			effect = 7; // 아이템 무기 1번
 			prob = 6;
-			manual = new ImageIcon("./src/image/아이템설명1.PNG");
-			image = new ImageIcon("./src/image/무기1.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명1.PNG"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/무기1.PNG"));
 		} else if (result == 2) {
 			itemId = 2;
 			name = "AK";
 			prob = 6;
-			manual = new ImageIcon("./src/image/아이템설명2.PNG");
-			image = new ImageIcon("./src/image/무기2.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명2.PNG"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/무기2.PNG"));
 			effect = 10;// 아이템 무기 2번
 		} else if (result == 3) {
 			itemId = 3;
 			name = "M4";
-			manual = new ImageIcon("./src/image/아이템설명1.PNG");
-			image = new ImageIcon("./src/image/무기3.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명3.PNG"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/무기3.PNG"));
 			prob = 7;
 			effect = 13;// 아이템 무기 3번
 		} else if (result == 4) {
 			itemId = 4;
 			name = "Kar-98";
-			image = new ImageIcon("./src/image/무기4.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/무기4.PNG"));
 			prob = 4;
-			manual = new ImageIcon("./src/image/아이템설명4.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명4.PNG"));
 			effect = 22;// 아이템 무기 4번
 		} else if (result == 5) {
 			itemId = 5;
 			name = "AWP";
-			manual = new ImageIcon("./src/image/아이템설명5.PNG");
-			image = new ImageIcon("./src/image/무기5.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명5.PNG"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/무기5.PNG"));
 			prob = 6;
 			effect = 30;// 아이템 무기 5번
 		} else if (result == 6) {
 			itemId = 6;
 			name = "구급상자";
-			image = new ImageIcon("./src/image/물약.PNG");
-			manual = new ImageIcon("./src/image/아이템설명6.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/물약.PNG"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명6.PNG"));
 			effect = 30;// 아이템 물약
 		} else if (result == 7) {
 			itemId = 7;
 			name = "수류탄";
-			image = new ImageIcon("./src/image/수류탄.PNG");
-			manual = new ImageIcon("./src/image/아이템설명7.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/수류탄.PNG"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명7.PNG"));
 			prob = 5;
 			effect = 35; // 아이템 수류탄
 		} else if (result == 8) {
 			itemId = 8;
-			image = new ImageIcon("./src/image/연막탄.PNG");
-			manual = new ImageIcon("./src/image/아이템설명8.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/연막탄.PNG"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명8.PNG"));
 			prob = 5;
 			effect = -999; // 아이템 연막탄
 		} else if (result == 9) {
 			itemId = 9;
 			name = "1렙 방어구";
-			manual = new ImageIcon("./src/image/아이템설명9.PNG");
-			image = new ImageIcon("./src/image/방어구1.PNG");
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명9.PNG"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/방어구1.PNG"));
 			effect = 20; // 아이템 방어구
 		} else if (result == 10) {
 			itemId = 10;
-			image = new ImageIcon("./src/image/방어구2.PNG");
-			manual = new ImageIcon("./src/image/아이템설명10.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/방어구2.PNG"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명10.PNG"));
 			name = "2렙 방어구";
 			effect = 30;// 아이템 방어구
 		} else if (result == 11) {
 			itemId = 11;
-			image = new ImageIcon("./src/image/방어구3.PNG");
-			manual = new ImageIcon("./src/image/아이템설명11.PNG");
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/방어구3.PNG"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/아이템설명11.PNG"));
 			name = "3렙 방어구";
 			effect = 40;// 아이템 방어구
 		}

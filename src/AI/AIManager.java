@@ -56,7 +56,7 @@ public class AIManager {
 		   	 * @param agi - 캐릭터 민첩
 		   	 * @param image - 캐릭터 이미지
 		   	 */
-				AI.add(new GameCharacter(Ainame,100,3,3,4,path));
+				AI.add(new GameCharacter(Ainame,10,3,3,4,path));
 				
 				int popAILocation = (int)(Math.random()*10)%9; //이곳에 넣음
 				
@@ -138,7 +138,7 @@ public class AIManager {
 		for(int i=0; i<AI.size(); i++)
 		{
 			int HPbonus = (AI.get(i).getHp()+12);
-			if(HPbonus>=100);
+			if(HPbonus>=100) AI.get(i).setHp(100);
 			else AI.get(i).setHp(HPbonus); //100을 넘진 않음 
 			
 			AI.get(i).setDef(AI.get(i).getDef()+1);

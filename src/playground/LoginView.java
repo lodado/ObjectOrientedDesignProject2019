@@ -3,6 +3,7 @@ package playground;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,128 +20,92 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 //로그인
-//로그인이나 회원가입 버튼 누르면 id와 pw값을 서버에 넘긴다.
 class LoginView extends JFrame implements ActionListener {
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://34.236.219.181:3306/OOP_USER";
-	static final String USERNAME = "tester";
-	static final String PASSWORD = "tester1234";
-	private CharacterSelectView cv;
 	private JTextField id;
 	private JTextField pw;
 	private JButton login;
-	private JButton signUp;
+	private JButton register;
 	private Container c;
-	public static final int width = 500;
-	public static final int height = 500;
-
-	UserInfo userInfo;
+	private CharacterSelectView cv;
+	private UserInfo user;
+	private StatusManager player;
+	private JLabel loginFail;
+	
 	JFrame frame;
 
-	LoginView(UserInfo ui, CharacterSelectView cv) {
-		this.cv = cv;
-		userInfo = ui;
+	LoginView(UserInfo user, StatusManager player) {
+		this.user = user;
+		this.player = player;
 		frame = new JFrame("Login");
-		frame.setSize(width, height);
+		frame.setSize(920, 920);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
 		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 898, 864);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
+		JLabel lblId = new JLabel("ID");
+		lblId.setFont(new Font("Gulim", Font.PLAIN, 18));
+		lblId.setBounds(196, 222, 82, 21);
+		panel.add(lblId);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblId.setFont(new Font("Gulim", Font.PLAIN, 18));
+		lblPassword.setBounds(196, 355, 82, 21);
+		panel.add(lblPassword);
+		
+		loginFail = new JLabel("");
+		loginFail.setBounds(196, 411, 750, 196);
+		panel.add(loginFail);
+		
 		id = new JTextField();
 		pw = new JTextField();
-		id.setBounds(150, 150, 200, 30);
-		pw.setBounds(150, 200, 200, 30);
+		id.setBounds(493, 219, 166, 27);
+		pw.setBounds(493, 352, 166, 27);
 
 		panel.add(id);
 		panel.add(pw);
 
-		JLabel tid = new JLabel("ID");
-		JLabel tpw = new JLabel("PW");
-		tid.setBounds(100, 130, 200, 60);
-		tpw.setBounds(100, 180, 200, 60);
-
-		panel.add(tid);
-		panel.add(tpw);
-
+		id.setColumns(10);
+		pw.setColumns(10);
+		
 		login = new JButton("로그인");
-		signUp = new JButton("회원가입");
+		register = new JButton("회원가입");
 		login.addActionListener(this);
-		signUp.addActionListener(this);
-		login.setBounds(100, 350, 100, 80);
-		signUp.setBounds(300, 350, 100, 80);
+		register.addActionListener(this);
+		login.setBounds(213, 695, 129, 29);
+		register.setBounds(517, 695, 129, 29);
 		panel.add(login);
-		panel.add(signUp);
+		panel.add(register);
 
 		c = frame.getContentPane();
 
 		c.add(panel);
 
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(login)) {
 			System.out.println("로그인 버튼 눌림");
 			System.out.println(id.getText());
-
-			Connection conn = null;
-			Statement stmt = null;
-			try {
-				Class.forName(JDBC_DRIVER);
-				conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-				System.out.println("\n- MySQL Connection");
-				stmt = conn.createStatement();
-				String sql;
-				sql = "SELECT * FROM OOP_player WHERE ID = \"" + id.getText() + "\"";
-				ResultSet rs = stmt.executeQuery(sql);
-				while (rs.next()) {
-					String p = rs.getString("PW");
-					if (p.equals(pw.getText())) {
-						System.out.println("로그인 성공!");
-						userInfo.setId(id.getText());
-						userInfo.setPw(pw.getText());
-						sql = "SELECT * FROM OOP_score WHERE ID = \"" + userInfo.getId() + "\"";
-						ResultSet rs2 = stmt.executeQuery(sql);
-						while (rs2.next()) {
-							int win = rs2.getInt("win");
-							int lose = rs2.getInt("lose");
-							userInfo.setWin(win);
-							userInfo.setLose(lose);
-						}
-						rs.close();
-						frame.setVisible(false);
-						cv.setVisible(true);
-					} else
-						System.out.println("비밀번호가 틀립니다.");
-				}
-				rs.close();
-				stmt.close();
-				conn.close();
-			} catch (SQLException se1) {
-				se1.printStackTrace();
-				System.out.println("계정 없음?");
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			} finally {
-				try {
-					if (stmt != null)
-						stmt.close();
-				} catch (SQLException se2) {
-				}
-				try {
-					if (conn != null)
-						conn.close();
-				} catch (SQLException se) {
-					se.printStackTrace();
-				}
+			String loginResult = user.login(id.getText(), pw.getText());
+			if (loginResult.equals("로그인 성공!")) {
+				frame.setVisible(false);
+				cv = new CharacterSelectView(user, player);
 			}
-			System.out.println("\n\n- MySQL Connection Close");
+			else {
+				loginFail.setText(loginResult);
+			}
 		}
 
-		if (e.getSource().equals(signUp)) {
-			
+		if (e.getSource().equals(register)) {
+			System.out.println("가입 버튼 눌림");
+			RegisterView rv = new RegisterView(user);
+		
 		}
 
 	}

@@ -10,57 +10,59 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-class WaitingRoomView extends JFrame{
+class WaitingRoomView extends JFrame implements ActionListener{
+	UserInfo user;
 	StatusManager player;
+	JLabel winlose = new JLabel("");
+	JLabel gameDes = new JLabel("게임 설명~~");
+	JButton startButton = new JButton("Start!");
+	JButton scoreButton = new JButton("Score");
 	
-	//public void setPlayer(StatusManager player)
-	//{
-	//	this.player=player;
-	//}
-	
-	public WaitingRoomView(StatusManager player) {
+	public WaitingRoomView(UserInfo user, StatusManager player) {
+		this.user = user;
 		this.player = player;
-		
+		winlose.setText("Win :  " + user.getWin() +"  Lose :  " + user.getLose());
 		setVisible(false);
 		setTitle("Wait Playing");
 		setSize(500, 500);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
-		
-		JLabel winlose = new JLabel("Win : " +"Lose : 0");
-		JLabel gameDes = new JLabel("게임 설명~~");
-		JButton startButton = new JButton("Start!");
-		
-		startButton.addActionListener(
-
-				new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) // 확인 버튼을 누르면 맵 화면에서 전투 혹은 미니게임 화면으로 이동
-					{
-						
-						/** * Instantiates a new launcher.*/
-						gamestart();
-					}
-				});
-		
+		startButton.addActionListener(this);
+		scoreButton.addActionListener(this);
 		
 		Container contentPane = getContentPane();
 		
 		winlose.setBounds(20, 10, 200, 70);
 		gameDes.setBounds(40, 150, 250, 250);
-		startButton.setSize(150, 70);
+		startButton.setSize(70, 70);
 		startButton.setLocation(300, 10);
+		scoreButton.setSize(70, 70);
+		scoreButton.setLocation(200, 10);
 		panel.add(winlose);
 		panel.add(gameDes);
 		panel.add(startButton);
+		panel.add(scoreButton);
 		contentPane.add(panel);
-		
+		setVisible(true);
 	}
 	
 	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(startButton)) {
+			System.out.println("시작 버튼 눌림");
+			gamestart();
+			
+		}
+		else if (e.getSource().equals(scoreButton)) {
+			ScoreView sv = new ScoreView(user);
+		}
+		
+	}
+	
 	public void gamestart() {
 		System.out.println(player.getStatus().getName());
-		final Mapmanager Mapcontroller = new Mapmanager(player);
+		final Mapmanager Mapcontroller = new Mapmanager(user, player);
 		Thread T1 = new Thread() { // 메인 쓰레드
 			@Override
 			public void run() {
@@ -80,6 +82,7 @@ class WaitingRoomView extends JFrame{
 			}
 		};
 		T1.start();
+		Mapcontroller.setVisible(true);
 	}
 	
 }

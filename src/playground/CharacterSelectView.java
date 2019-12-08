@@ -13,17 +13,20 @@ import javax.swing.JPanel;
 
 //캐릭터 선택 프레임
 class CharacterSelectView extends JFrame {
+	UserInfo user;
 	StatusManager player;
 	WaitingRoomView wv;
-	CharacterSelectView(WaitingRoomView wv, StatusManager player) {
-		this.wv = wv;
+	
+	CharacterSelectView(UserInfo user, StatusManager player) {
+		this.user = user;
 		this.player = player;
 		setTitle("Text Battle");
 		setSize(500, 500);
 		setResizable(false);
-		ImageIcon ic1 = new ImageIcon("./cha1.jpg");
-		ImageIcon ic2 = new ImageIcon("./cha2.jpg");
-		ImageIcon ic3 = new ImageIcon("./cha3.jpg");
+		
+		ImageIcon ic1 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha1.jpg"));
+		ImageIcon ic2 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha2.jpg"));
+		ImageIcon ic3 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha3.jpg"));
 		Image im1 = ic1.getImage();
 		Image im2 = ic2.getImage();
 		Image im3 = ic3.getImage();
@@ -33,6 +36,7 @@ class CharacterSelectView extends JFrame {
 		ImageIcon icon1 = new ImageIcon(nim1);
 		ImageIcon icon2 = new ImageIcon(nim2);
 		ImageIcon icon3 = new ImageIcon(nim3);
+		
 
 		JLabel lbImage1 = new JLabel(icon1);
 		JLabel lbImage2 = new JLabel(icon2);
@@ -52,7 +56,7 @@ class CharacterSelectView extends JFrame {
 		dCha3.setLocation(325, 330);
 
 		// add panel to frame
-		ButtonPanel buttonPanel = new ButtonPanel(player, this.wv);
+		ButtonPanel buttonPanel = new ButtonPanel(user, player);
 		buttonPanel.setLayout(null);
 		// ImagePanel imagePanel = new ImagePanel();
 		Container contentPane = getContentPane();
@@ -65,8 +69,8 @@ class CharacterSelectView extends JFrame {
 		contentPane.add(lbImage3);
 		contentPane.add(buttonPanel);
 		//보이기
-		setVisible(false);
-
+		setVisible(true);
+		
 		// contentPane.add(panel3);
 	}
 }
@@ -80,17 +84,18 @@ class ButtonPanel extends JPanel implements ActionListener {
 	private JButton selectButton2;
 	private JButton selectButton3;
 	private StatusManager player;
+	private UserInfo user;
 	WaitingRoomView wv;
 	
 	private GameCharacter cha1;
 	private GameCharacter cha2;
 	private GameCharacter cha3;
-	public ButtonPanel(StatusManager player, WaitingRoomView wv) {
+	public ButtonPanel(UserInfo user, StatusManager player) {
+		this.user = user;
 		this.player = player;
-		this.wv = wv;
-		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "default.jpg");
-		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "attacker.jpg");
-		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "tanker.jpg");
+		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "AI/1.jpg");
+		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "AI/cha2.jpg");
+		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "AI/cha3.jpg");
 
 		// create buttons
 		selectButton1 = new JButton("Select");
@@ -120,7 +125,6 @@ class ButtonPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(selectButton1)) {
 			player.setStatus(cha1);
-			
 		}
 		if (e.getSource().equals(selectButton2)) {
 			player.setStatus(cha2);
@@ -128,7 +132,8 @@ class ButtonPanel extends JPanel implements ActionListener {
 		if (e.getSource().equals(selectButton3)) {
 			player.setStatus(cha3);
 		}
-		wv.setVisible(true);
+		wv = new WaitingRoomView(user, player);
+		
 	}
 
 }

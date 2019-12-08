@@ -48,7 +48,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	
 	/** 자신 캐릭터 스텟 */
 	private StatusManager player;
-	
+	private UserInfo user;
 	private GameCharacter pointer;
 	
 	/** AI manager. */
@@ -138,7 +138,7 @@ public class Mapmanager extends JFrame implements Runnable {
 			} else {
 					System.out.println(mv.getAINumber());
 					pointer = m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber());
-				new FightManager(player.getStatus(), pointer,Mapmanager.this,m[myLocation]);// fight manager();
+				new FightManager(player.getStatus(), pointer,Mapmanager.this,m[myLocation],AI.getList(), user);// fight manager();
 			}
 
 		}
@@ -411,18 +411,22 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**
 	 * map을 관리해주는 매니저 생성자.
 	 */
-	public Mapmanager(StatusManager player) {
-		
+	public Mapmanager(UserInfo user, StatusManager player) {
+		this.user = user;
 		this.player = player;
 		forDef = new JLabel(" 방어력 :  " +player.getStatus().getDef());
-		characterImage = new JLabel(new ImageIcon(player.getStatus().getImage()));
-		try{
+		
+		String imags =player.getStatus().getImage();
+		
+		if(imags == "image/cha1.png")	imags = "image/1cha1.png";
+		if(imags == "image/cha2.png")	imags = "image/1cha2.png";
+		if(imags == "image/cha3.png")	imags = "image/1cha3.png";
+		
+		System.out.println("#"+imags+"#");
+			characterImage = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(imags)));
 			characterImage.setBounds(0,0,201,90);
 			
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}	
+		
 		
 		final int ROW = 920; // 크기 나중에 삭제
 		final int COL = 920;
@@ -581,7 +585,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		Item.addActionListener(new ActionListener() // 가방을 누르면 시작되는 이벤트
 		{
 			public void actionPerformed(ActionEvent e) {
-				new Itemview(player.getStatus(),Mapmanager.this);
+				new Itemview(thisFrame,player.getStatus(),Mapmanager.this);
 			}
 		});
 

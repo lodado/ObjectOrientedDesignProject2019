@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import Item.ItemManager;
 import Map.Mapmanager;
 import Map.map;
 import playground.GameCharacter;
@@ -508,6 +509,12 @@ public class MinigameManager extends JFrame implements Runnable {
 				else
 					ans = "미니게임 실패 ! \n아이템을 확득하지 못하였습니다.";
 
+				if(gameresult())
+				{	int result= (int)(Math.random()*100)%11+1;
+
+					new ItemManager(myMan,result);
+				}
+				
 				int result = JOptionPane.showConfirmDialog(null, ans, "확인", JOptionPane.CLOSED_OPTION);
 
 				if (result == JOptionPane.OK_OPTION || result == JOptionPane.CLOSED_OPTION) {
