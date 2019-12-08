@@ -122,15 +122,14 @@ public class AIManager {
 		System.out.println();
 	}
 	
-
 	/*
 	 * 
 	public void attackAlgorithm()
 	{
 		fightManager로 이동
 	}
-	*/
 	
+	*/	
 	/**
 	 * AI가 턴이 지날때마다 점점 쎄집니다.
 	 */
@@ -150,4 +149,10 @@ public class AIManager {
 		
 		}
 	}
+	
+	public LinkedList<GameCharacter> getList()
+	{
+		return AI;
+	}
+	
 }
