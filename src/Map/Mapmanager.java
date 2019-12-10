@@ -73,6 +73,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** 맵 9개 */
 	private map m[] = new map[9];
 	
+	/** 자신 위치 표시해주는 그림 */
 	JLabel ping = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/ping.png"))); // 자기위치 가리킴
 
 	/** 맵이름 text */
@@ -109,7 +110,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	LinkedList<Integer> list;
 
 	/**
-	 * 맵 장소 이동할때 확인 혹은 취소를 누르는 팝업창을 위한 inner class, JDialog로 교체 가능
+	 * 맵 장소 이동할때 확인 혹은 취소를 누르는 팝업창을 위한 inner class
 	 * 
 	 * @author Chungheon Yi
 	 */
@@ -151,7 +152,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		/**
 		 * 확인 누르면 맵 이동, 취소 누르면 취소.
 		 *
-		 * @param thisFrameList 이게 없으면 팝업이 중복되는 문제가 생겨서 만든 코드입니다..확인을 누를시 모든 JFrame을 닫습니다.
+		 * @param thisFrameList 확인을 누를시 모든 JFrame을 닫습니다.
 		 * @param M   맵 m
 		 * @param num 이곳 번지수(location)
 		 */
@@ -232,6 +233,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
+	 * Gets the my location
+	 *
 	 * @return 자기 자신 위치 받음
 	 */
 	public map getMyLoc() {
@@ -239,7 +242,9 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * @param 자기 자신 위치 설정
+	 * Sets the my location
+	 *
+	 * @param num the new my loc
 	 */
 	public void setMyLoc(int num) {
 		this.myLocation = num;
@@ -299,7 +304,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * Gets the pointer. null 이면 null 반환 
+	 * Gets the pointer.(fight시 상대 gamecharacter 객체 가리킴) null 이면 null 반환 
 	 * @return pointer
 	 */
 	public GameCharacter getPointer()
@@ -308,7 +313,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 	
 	/**
-	 * Sets the pointer.
+	 * Sets the pointer(fight시 상대 gamecharacter 객체 가리킴).
 	 * @param pt the new pointer
 	 */
 	public void setPointer(GameCharacter pt)
