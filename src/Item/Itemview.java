@@ -16,12 +16,21 @@ import javax.swing.JLabel;
 import Map.Mapmanager;
 import playground.GameCharacter;
 
+/**맵에서의 인벤토리 view 클래스
+ * @author 박다원
+ *
+ */
 public class Itemview extends JFrame {
 	JLabel des = new JLabel();
 	public Itemview(LinkedList<JFrame> getframe, GameCharacter player, Mapmanager manager) {
 		Inventory inventory= new Inventory();
 		inventory = player.getInventory();
 		JFrame frame = new JFrame("Inventory screen");
+		
+		while (!getframe.isEmpty()) {
+			getframe.peekFirst().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			getframe.pollFirst().setVisible(false);
+		} 
 		
 		getframe.add(frame);
 		frame.setSize(520, 540);
@@ -33,7 +42,7 @@ public class Itemview extends JFrame {
  		final int[] id= new int[10];
 		ArrayList<Item> playerinventory = new ArrayList<Item>();
 		playerinventory= inventory.getItemlist();
-		for(int i= 0; i<playerinventory.size(); i++)
+		for(int i= 0; i<playerinventory.size(); i++) //플레이어의 인벤토리를 확인
 		{	
 			
 			Item temp = playerinventory.get(i);
@@ -61,7 +70,7 @@ public class Itemview extends JFrame {
 			button[i].addMouseListener(new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
 
-                	if(e.getClickCount()==2)
+                	if(e.getClickCount()==2) //더블클릭시 장착
                 		if(id[mynum]==1||id[mynum]==2||id[mynum]==3||id[mynum]==4||id[mynum]==5||id[mynum]==9||id[mynum]==10||id[mynum]==11) {
 					{	System.out.println("click");
 						player.setEquip(temp);

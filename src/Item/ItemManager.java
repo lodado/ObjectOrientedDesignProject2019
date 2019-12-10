@@ -14,25 +14,21 @@ import minigame.*;
 import Map.*;
 import playground.*;
 
-
 /**
+ * 아이템매니저
+ * 
  * @author 박다원
- * @version 0.0.1 11 3 2019
- */
-
-
-/**
- * @author 박다원
- * @version 0.0.1 11 3 2019
+ * 
  */
 public class ItemManager {
 	private Inventory inventory;
 	private Item temp;
 	private static GameCharacter cha1;
 
-	public static void main(String[] args){
-		
+	public static void main(String[] args) {
+
 	}
+
 	public ItemManager(GameCharacter player, int result) {
 		inventory = player.getInventory();
 		temp = new Item(result);

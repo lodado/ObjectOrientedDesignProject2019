@@ -34,6 +34,7 @@ public class GameCharacter {
       this.agi = agi;
       this.image = image;
       this.equip[0] = new Item(-3);
+      this.equip[1] = new Item(-4);
    }
 
    public String getName() {

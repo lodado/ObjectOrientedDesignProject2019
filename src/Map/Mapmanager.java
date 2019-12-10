@@ -158,6 +158,11 @@ public class Mapmanager extends JFrame implements Runnable {
 		public MapLocationPopup(final LinkedList<JFrame> thisFrameList, map M, int num) {
 			JFrame thisframe = new JFrame();
 
+			while (!thisFrameList.isEmpty()) {
+				thisFrameList.peekFirst().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				thisFrameList.pollFirst().setVisible(false);
+			} 
+			
 			thisFrameList.add(thisframe); // 이 frame도 스텍에 담아둠
 			
 			
@@ -302,6 +307,10 @@ public class Mapmanager extends JFrame implements Runnable {
 		return pointer;
 	}
 	
+	/**
+	 * Sets the pointer.
+	 * @param pt the new pointer
+	 */
 	public void setPointer(GameCharacter pt)
 	{
 	  pointer = pt;
@@ -367,10 +376,10 @@ public class Mapmanager extends JFrame implements Runnable {
 				Mytime.setText("                   " + timer); // 시간초 계속 갱신
 
 				IsClosedMap(count1, m[myLocation], (double) 10,	player.getStatus()); // count = 참조를 통한 인자 변경(C++의 &)을 위한 배열,
-				setHP(player.getStatus().getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
-				IsClosedMap(count2, m[myLocation], (double)10,pointer);
+				
+				IsClosedMap(count2, m[myLocation], (double)10, pointer);
 				// HP는 HP바, 쓰레드 speed(500millsec*10)
-
+				setHP(player.getStatus().getHp(), m[myLocation], HP); // 현재 HP에 characterHP 대입. 이부분은 나중 character와 연동할것
 				if (!list.isEmpty()) // 모두 닫겼다면 실행 하지 않음
 				{
 					
@@ -435,7 +444,6 @@ public class Mapmanager extends JFrame implements Runnable {
 		if(imags == "image/cha2.png")	imags = "image/1cha2.png";
 		if(imags == "image/cha3.png")	imags = "image/1cha3.png";
 		
-		System.out.println("#"+imags+"#");
 			characterImage = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(imags)));
 			characterImage.setBounds(0,0,201,90);
 			
@@ -606,7 +614,7 @@ public class Mapmanager extends JFrame implements Runnable {
 		Dimension screenSize = tk.getScreenSize();
 		int screenHeight = screenSize.height;
 		int screenWidth = screenSize.width;
-
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		frame.setTitle("전대 그라운드 - Map");
 		frame.setSize(ROW, COL);
 

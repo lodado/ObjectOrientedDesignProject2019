@@ -14,6 +14,11 @@ import javax.swing.JLabel;
 import minigame.*;
 import Map.*;
 import playground.*;
+
+/**아이템 클래스
+ * @author 박다원
+ *
+ */
 public class Item {
 	private int itemId; // 아이템 id
 	private int effect; // 아이템 효과
@@ -22,16 +27,21 @@ public class Item {
 	private ImageIcon image;// 아이템 이미지
 	private int prob = 0; // 아이템 명중률
 
-	/**
-	 * @param int 아이템 생성자
+	
+	/**아이템 생성자
+	 * @param result
 	 */
 	public Item(int result) {
 		
 	 if(result ==-3) {
-			itemId = 0;
+			itemId = -3;
 			effect = 5;
 			prob = 5;
-		}
+		} // 기본 공격 장비
+	 else if(result ==-4) {
+		 itemId =-4;
+		 effect =6;
+	 }
 		else if (result == 1) {
 			itemId = 1;
 			name = "M16";

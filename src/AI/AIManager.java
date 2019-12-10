@@ -34,7 +34,7 @@ public class AIManager {
 		for(int i=0; i<9; i++) names.add(name[i]);                           
 
 		
-		for(int i=0; i<1; i++) //AIgenerator i의 한계 = ai의 갯수
+		for(int i=0; i<5; i++) //AIgenerator i의 한계 = ai의 갯수
 			{
 			int num =(int)(Math.random()*10)%names.size();
 			String Ainame = adj[(int)(Math.random()*10)%8]+" "+
@@ -60,20 +60,16 @@ public class AIManager {
 		   	 * @param agi - 캐릭터 민첩
 		   	 * @param image - 캐릭터 이미지
 		   	 */
-				AI.add(new GameCharacter(Ainame,10,4,3,4,path));
+				AI.add(new GameCharacter(Ainame,100,4,3,4,path));
 				
 				int popAILocation = (int)(Math.random()*10)%9; //이곳에 넣음
 				
 				puthere[popAILocation].addAI(AI.getLast());
 				
-				System.out.println(AI.getLast().getName() +" 가 "+puthere[popAILocation].getMapName()+"으로 이동");
-				
+
 				
 			}
-		
-		for(int j=0; j<9; j++)
-			System.out.println(puthere[j].getMapName()+puthere[j].getAINumber());
-	}
+		}
 	
 	/**
 	 * AI를 움직이는 Move algorithm.
@@ -123,7 +119,7 @@ public class AIManager {
 			
 			} 
 		}
-		System.out.println();
+			System.out.println();
 	}
 	
 	/*
