@@ -1,26 +1,30 @@
+/*
+ * 
+ */
 package minigame;
 
 import javax.swing.ImageIcon;
 
+// TODO: Auto-generated Javadoc
 /** 미니게임을 담아두는 class. 클릭해서 푸는 문제와 이미지를 보고 답을 제출하는 문제 2가지
  * @author Chungheon Yi
  *
  */
 public class Minigame {
 		
-	/** 게임 이미지 */
+	/**  게임 이미지. */
 	private ImageIcon image;
 
-	/** 게임 답 */
+	/**  게임 답. */
 	private String str;
 
-	/** 미니게임 pause 체크 하는데 쓰는 boolean 값 */
+	/**  미니게임 pause 체크 하는데 쓰는 boolean 값. */
 	private boolean isStop = false;
 	
-	/** 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름 */
+	/**  게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름. */
 	private String[] list = new String[4];
 	
-	/** 게임 제한 초 */
+	/**  게임 제한 초. */
 	private int timer =30;
 	
 	
@@ -30,15 +34,16 @@ public class Minigame {
 		/** The y. */
 		private int y;
 		
-		/** 좌표를 4개 담아놓는 박스(클릭해서 그 좌표들이 만든 사각형 안에 포함되있다면 정답) */
+		/** 좌표 4가지 */
 		private int Point[];
 	
 	/**
-		 * 이 게임의 퀴즈와 정답을 설정한다. (좌표 x)
-		 * @param ima 이미지
-		 * @param strings 게임 정답
-		 * @param howtoplay 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름
-		 */
+	 * set the image, answer, and description of game.
+	 *
+	 * @param ima image
+	 * @param strings answer 
+	 * @param howtoplay description of game
+	 * 	 */
 	public Minigame(ImageIcon ima, String strings,String[] howtoplay) // 게임 생성
 	{
 		this.image = ima;
@@ -50,10 +55,11 @@ public class Minigame {
 	
 	/**
 	 * 이 게임의 퀴즈와 정답을 설정한다.클릭용 (좌표O)
-	 * @param ima 퀴즈의 이미지
-	 * @Param XY (x,y) 좌표 4가지 for answer
-	 * @param howtoplay 게임에 대한 설명을 담아놓는 문자열 배열, String[0]는 이 미니게임의 이름
-	 *  
+	 *
+	 * @param ima image of quiz
+	 * @param XY thexy
+	 * @param howtoplay 게임에 대한 설명을 담아놓는 문자열 배열, String[0] name of game 
+	 * @Param XY 4 (x,y) for answer
 	 */
 	public Minigame(ImageIcon ima,int XY[], String[] howtoplay) // 게임 생성
 	{
@@ -68,7 +74,7 @@ public class Minigame {
 	/**
 	 * Sets the x.
 	 *
-	 * @param num x에 대입
+	 * @param num the new x
 	 */
 	void setX(int num) {
 		x = num;
@@ -77,23 +83,22 @@ public class Minigame {
 	/**
 	 * Sets the y.
 	 *
-	 * @param num y에 대입
+	 * @param num the new y
 	 */
 	void setY(int num) {
 		y = num;
 	}
 	
 	/**
-	 * Sets X and Y. + 덤으로 클릭 미니게임시 답 유무도 지정함.
-	 *
-	 * @param num1 x값 인자로 받음
-	 * @param num2 y값 인자로 받음
+	 * Sets X and Y.
+	 * @param num1 get x
+	 * @param num2 get y
 	 */
 	void setXY(int num1,int num2) {
 		x = num1;
 		y=  num2;
 		
-		if(Point !=null)
+		if(Point !=null) // 미니게임이 클릭이라면 이거 실행
 		{  //(x최소,x최대,y최소,y최대)
 			if(Point[0]<=x && Point[1]>=x && Point[2]<=y && Point[3]>=y)
 			{
@@ -122,7 +127,7 @@ public class Minigame {
 	
 	/**
 	 * Sets the point.
-	 * @param arr 4개의 좌표
+	 * @param arr the new point
 	 */
 	void setPoint(int[] arr)
 	{
@@ -140,9 +145,8 @@ public class Minigame {
 	
 	/**
 	 * Gets the point.
-	 *
-	 * @param index 받고싶은 Point 인덱스 값
-	 * @return the point[index]
+	 * @param index the index
+	 * @return the point of index
 	 */
 	int getPoint(int index)
 	{
@@ -150,9 +154,8 @@ public class Minigame {
 	}
 	
 	/**
-	 * 게임 이미지 반환
-	 * 
-	 * @return image 이미지 반환
+	 * return game image.
+	 * @return image gameimage
 	 */
 	public ImageIcon getImage() {
 		return image;
@@ -169,7 +172,7 @@ public class Minigame {
 	
 	/**
 	 * Gets the timer.
-	 * @return the timer
+	 * @return timer
 	 */
 	public int getTimer() {
 		return timer;
@@ -184,28 +187,37 @@ public class Minigame {
 	}
 	
 	/**
-	 * 게임 답 반환
-	 * 
-	 * @return str 정답 반환
+	 * return answer.
+	 *
+	 * @return str return answer
 	 */
 	public String getAnswer() {
 		return str;
 	}
 
+	/**
+	 * Sets the answer.
+	 *
+	 * @param strings the new answer
+	 */
 	public void setAnswer(String strings) {
 		this.str = new String(strings);
 	}
+	
 	/**
-	 * 미니게임 pause 체크 하는데 쓰는 boolean 값 반환
-	 * @return isstop 반환
+	 * return pause check.
+	 *
+	 * @return isstop pause check
 	 */
 	public boolean getisStop() {
 		return isStop;
 	}
 
 	
-	/**	미니게임 pause 체크 하는데 쓰는 boolean 값 setting
-	 * @param bool = setting할 boolean값
+	/**
+	 * 	to check it is paused or not .
+	 *
+	 * @param bool the new checks if is stop
 	 */
 	public void setisStop(boolean bool) {
 		isStop = bool;
@@ -213,8 +225,7 @@ public class Minigame {
 	
 	/**
 	 * Sets the list.
-	 *
-	 * @param getstring the new list, list[0]은 이 게임 이름
+	 * @param getstring the new list list[0] is the name of minigame
 	 */
 	public void setList(String[] getstring) // 게임 설명을 적어놓는다.
 	{
@@ -228,9 +239,8 @@ public class Minigame {
 	}
 	
 	/**
-	 * Gets the list. list[0]는 이 미니게임 이름
-	 *
-	 * @param 인덱스 번호
+	 * Gets the list. list[0] is the name of minigame
+	 * @param i number of index
 	 * @return the list
 	 */
 	public String getList(int i)

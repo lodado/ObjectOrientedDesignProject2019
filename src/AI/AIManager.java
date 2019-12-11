@@ -11,19 +11,17 @@ import Map.*;
 import playground.*;
 
 /**
- * AI를 컨트롤 하는 클래스
+ * Control AI 
  * @author Chungheon Yi
- *
  */
 public class AIManager {
 
-	/** 전체 AI를 담아두는 LinkedList */
+	/** AI's LinkedList. */
 	LinkedList<GameCharacter> AI = new LinkedList<>();
 	
 	/**
-	 * AI를 설정하는 AIManager 생성자 .
-	 *
-	 * @param puthere 전체 맵을 인자로 받음
+	 * generate AI(total 5).
+	 * @param puthere the puthere
 	 */
 	public AIManager(map[] puthere)
 	{
@@ -51,16 +49,16 @@ public class AIManager {
 			
 			names.remove(num); //쓴 이름은 제거
 			
-			/**
-		   	 * 캐릭터의 정보를 설정한다.
-		   	 * @param name - 캐릭터 이름
-		   	 * @param hp - 캐릭터 체력
-		   	 * @param off - 캐릭터 공격력
-		   	 * @param def - 캐릭터 방어력
-		   	 * @param agi - 캐릭터 민첩
-		   	 * @param image - 캐릭터 이미지
-		   	 */
-				AI.add(new GameCharacter(Ainame,100,4000,3,4,path));
+			
+		   	// 캐릭터의 정보를 설정한다.
+		   	// @param name - 캐릭터 이름
+		   	// @param hp - 캐릭터 체력
+		   	// @param off - 캐릭터 공격력
+		   	// @param def - 캐릭터 방어력
+		   	// @param agi - 캐릭터 민첩
+		   	// @param image - 캐릭터 이미지
+		   	 
+				AI.add(new GameCharacter(Ainame,100,4,3,4,path));
 				
 				int popAILocation = (int)(Math.random()*10)%9; //이곳에 넣음
 				
@@ -72,10 +70,10 @@ public class AIManager {
 		}
 	
 	/**
-	 * AI를 움직이는 Move algorithm.
+	 * use this when AI moves.
 	 *
-	 * @param worldMap 맵 전체를 이곳에 넣음
-	 * @param list 맵이 움직여도 되는지 안되는지 확인
+	 * @param worldMap contain whole map
+	 * @param list (not hazard place)
 	 */
 	
 	public void MoveAlgorithm(map[] worldMap,final LinkedList<Integer> list) 
@@ -131,7 +129,7 @@ public class AIManager {
 	
 	*/	
 	/**
-	 * AI가 턴이 지날때마다 점점 쎄집니다.
+	 * AI become strong
 	 */
 	public void AIgetStronger()
 	{
@@ -150,6 +148,10 @@ public class AIManager {
 		}
 	}
 	
+	/**
+	 * Gets the list.
+	 * @return the list
+	 */
 	public LinkedList<GameCharacter> getList()
 	{
 		return AI;

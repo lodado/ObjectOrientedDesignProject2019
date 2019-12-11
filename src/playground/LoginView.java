@@ -45,12 +45,15 @@ class LoginView implements ActionListener {
 	 * @param user - 사용자 정보
 	 * @param player - 플레이어 정보*/
 	LoginView(UserInfo user, StatusManager player) {
+		
+		
+		
+		
 		frame = new JFrame();
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension screenSize = tk.getScreenSize();
 		int screenHeight = screenSize.height;
 		int screenWidth = screenSize.width;
-		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		
 		this.user = user;
 		this.player = player;
@@ -102,7 +105,9 @@ class LoginView implements ActionListener {
 		c = frame.getContentPane();
 
 		c.add(panel);
-
+		
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
+		
 		frame.setVisible(true);
 	}
 

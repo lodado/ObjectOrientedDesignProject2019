@@ -53,9 +53,26 @@ public class CharacterSelectView{
 		ImageIcon icon3 = new ImageIcon(nim3);
 		*/
 
-		JLabel lbImage1 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha1.png")));
-		JLabel lbImage2 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha2.png")));
-		JLabel lbImage3 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha3.png")));
+		ImageIcon ic1 = (new ImageIcon(getClass().getClassLoader().getResource("image/cha1.png")));
+		ImageIcon ic2  = (new ImageIcon(getClass().getClassLoader().getResource("image/cha2.png")));
+		ImageIcon ic3 = (new ImageIcon(getClass().getClassLoader().getResource("image/cha3.png")));
+		
+		
+		
+		Image im1 = ic1.getImage();
+		Image im2 = ic2.getImage();
+		Image im3 = ic3.getImage();
+		Image nim1 = im1.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		Image nim2 = im2.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		Image nim3 = im3.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		
+		
+		JLabel lbImage1 = new JLabel(new ImageIcon(nim1));
+		JLabel lbImage2 = new JLabel(new ImageIcon(nim2));
+		JLabel lbImage3 = new JLabel(new ImageIcon(nim3));
+		
+		
+		
 		lbImage1.setBounds(0, 0, 150, 300);
 		lbImage2.setBounds(175, 0, 150, 300);
 		lbImage3.setBounds(325, 0, 150, 300);

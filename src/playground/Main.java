@@ -11,7 +11,7 @@ public class Main {
 		StatusManager player = new StatusManager();
 
 		/*// DB없이 시작하고싶으면 이것 삽입 
-		player.setStatus(new GameCharacter("yes", 100, 10, 20, 45, null));
+		player.setStatus(new GameCharacter("yes", 100, 10, 20, 45, "image/cha1.png"));
 		wv.gamestart();
 		*/
 		LaunchManager lm = new LaunchManager(user, player);

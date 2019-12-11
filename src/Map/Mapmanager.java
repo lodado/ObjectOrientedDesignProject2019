@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package Map;
 
 import java.awt.BorderLayout;
@@ -40,16 +43,15 @@ import minigame.*;
 import playground.*;
 
 /**
- * 맵 관리 매니저 클래스. Thread는 launcher와 함께 게임 플레이동안 계속 돌아간다.
- * 
- * @author Chungheon Yi
- */
+  * The Class Mapmanager.
+  *  @author Chungheon Yi
+  */
 public class Mapmanager extends JFrame implements Runnable {
 	
-	/**  자신 캐릭터 스텟. */
+	/**  my Character stat. */
 	private StatusManager player;
 	
-	/** The userInfo */
+	/**  The userInfo. */
 	private UserInfo user;
 	
 	/** The pointer. */
@@ -58,80 +60,78 @@ public class Mapmanager extends JFrame implements Runnable {
 	/** AI manager. */
 	private AIManager AI;
 	
-	/** The hp */
+	/**  The hp. */
 	private JProgressBar HP = new JProgressBar(0, 100);
 
 	/** The my location. */
 	private int myLocation = 0; // 자신의 위치숫자로 구별
 
-	/** 맵 이름들. 맵 생성용으로 사용. */
+	/** nameofMaps */
 	private String mapsName[] = { "농대", "공대", "자연대", "사회대", "봉지","인문대", "경영대", "용지", "예대" };
 
-	/** 타이머 */
+	/**  timer */
 	private int timer = 0; //
 
-	/** 맵 9개 */
+	/**  map total 9  */
 	private map m[] = new map[9];
 	
-	/** 자신 위치 표시해주는 그림 */
+	/**  ping where i am*/
 	JLabel ping = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/mapImage/ping.png"))); // 자기위치 가리킴
 
-	/** 맵이름 text */
+	/**  maps name text. */
 	JLabel text[] = new JLabel[9];
 
-	/** 버튼 9개 */
+	/**  button total 9 for map */
 	private JButton[] b = new JButton[9];
 
-	/** 타이머 관리용 쓰레드 */
+	/**  Thread to control map. */
 	private Thread myThread;
 	
-	/** 캐릭터의 이미지 */
+	/**  image of Character. */
 	private JLabel characterImage;
 	
-	/** 이 클래스의 Frame. */
+	/** this class's Frame. */
 	private JFrame frame = new JFrame();
 
-	/** 좌측 상단 패널 */
+	/**  Panel top */
 	private JPanel top = new JPanel();
 
-	/** hp 출력 */
+	/**  print hp */
 	private JLabel forHp = new JLabel(" HP :");
 
-	/** 방어력 출력 */
+	/**  print def */
 	private JLabel forDef;
 
-	/** 현재위치 출력 */
+	/**  print my location */
 	private JLabel forLoc = new JLabel(" 현재 위치 :   " + mapsName[myLocation]);
 
-	/** 총 게임 플레이 시간 출력 */
+	/**  print total playtime */
 	private JLabel Mytime = new JLabel("                   " + timer);
 
-	/** 자기장이 여닫겼는지 확인할때 쓰이는 linkedlist */
+	/** LinkedList to know this place is hazard or not */
 	LinkedList<Integer> list;
 
 	/**
-	 * 맵 장소 이동할때 확인 혹은 취소를 누르는 팝업창을 위한 inner class
-	 * 
+	 * inner class to move place to another place 
 	 * @author Chungheon Yi
 	 */
 	private class MapLocationPopup extends JDialog {
 
-		/** 이동 버튼 */
+		/**  move button . */
 		private JButton Bt1 = new JButton(new ImageIcon(getClass().getClassLoader().getResource(("image/button/buttonYES.png"))));
 
-		/** 취소 버튼 */
+		/**  cancel button. */
 		private JButton Bt2 = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/button/buttonNO.png")));
 
-		/** 하단 패널 */
+		/**  bottom panel. */
 		private JPanel bottom = new JPanel();
 
-		/** 상단 패널 */
+		/**  top panel. */
 		private JPanel top = new JPanel();
 
 		/**
-		 * 이동 둘중 택 fight or startMinigame.
-		 *
-		 * @param mv 클릭한 버튼의 map을 인자로 받음
+		 * moving method, fight or start minigame.
+		 * @param mv get map instance
 		 */
 		public void moving(map mv) {
 			myLocation = mv.getLoc(); // 자신의 위치 이곳으로 이동
@@ -150,11 +150,10 @@ public class Mapmanager extends JFrame implements Runnable {
 		}
 
 		/**
-		 * 확인 누르면 맵 이동, 취소 누르면 취소.
-		 *
-		 * @param thisFrameList 확인을 누를시 모든 JFrame을 닫습니다.
-		 * @param M   맵 m
-		 * @param num 이곳 번지수(location)
+		 * select move or cancel 
+		 * @param thisFrameList to control JFrame
+		 * @param M   Map m
+		 * @param num location
 		 */
 		public MapLocationPopup(final LinkedList<JFrame> thisFrameList, map M, int num) {
 			JFrame thisframe = new JFrame();
@@ -233,18 +232,17 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * Gets the my location
-	 *
-	 * @return 자기 자신 위치 받음
+	 * Gets the my location.
+	 * @return m[myLocation]
 	 */
 	public map getMyLoc() {
 		return m[myLocation];
 	}
 
 	/**
-	 * Sets the my location
+	 * Sets the my location.
 	 *
-	 * @param num the new my loc
+	 * @param num newLocation
 	 */
 	public void setMyLoc(int num) {
 		this.myLocation = num;
@@ -252,8 +250,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Sets the thread.
-	 * 
-	 * @param the thread를 인자로 받음.
+	 * @param T1 the new thread
 	 */
 	void setThread(Thread T1) {
 		T1 = new Thread(this);
@@ -261,15 +258,14 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Gets the thread.
-	 *
-	 * @return the thread
+	 * @return myThread
 	 */
 	public Thread getThread() {
 		return this.myThread;
 	}
 
 	/**
-	 * Sets the timer. 변경은 허용불가
+	 * Sets the timer.
 	 * @param time the new timer
 	 */
 	public void setTimer(final int time) {
@@ -278,7 +274,6 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Gets the timer.
-	 * 
 	 * @return the timer
 	 */
 	public int getTimer() {
@@ -287,7 +282,6 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Gets the map frame.
-	 * 
 	 * @return the map frame
 	 */
 	public JFrame getMapFrame() {
@@ -296,7 +290,7 @@ public class Mapmanager extends JFrame implements Runnable {
 
 	/**
 	 * Sets the map frame.
-	 * 
+
 	 * @param frame the new map frame
 	 */
 	public void setMapFrame(JFrame frame) {
@@ -304,7 +298,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * Gets the pointer.(fight시 상대 gamecharacter 객체 가리킴) null 이면 null 반환 
+	 * Gets the pointer.
+	 * point AI who fights with me
 	 * @return pointer
 	 */
 	public GameCharacter getPointer()
@@ -313,7 +308,8 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 	
 	/**
-	 * Sets the pointer(fight시 상대 gamecharacter 객체 가리킴).
+	 * Sets the pointer
+	 * Point AI who fights with me
 	 * @param pt the new pointer
 	 */
 	public void setPointer(GameCharacter pt)
@@ -322,10 +318,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 	
 	/**
-	 * Sets the hp bar. map, fight, minigame 매니저에서 사용
+	 * Sets the hp bar. use in map, fight, minigame
 	 *
-	 * @param CharHP 자신 HP
-	 * @param m 맵 m
+	 * @param CharHP the char HP
+	 * @param m map
 	 * @param HPBar the JPrgressBar
 	 */
 	public void setHP(int CharHP, map m, JProgressBar HPBar) {
@@ -338,13 +334,12 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * (private) 맵이 닫겼으면 쓰레드와 연동하여서 지속적으로 그맵 안의 체력을 깎는다.
+	 * (private) player gets damaged when he enters hazard field
 	 *
-	 * @param count       the count. C++의 인자 참조(&)를 구현하기 위하여 배열을 사용하였다. 칸은 총
-	 *                    1칸(count)
+	 * @param count       the count. i used this to use reference in Cplusplus               
 	 * @param m the map
-	 * @param Threadspeed 1000 = 1, 250 = 4 , 500 = 2 , 100 = 10
-	 * @param gamer 파이터시 싸우는 상대
+	 * @param Threadspeed 1000 = 1 250 = 4 500 = 2 100 = 10
+	 * @param gamer AI who fights against me
 	 */
 	private void IsClosedMap(int count[], map m, double Threadspeed, GameCharacter gamer) //
 	{
@@ -364,9 +359,6 @@ public class Mapmanager extends JFrame implements Runnable {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * 60마다 경고, 90초후 맵 한곳을 닫음 
-	 */
 	@Override
 	public void run() {
 		try {
@@ -433,10 +425,10 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * map을 관리해주는 매니저 생성자.
+	 * control Mapmanager.
 	 *
-	 * @param user UserInfo를 받음 
-	 * @param player 정보를 받음
+	 * @param user get UserInfo
+	 * @param player get player
 	 */
 	public Mapmanager(UserInfo user, StatusManager player) {
 		this.user = user;
@@ -444,11 +436,11 @@ public class Mapmanager extends JFrame implements Runnable {
 		forDef = new JLabel(" 방어력 :  " +player.getStatus().getDef());
 		
 		String imags =player.getStatus().getImage();
-		System.out.println(imags);
+		
 		if(imags == "image/cha1.png")	imags = "image/1cha1.png";
 		if(imags == "image/cha2.png")	imags = "image/1cha2.png";
 		if(imags == "image/cha3.png")	imags = "image/1cha3.png";
-		System.out.println(imags);
+		
 			characterImage = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(imags)));
 			characterImage.setBounds(0,0,201,90);
 			
@@ -610,14 +602,27 @@ public class Mapmanager extends JFrame implements Runnable {
 
 		Item.addActionListener(new ActionListener() // 가방을 누르면 시작되는 이벤트
 		{
+			
+			/**
+			 * Action performed.
+			 *
+			 * @param e the e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				new Itemview(thisFrame,player.getStatus(),Mapmanager.this);
 			}
 		});
 
+		/** The tk. */
 		Toolkit tk = Toolkit.getDefaultToolkit();
+		
+		/** The screen size. */
 		Dimension screenSize = tk.getScreenSize();
+		
+		/** The screen height. */
 		int screenHeight = screenSize.height;
+		
+		/** The screen width. */
 		int screenWidth = screenSize.width;
 		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		frame.setTitle("전대 그라운드 - Map");
@@ -636,7 +641,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	
 	/**
 	 * Sets the player.
-	 * @param player를 set
+	 * @param player the new player
 	 */
 	public void setPlayer(StatusManager player) {
 		this.player = player;
