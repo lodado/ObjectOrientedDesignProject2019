@@ -1,6 +1,8 @@
 package Item;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -26,7 +28,11 @@ public class Itemview extends JFrame {
 		Inventory inventory= new Inventory();
 		inventory = player.getInventory();
 		JFrame frame = new JFrame("Inventory screen");
-		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		while (!getframe.isEmpty()) {
 			getframe.peekFirst().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getframe.pollFirst().setVisible(false);

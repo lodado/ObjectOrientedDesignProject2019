@@ -9,12 +9,6 @@ public class Main {
 		// csf.setVisible(true);
 		UserInfo user = new UserInfo();
 		StatusManager player = new StatusManager();
-
-		// DB없이 시작하고싶으면 이것 삽입 
-		player.setStatus(new GameCharacter("yes", 100, 1000, 20, 45, "image/cha1.png"));
-		WaitingRoomView wv = new WaitingRoomView(user, player);
-		wv.gamestart();
-		
 		
 		LaunchManager lm = new LaunchManager(user, player);
 		

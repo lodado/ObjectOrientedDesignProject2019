@@ -8,13 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -35,7 +28,6 @@ import javax.swing.border.LineBorder;
 import Item.*;
 import playground.*;
 import Map.*;
-
 
 /**
  * The Class FightManager.
@@ -171,7 +163,7 @@ public class FightManager extends JFrame {
 				T1.interrupt();
 				/**/
 				frame.dispose();
-				
+
 			}
 		} else {
 			int AIattack = AIattack();
@@ -206,9 +198,9 @@ public class FightManager extends JFrame {
 				manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
 				T1.interrupt();
 				/**/
-				
+
 				frame.dispose();
-				
+
 			}
 		} else {
 			int AIattack = AIattack();
@@ -249,8 +241,8 @@ public class FightManager extends JFrame {
 			Fightframe.dispose();
 			frame.dispose();
 		}
-		 if (player.getHp() <= 0 && ending == false) {
-			// user.updateMyScore(user.getWin(), user.getLose() + 1);
+		if (player.getHp() <= 0 && ending == false) {
+			user.updateMyScore(user.getWin(), user.getLose() + 1);
 			System.out.print("플레이어 사망 끝");// 사망
 			JFrame frame = new JFrame("END");
 			frame.setSize(200, 200);
@@ -277,25 +269,6 @@ public class FightManager extends JFrame {
 			frame.setVisible(true);
 
 		}
-		/*
-		 * if (AI.getHp() <= 0 && ending == false) { JFrame frame = new JFrame("END");
-		 * frame.setSize(200, 200); frame.setLayout(null); JLabel end = new
-		 * JLabel("               전투승리"); end.setLayout(null); end.setBounds(0, 50, 200,
-		 * 50); JButton out = new JButton("돌아가기"); out.addActionListener(new
-		 * ActionListener() { // 익명클래스로 리스너 작성 public void actionPerformed(ActionEvent
-		 * e) { Fightframe.dispose(); frame.dispose();
-		 * 
-		 * AIPlayer = null; manager.getMapFrame().setVisible(true);
-		 * manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
-		 * T1.interrupt();
-		 * 
-		 * } }); ending=true; out.setLayout(null); out.setBounds(50, 100, 100, 50);
-		 * frame.add(out); frame.add(end);
-		 * frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		 * frame.setVisible(true);
-		 * 
-		 * }
-		 */
 		if (AI.getHp() <= 0 && ending == false) {
 
 			for (int x = 0; x < AInum.size(); x++) {
@@ -304,7 +277,7 @@ public class FightManager extends JFrame {
 				}
 			}
 			if (AInum.isEmpty()) {
-				//user.updateMyScore(user.getWin() + 1, user.getLose());
+				user.updateMyScore(user.getWin() + 1, user.getLose());
 				JFrame end_frame = new JFrame("END");
 				JLabel end2 = new JLabel("                   게임승리");
 				end2.setLayout(null);
@@ -333,12 +306,8 @@ public class FightManager extends JFrame {
 
 			JButton out = new JButton("나가기");
 			out = new JButton("나가기");
-			//JLabel end = new JLabel("                   전투승리");
-			//end.setLayout(null);
-			//end.setBounds(0, 50, 200, 50);
 			out.setLayout(null);
 			out.setBounds(50, 100, 100, 50);
-			//frame.add(end);
 			if (!AInum.isEmpty())
 				out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 					public void actionPerformed(ActionEvent e) {
@@ -353,10 +322,8 @@ public class FightManager extends JFrame {
 					}
 				});
 
-	
-			
 		}
-		
+
 	}
 
 	/**
@@ -372,7 +339,7 @@ public class FightManager extends JFrame {
 			UserInfo user) {
 
 		JFrame frame = new JFrame();
-
+		boolean ending = false;
 		this.user = user;
 		LinkedList<GameCharacter> AInumber = AInum;
 		Player = player;
@@ -382,7 +349,14 @@ public class FightManager extends JFrame {
 		JLabel Image3 = new JLabel(bk);
 		Image3.setLayout(null);
 		Image3.setBounds(0, -70, 700, 700);
-
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
+		
+		
 		// 밑바탕
 		frame.setSize(940, 940);
 		frame.setLayout(null);
@@ -492,16 +466,14 @@ public class FightManager extends JFrame {
 				if (player.getHp() > 0 && AI.getHp() > 0 && playerturn > 0) {
 					if (button1.getText().equals("공격하기")) {
 						int effect = playerAttack(player);
-
+						
 						if (effect == 0) {
 							textarea.append(playerturn + "라운드: player 공격 실패\n");
 							playerturn--;
 							AIoperate(player, textarea, frame);// 텍스트로 공격 실패
 							isEnd(player, AI, AInumber, frame);
 							label1.setText("         체력 :" + player.getHp());
-
 						} else {
-
 							int AIhp = AI.getHp(); // AI hp 가져오기
 							AIhp = AIhp - effect;
 							AI.setHp(AIhp); // 공격 효과 세팅
@@ -513,7 +485,7 @@ public class FightManager extends JFrame {
 							isEnd(player, AI, AInumber, frame);
 							label1.setText("         체력 :" + player.getHp());
 						}
-						isEnd(player, AI, AInumber, frame);
+						//isEnd(player, AI, AInumber, frame);
 					}
 				}
 			}
@@ -532,7 +504,7 @@ public class FightManager extends JFrame {
 						label1.setText("         체력 :" + player.getHp());
 					}
 				}
-				isEnd(player, AI, AInumber, frame);
+				//isEnd(player, AI, AInumber, frame);
 			}
 		});
 		button3.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
@@ -542,9 +514,14 @@ public class FightManager extends JFrame {
 					if (player.getHp() >= 0 && AI.getHp() >= 0 && playerturn > 0) {
 						Inventory inventory = new Inventory();
 						inventory = player.getInventory();
-						JFrame frame = new JFrame("Inventory screen"); //아이템 창 열기
+						JFrame frame = new JFrame("Inventory screen"); // 아이템 창 열기
 						frame.setSize(520, 540);
 						frame.setLayout(null);
+						Toolkit tk = Toolkit.getDefaultToolkit();
+						Dimension screenSize = tk.getScreenSize();
+						int screenHeight = screenSize.height;
+						int screenWidth = screenSize.width;
+						frame.setLocation(screenWidth / 4, screenHeight / 10);
 						JButton[] button = new JButton[15];
 						JButton out = new JButton();
 						ImageIcon[] image = new ImageIcon[11];
@@ -553,7 +530,7 @@ public class FightManager extends JFrame {
 						ArrayList<Item> playerinventory = new ArrayList<Item>();
 						playerinventory = inventory.getItemlist();
 						for (int i = 0; i < playerinventory.size(); i++) {
-											
+
 							Item temp = playerinventory.get(i);
 							image[i] = temp.getImage();
 							manual[i] = temp.getManual();
@@ -656,7 +633,7 @@ public class FightManager extends JFrame {
 												label1.setText("         체력 :" + player.getHp());
 												AIoperate(player, textarea, frame);
 												isEnd(player, AI, AInumber, frame);
-											} else if (id[mynum] == 7) { //  수류탄 일때
+											} else if (id[mynum] == 7) { // 수류탄 일때
 												int random = (int) (Math.random() * 10);
 												if (temp.getProb() > random) {
 													int hp = AI.getHp();
@@ -764,7 +741,7 @@ public class FightManager extends JFrame {
 						frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 						frame.setVisible(true);
 					}
-					isEnd(player, AI, AInumber, frame);
+					//isEnd(player, AI, AInumber, frame);
 				}
 			}
 		});
@@ -775,36 +752,13 @@ public class FightManager extends JFrame {
 					if (player.getHp() >= 0 && AI.getHp() >= 0 && playerturn > 0) {
 						int run = run(player);
 						if (run == -999) {
-							System.out.println("도망성공");
-							JFrame runframe = new JFrame("run");
-							runframe.setSize(200, 200);
-							runframe.setLayout(null);
-							JLabel Run = new JLabel("                   도망성공");
-							Run.setLayout(null);
-							Run.setBounds(0, 50, 200, 50);
-							JButton out = new JButton("나가기");
-							out = new JButton("나가기");
-
-							out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
-								public void actionPerformed(ActionEvent e) {
-									
-									/* 돌릴때 실행할 부분 */
-									manager.setPointer(null);
-									manager.getMapFrame().setVisible(true);
-									manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
-									T1.interrupt();
-									/**/
-									runframe.dispose();
-									frame.dispose();
-								}
-							});
-							out.setLayout(null);
-							out.setBounds(50, 100, 100, 50);
-							runframe.add(out);
-							runframe.add(Run);
-							runframe.setVisible(true);
-							frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-							frame.setVisible(true);
+							JOptionPane.showMessageDialog(null, "플레이어가 도망갔습니다!", "!!", JOptionPane.CLOSED_OPTION);
+							manager.setPointer(null);
+							manager.getMapFrame().setVisible(true);
+							manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
+							T1.interrupt();
+							/**/
+							frame.dispose();
 							// 맵매니저 호출
 
 						} else {
@@ -813,16 +767,14 @@ public class FightManager extends JFrame {
 							AIoperate(player, textarea, frame);
 							label1.setText("         체력 :" + player.getHp());
 							isEnd(player, AI, AInumber, frame);
-							// 도망실패 팝업
 						}
 					}
-					isEnd(player, AI, AInumber, frame);
+					//isEnd(player, AI, AInumber, frame);
 				}
 			}
 		});
 		JScrollPane scroll = new JScrollPane(textarea);
 		scroll.setSize(440, 750);
-
 		JPanel panel = new JPanel();// 텍스트 붙일 패널
 		panel.setLayout(null);
 		panel.setBounds(250, 153, 420, 910);
@@ -840,17 +792,5 @@ public class FightManager extends JFrame {
 		frame.add(Image3);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
-		//if (playerturn == 0) {
-			//JOptionPane.showMessageDialog(null, "전투종료!", "!!", JOptionPane.CLOSED_OPTION);
-			///* 돌릴때 실행할 부분 */
-			//AIPlayer = null;
-			//manager.getMapFrame().setVisible(true);
-			//manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
-			//T1.interrupt();
-			/**/
-
-		//	frame.dispose();
-		//}
 	}
-
 }
