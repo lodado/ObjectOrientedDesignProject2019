@@ -1,32 +1,47 @@
 package playground;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-//캐릭터 선택 프레임
-class CharacterSelectView extends JFrame {
+/**캐릭터 선택 뷰*/
+public class CharacterSelectView{
+	JFrame frame;
+	/**사용자 정보*/
 	UserInfo user;
+	/**플레이어 정보*/
 	StatusManager player;
+	/**캐릭터를 선택 후 생성될 뷰*/
 	WaitingRoomView wv;
 	
+	/**캐릭터 선택 창 초기화
+	 * @param user - 사용자 정보
+	 * @param player - 플레이어 정보
+	 * */
 	CharacterSelectView(UserInfo user, StatusManager player) {
+		frame = new JFrame();
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
 		this.user = user;
 		this.player = player;
-		setTitle("Text Battle");
-		setSize(500, 500);
-		setResizable(false);
-		
-		ImageIcon ic1 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha1.jpg"));
-		ImageIcon ic2 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha2.jpg"));
-		ImageIcon ic3 = new ImageIcon(getClass().getClassLoader().getResource("image/AI/cha3.jpg"));
+		frame.setTitle("Text Battle");
+		frame.setSize(500, 500);
+		frame.setResizable(false);
+		/*
+		ImageIcon ic1 = new ImageIcon("./cha1.jpg");
+		ImageIcon ic2 = new ImageIcon("./cha2.jpg");
+		ImageIcon ic3 = new ImageIcon("./cha3.jpg");
 		Image im1 = ic1.getImage();
 		Image im2 = ic2.getImage();
 		Image im3 = ic3.getImage();
@@ -36,11 +51,11 @@ class CharacterSelectView extends JFrame {
 		ImageIcon icon1 = new ImageIcon(nim1);
 		ImageIcon icon2 = new ImageIcon(nim2);
 		ImageIcon icon3 = new ImageIcon(nim3);
-		
+		*/
 
-		JLabel lbImage1 = new JLabel(icon1);
-		JLabel lbImage2 = new JLabel(icon2);
-		JLabel lbImage3 = new JLabel(icon3);
+		JLabel lbImage1 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha1.png")));
+		JLabel lbImage2 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha2.png")));
+		JLabel lbImage3 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("image/cha3.png")));
 		lbImage1.setBounds(0, 0, 150, 300);
 		lbImage2.setBounds(175, 0, 150, 300);
 		lbImage3.setBounds(325, 0, 150, 300);
@@ -56,10 +71,10 @@ class CharacterSelectView extends JFrame {
 		dCha3.setLocation(325, 330);
 
 		// add panel to frame
-		ButtonPanel buttonPanel = new ButtonPanel(user, player);
+		ButtonPanel buttonPanel = new ButtonPanel(frame, user, player);
 		buttonPanel.setLayout(null);
 		// ImagePanel imagePanel = new ImagePanel();
-		Container contentPane = getContentPane();
+		Container contentPane = frame.getContentPane();
 
 		contentPane.add(dCha1);
 		contentPane.add(dCha2);
@@ -69,33 +84,39 @@ class CharacterSelectView extends JFrame {
 		contentPane.add(lbImage3);
 		contentPane.add(buttonPanel);
 		//보이기
-		setVisible(true);
+		frame.setVisible(true);
 		
 		// contentPane.add(panel3);
 	}
 }
 
-/**
- * A panel with three buttons.
- */
-
+/**버튼을 모아둔 패널*/
 class ButtonPanel extends JPanel implements ActionListener {
 	private JButton selectButton1;
 	private JButton selectButton2;
 	private JButton selectButton3;
-	private StatusManager player;
+	private JFrame frame;
+	/**사용자 정보*/
 	private UserInfo user;
+	/**플레이어 정보*/
+	private StatusManager player;
+	/**캐릭터 선택 후 생성될 뷰*/
 	WaitingRoomView wv;
 	
 	private GameCharacter cha1;
 	private GameCharacter cha2;
 	private GameCharacter cha3;
-	public ButtonPanel(UserInfo user, StatusManager player) {
+	
+	/**필요한 인자를 받아 패널을 만든다
+	 * @param user - 사용자 정보
+	 * @param player - 플레이어 정보*/
+	public ButtonPanel(JFrame frame, UserInfo user, StatusManager player) {
+		this.frame = frame;
 		this.user = user;
 		this.player = player;
-		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "AI/1.jpg");
-		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "AI/cha2.jpg");
-		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "AI/cha3.jpg");
+		cha1 = new GameCharacter("디폴트", 100, 10, 10, 10, "image/cha1.png");
+		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "image/cha2.png");
+		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "image/cha3.png");
 
 		// create buttons
 		selectButton1 = new JButton("Select");
@@ -119,9 +140,7 @@ class ButtonPanel extends JPanel implements ActionListener {
 		// create button actions
 	}
 
-	/**
-	 * An action listener that sets the panel's background color.
-	 */
+	/**누른 버튼에 맞는 캐릭터 설정을 플레이어 캐릭터에 적용한다. 이후 대기실 뷰를 만든다.*/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(selectButton1)) {
 			player.setStatus(cha1);
@@ -133,7 +152,7 @@ class ButtonPanel extends JPanel implements ActionListener {
 			player.setStatus(cha3);
 		}
 		wv = new WaitingRoomView(user, player);
-		
+		frame.dispose();
 	}
 
 }

@@ -83,6 +83,11 @@ public class Itemview extends JFrame {
 						JFrame frame= new JFrame("장착완료");
 						frame.setSize(200,200);
 						frame.setLayout(null);
+						Toolkit tk = Toolkit.getDefaultToolkit();
+						Dimension screenSize = tk.getScreenSize();
+						int screenHeight = screenSize.height;
+						int screenWidth = screenSize.width;
+						frame.setLocation(screenWidth / 4, screenHeight / 10);
 						JLabel set = new JLabel("장착 완료했습니다");
 						set.setLayout(null);
 						set.setBounds(0,10,200,100);

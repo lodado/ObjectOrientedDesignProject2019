@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -19,21 +20,38 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-//로그인
-class LoginView extends JFrame implements ActionListener {
+/**로그인 뷰*/
+class LoginView implements ActionListener {
+	/**아이디 입력 필드*/
 	private JTextField id;
+	/**비밀번호 입력 필드*/
 	private JTextField pw;
+	/**로그인 버튼*/
 	private JButton login;
+	/**회원가입 버튼*/
 	private JButton register;
 	private Container c;
+	/**로그인이 성공했을 시 실행될 뷰*/
 	private CharacterSelectView cv;
+	/**입력한 정보를 저장하기 위한 사용자 정보 객체*/
 	private UserInfo user;
+	/**캐릭터 선택 뷰에 넘기기 위한 인자*/
 	private StatusManager player;
+	/**로그인이 실패했을 시 실패 메시지를 띄우는 라벨*/
 	private JLabel loginFail;
-	
-	JFrame frame;
 
+	JFrame frame;
+	/**로그인 뷰 설정
+	 * @param user - 사용자 정보
+	 * @param player - 플레이어 정보*/
 	LoginView(UserInfo user, StatusManager player) {
+		frame = new JFrame();
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
+		
 		this.user = user;
 		this.player = player;
 		frame = new JFrame("Login");
@@ -88,6 +106,9 @@ class LoginView extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 
+	/**로그인 버튼을 누르면 DB와 연동해 로그인 성공/실패를 판단한다.
+	 * 성공시 캐릭터 선택 뷰로 넘어가고 실패시 실패 메시지를 라벨에 표시한다.
+	 * 회원가입 버튼을 누르면 회원가입 뷰로 넘어간다.*/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(login)) {
 			System.out.println("로그인 버튼 눌림");
@@ -105,7 +126,6 @@ class LoginView extends JFrame implements ActionListener {
 		if (e.getSource().equals(register)) {
 			System.out.println("가입 버튼 눌림");
 			RegisterView rv = new RegisterView(user);
-		
 		}
 
 	}

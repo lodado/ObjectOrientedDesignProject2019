@@ -9,10 +9,13 @@ public class Main {
 		// csf.setVisible(true);
 		UserInfo user = new UserInfo();
 		StatusManager player = new StatusManager();
-		
+
+		/*// DB없이 시작하고싶으면 이것 삽입 
+		player.setStatus(new GameCharacter("yes", 100, 10, 20, 45, null));
+		wv.gamestart();
+		*/
 		LaunchManager lm = new LaunchManager(user, player);
-		
-		
+	
 		// WaitPlay w = new WaitPlay();
 		// w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// w.setVisible(true);

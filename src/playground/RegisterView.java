@@ -1,12 +1,13 @@
 package playground;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -20,32 +21,45 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**회원가입 뷰*/
 public class RegisterView {
-
+	
 	private JFrame frame;
+	/**아이디 입력 필드*/
 	private JTextField textField;
+	/**닉네임 입력 필드*/
 	private JTextField textField_1;
+	/**비밀번호 입력 필드*/
 	private JTextField textField_2;
+	/**비밀번호 확인 필드*/
 	private JTextField textField_3;
+	/**DB와 연동하기 위한 객체*/
 	private UserInfo user;
 	
+	/**회원가입이 성공하면 버튼의 상태를 바꾸기 위한 변수*/
 	boolean registerCheck = false;
 
+	/**회원가입 뷰 설정
+	 * @param user - 사용자 정보*/
 	public RegisterView(UserInfo user) {
 		this.user = user;
 		initialize();
 		frame.setVisible(true);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	/**프레임 설정*/
 	private void initialize() {
 		frame = new JFrame();
 		frame.setSize(600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		frame.setLocation(screenWidth / 4, screenHeight / 10);
+		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 578, 544);
 		frame.getContentPane().add(panel);
@@ -94,6 +108,7 @@ public class RegisterView {
 		JButton btnRegister = new JButton("Register");
 		btnRegister.setBounds(228, 459, 129, 29);
 		panel.add(btnRegister);
+		/**회원가입이 성공하면 registerCheck를 true로 바꿔 프레임이 꺼질 수 있도록 한다.*/
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (arg0.getSource().equals(btnRegister)) {

@@ -1,24 +1,38 @@
 package playground;
 
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Map.*;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**대기실 뷰*/
 class WaitingRoomView extends JFrame implements ActionListener{
+	/**사용자 정보*/
 	UserInfo user;
+	/**플레이어 정보*/
 	StatusManager player;
+	/**이긴 횟수, 진 횟수 표시*/
 	JLabel winlose = new JLabel("");
+	/**게임 설명*/
 	JLabel gameDes = new JLabel("게임 설명~~");
 	JButton startButton = new JButton("Start!");
 	JButton scoreButton = new JButton("Score");
 	
+	/**대기실 뷰 설정
+	 * @param user - 사용자 정보
+	 * @param player - 플레이어 정보*/
 	public WaitingRoomView(UserInfo user, StatusManager player) {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screenSize = tk.getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		setLocation(screenWidth / 4, screenHeight / 10);
 		this.user = user;
 		this.player = player;
 		winlose.setText("Win :  " + user.getWin() +"  Lose :  " + user.getLose());
@@ -47,7 +61,7 @@ class WaitingRoomView extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 	
-	
+	/**시작 버튼이 눌리면 게임을 시작하고 스코어 버튼이 눌리면 점수 목록을 표시해준다.*/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(startButton)) {
 			System.out.println("시작 버튼 눌림");
@@ -60,8 +74,9 @@ class WaitingRoomView extends JFrame implements ActionListener{
 		
 	}
 	
+	/**Mapmanager를 생성하고 게임을 시작한다*/
 	public void gamestart() {
-		System.out.println(player.getStatus().getName());
+	
 		final Mapmanager Mapcontroller = new Mapmanager(user, player);
 		Thread T1 = new Thread() { // 메인 쓰레드
 			@Override
@@ -82,7 +97,7 @@ class WaitingRoomView extends JFrame implements ActionListener{
 			}
 		};
 		T1.start();
-		Mapcontroller.setVisible(true);
+		
 	}
 	
 }

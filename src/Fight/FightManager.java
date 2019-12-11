@@ -39,8 +39,6 @@ public class FightManager extends JFrame {
 	JLabel des = new JLabel();
 	/** The A iturn. */
 	private int AIturn = 5; // AI turn
-	/** ending */
-	private boolean ending = false;
 	/** The playerturn. */
 	private int playerturn = 5; // Player turn
 
@@ -228,7 +226,8 @@ public class FightManager extends JFrame {
 	 * @param AInum
 	 * @param Fightframe
 	 */
-	public void isEnd(GameCharacter player, GameCharacter AI, LinkedList<GameCharacter> AInum, JFrame Fightframe) {
+	public void isEnd(GameCharacter player, GameCharacter AI, LinkedList<GameCharacter> AInum, JFrame Fightframe,boolean ending) {
+		if(ending == true) return;
 		if (playerturn == 0 && player.getHp() >= 0) {
 			System.out.print("턴 끝");// mapManger 호출
 			JOptionPane.showMessageDialog(null, "전투종료!", "!!", JOptionPane.CLOSED_OPTION);
@@ -237,14 +236,21 @@ public class FightManager extends JFrame {
 			manager.getMapFrame().setVisible(true);
 			manager.getMapFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
 			T1.interrupt();
+			ending = true;
 			/**/
 			Fightframe.dispose();
 			frame.dispose();
+			
 		}
-		if (player.getHp() <= 0 && ending == false) {
+		else if (player.getHp() <= 0) {
 			user.updateMyScore(user.getWin(), user.getLose() + 1);
 			System.out.print("플레이어 사망 끝");// 사망
 			JFrame frame = new JFrame("END");
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			Dimension screenSize = tk.getScreenSize();
+			int screenHeight = screenSize.height;
+			int screenWidth = screenSize.width;
+			frame.setLocation(screenWidth / 4, screenHeight / 10);
 			frame.setSize(200, 200);
 			frame.setLayout(null);
 			JLabel end = new JLabel("                   패배");
@@ -252,24 +258,24 @@ public class FightManager extends JFrame {
 			end.setBounds(0, 50, 200, 50);
 			JButton out = new JButton("나가기");
 			out = new JButton("나가기");
+			ending=true;
 			out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 				public void actionPerformed(ActionEvent e) {
+					
 					Fightframe.dispose();
 					frame.dispose();
 					System.exit(0);
 				}
-
 			});
-			ending = true;
 			out.setLayout(null);
 			out.setBounds(50, 100, 100, 50);
 			frame.add(out);
 			frame.add(end);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
-
 		}
-		if (AI.getHp() <= 0 && ending == false) {
+		
+		else if (AI.getHp() <= 0) {
 
 			for (int x = 0; x < AInum.size(); x++) {
 				if (AInum.get(x).getName() == AI.getName()) {
@@ -279,12 +285,17 @@ public class FightManager extends JFrame {
 			if (AInum.isEmpty()) {
 				user.updateMyScore(user.getWin() + 1, user.getLose());
 				JFrame end_frame = new JFrame("END");
+				Toolkit tk = Toolkit.getDefaultToolkit();
+				Dimension screenSize = tk.getScreenSize();
+				int screenHeight = screenSize.height;
+				int screenWidth = screenSize.width;
+				end_frame.setLocation(screenWidth / 4, screenHeight / 10);
 				JLabel end2 = new JLabel("                   게임승리");
 				end2.setLayout(null);
 				end2.setBounds(0, 50, 200, 50);
 				JButton out2 = new JButton("나가기");
 				out2.setBounds(50, 100, 100, 50);
-
+				ending=true;
 				out2.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 					public void actionPerformed(ActionEvent e) {
 						Fightframe.dispose();
@@ -293,7 +304,7 @@ public class FightManager extends JFrame {
 					}
 				});
 				end2.setBounds(0, 50, 200, 50);
-
+				ending=true;
 				end_frame.setSize(200, 200);
 				end_frame.setLayout(null);
 
@@ -470,22 +481,28 @@ public class FightManager extends JFrame {
 						if (effect == 0) {
 							textarea.append(playerturn + "라운드: player 공격 실패\n");
 							playerturn--;
+							if(AI.getHp()>0) {
 							AIoperate(player, textarea, frame);// 텍스트로 공격 실패
-							isEnd(player, AI, AInumber, frame);
+							isEnd(player, AI, AInumber, frame,ending);
 							label1.setText("         체력 :" + player.getHp());
+							}
 						} else {
+							if(player.getHp()>0) {
 							int AIhp = AI.getHp(); // AI hp 가져오기
 							AIhp = AIhp - effect;
 							AI.setHp(AIhp); // 공격 효과 세팅
-							isEnd(player, AI, AInumber, frame);
+							isEnd(player, AI, AInumber, frame,ending);
 							label3.setText("         체력 :" + AI.getHp());
 							textarea.append(playerturn + "라운드: player" + effect + "의 공격 성공\n");
 							playerturn--;
+							}
+							if(AI.getHp() >0) {
 							AIoperate(player, textarea, frame);// 텍스트로 공격 성공 얼마나 공격을 입혓는지 텍스트 입력
-							isEnd(player, AI, AInumber, frame);
+							isEnd(player, AI, AInumber, frame,ending);
 							label1.setText("         체력 :" + player.getHp());
+							}
 						}
-						//isEnd(player, AI, AInumber, frame);
+						//isEnd(player, AI, AInumber, frame,ending);
 					}
 				}
 			}
@@ -498,9 +515,8 @@ public class FightManager extends JFrame {
 						int player_defence = defence(player);
 						textarea.append(playerturn + "라운드: player 방어선택\n");
 						playerturn--;
-
 						AIoperate(player, player_defence, textarea, frame);
-						isEnd(player, AI, AInumber, frame);
+						isEnd(player, AI, AInumber, frame,ending);
 						label1.setText("         체력 :" + player.getHp());
 					}
 				}
@@ -631,8 +647,10 @@ public class FightManager extends JFrame {
 												textarea.append(playerturn + "라운드: player가" + effect + "의 회복 물약사용\n");
 												playerturn--;
 												label1.setText("         체력 :" + player.getHp());
+												if(AI.getHp()>0) {
 												AIoperate(player, textarea, frame);
-												isEnd(player, AI, AInumber, frame);
+												isEnd(player, AI, AInumber, frame,ending);
+												}
 											} else if (id[mynum] == 7) { // 수류탄 일때
 												int random = (int) (Math.random() * 10);
 												if (temp.getProb() > random) {
@@ -646,18 +664,22 @@ public class FightManager extends JFrame {
 													AI.setHp(hp);
 													textarea.append(
 															playerturn + "라운드: player 수류탄으로 " + effect + "의 공격\n");
-													isEnd(player, AI, AInumber, frame);
+													isEnd(player, AI, AInumber, frame,ending);
 													playerturn--;
 													label3.setText("         체력 :" + AI.getHp());
+													if(AI.getHp()>0) {
 													AIoperate(player, textarea, frame);
 													label1.setText("         체력 :" + player.getHp());
-													isEnd(player, AI, AInumber, frame);
+													isEnd(player, AI, AInumber, frame,ending);
+													}
 												} else {
 													textarea.append(playerturn + "라운드: player 수류탄 공격실패\n");
 													playerturn--;
+													if(AI.getHp()>0) {
 													AIoperate(player, textarea, frame);
 													label1.setText("         체력 :" + player.getHp());
-													isEnd(player, AI, AInumber, frame);
+													isEnd(player, AI, AInumber, frame,ending);
+													}
 													// text로 사용실패띄워주기
 												}
 											} else if (id[mynum] == 8) { // 연막탄일때
@@ -672,8 +694,10 @@ public class FightManager extends JFrame {
 												} else {
 													textarea.append(playerturn + "라운드: player 연막탄실패 \n");
 													playerturn--;
+													if(AI.getHp()>0) {
 													AIoperate(player, textarea, frame);
-													isEnd(player, AI, AInumber, frame);
+													isEnd(player, AI, AInumber, frame,ending);
+													}
 												}
 
 											}
@@ -741,7 +765,7 @@ public class FightManager extends JFrame {
 						frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 						frame.setVisible(true);
 					}
-					//isEnd(player, AI, AInumber, frame);
+					//isEnd(player, AI, AInumber, frame,ending);
 				}
 			}
 		});
@@ -764,9 +788,11 @@ public class FightManager extends JFrame {
 						} else {
 							textarea.append(playerturn + "라운드: player 도망 실패\n");
 							playerturn--;
+							if(AI.getHp()>0) {
 							AIoperate(player, textarea, frame);
 							label1.setText("         체력 :" + player.getHp());
-							isEnd(player, AI, AInumber, frame);
+							isEnd(player, AI, AInumber, frame,ending);
+							}
 						}
 					}
 					//isEnd(player, AI, AInumber, frame);

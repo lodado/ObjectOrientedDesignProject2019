@@ -444,11 +444,11 @@ public class Mapmanager extends JFrame implements Runnable {
 		forDef = new JLabel(" ¹æ¾î·Â :  " +player.getStatus().getDef());
 		
 		String imags =player.getStatus().getImage();
-		
+		System.out.println(imags);
 		if(imags == "image/cha1.png")	imags = "image/1cha1.png";
 		if(imags == "image/cha2.png")	imags = "image/1cha2.png";
 		if(imags == "image/cha3.png")	imags = "image/1cha3.png";
-		
+		System.out.println(imags);
 			characterImage = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(imags)));
 			characterImage.setBounds(0,0,201,90);
 			
