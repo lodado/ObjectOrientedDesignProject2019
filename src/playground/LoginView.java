@@ -116,6 +116,8 @@ class LoginView implements ActionListener {
 	 * 회원가입 버튼을 누르면 회원가입 뷰로 넘어간다.*/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(login)) {
+			System.out.println("로그인 버튼 눌림");
+			System.out.println(id.getText());
 			String loginResult = user.login(id.getText(), pw.getText());
 			if (loginResult.equals("로그인 성공!")) {
 				frame.setVisible(false);
@@ -127,6 +129,7 @@ class LoginView implements ActionListener {
 		}
 
 		if (e.getSource().equals(register)) {
+			System.out.println("가입 버튼 눌림");
 			RegisterView rv = new RegisterView(user);
 		}
 
