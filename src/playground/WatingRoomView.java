@@ -64,7 +64,6 @@ class WaitingRoomView extends JFrame implements ActionListener{
 	/**시작 버튼이 눌리면 게임을 시작하고 스코어 버튼이 눌리면 점수 목록을 표시해준다.*/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(startButton)) {
-			System.out.println("시작 버튼 눌림");
 			gamestart();
 			
 		}

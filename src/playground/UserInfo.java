@@ -44,7 +44,6 @@ public class UserInfo {
          stmt = conn.createStatement();
       } catch (SQLException se1) {
          se1.printStackTrace();
-         System.out.println("연결 불가");
       } catch (ClassNotFoundException e) {
          e.printStackTrace();
       }
@@ -74,7 +73,6 @@ public class UserInfo {
 
       } catch (SQLException se1) {
          se1.printStackTrace();
-         System.out.println("오류!");
          return "오류!";
       }
    }
@@ -99,8 +97,6 @@ public class UserInfo {
                sql = "SELECT * FROM OOP_score WHERE nickname = \"" + nickname + "\"";
                ResultSet rs2 = stmt.executeQuery(sql);
                while (rs2.next()) {
-                  System.out.println(rs2.getInt("win"));
-                  System.out.println(rs2.getInt("lose"));
                   win = rs2.getInt("win");
                   lose = rs2.getInt("lose");
                }
@@ -111,7 +107,6 @@ public class UserInfo {
          }
       } catch (SQLException se1) {
          se1.printStackTrace();
-         System.out.println("계정 없음?");
          return "계정이 없습니다.";
       }
       return "오류?";
@@ -138,7 +133,6 @@ public class UserInfo {
 
       } catch (SQLException se1) {
          se1.printStackTrace();
-         System.out.println("계정 없음?");
       }
       return scoreList;
    }
@@ -152,10 +146,8 @@ public class UserInfo {
          sql = "update OOP_score set win=" + this.win + ", lose=" + this.lose + " where nickname=\"" + nickname
                + "\"";
          int rs = stmt.executeUpdate(sql);
-         System.out.println("업데이트 완료");
       } catch (SQLException se1) {
          se1.printStackTrace();
-         System.out.println("오류");
       }
    }
    
@@ -179,7 +171,6 @@ public class UserInfo {
          rs.close();
          stmt.close();
          conn.close();
-         System.out.println("종료 완료");
       } catch (SQLException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();

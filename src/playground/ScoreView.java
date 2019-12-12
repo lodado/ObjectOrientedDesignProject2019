@@ -189,7 +189,6 @@ public class ScoreView implements ActionListener {
          if (pageNum < maxPageNum) {
             pageNum += 1;
             try {
-               System.out.println(pageNum);
                changePanelState(scoreList, sp1, 5 * pageNum);
                changePanelState(scoreList, sp2, (5 * pageNum) + 1);
                changePanelState(scoreList, sp3, (5 * pageNum) + 2);
@@ -214,7 +213,6 @@ public class ScoreView implements ActionListener {
             lblPage.setText(Integer.toString(pageNum + 1));
          }
       } else if (e.getSource() == (btnClose)) {
-         System.out.println("close");
          frame.dispose();
       }
    }
