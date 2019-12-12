@@ -10,10 +10,11 @@ public class Main {
 		UserInfo user = new UserInfo();
 		StatusManager player = new StatusManager();
 
-		/*// DB없이 시작하고싶으면 이것 삽입 
-		player.setStatus(new GameCharacter("yes", 100, 10, 20, 45, "image/cha1.png"));
+		 //DB없이 시작하고싶으면 이것 삽입 
+		player.setStatus(new GameCharacter("PlayerName", 100, 10, 20, 45, "image/cha3.png"));
+		WaitingRoomView wv = new WaitingRoomView(user, player);
 		wv.gamestart();
-		*/
+		
 		LaunchManager lm = new LaunchManager(user, player);
 	
 		// WaitPlay w = new WaitPlay();

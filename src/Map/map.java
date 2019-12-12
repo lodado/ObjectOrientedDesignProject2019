@@ -33,7 +33,7 @@ public class map
 	/**  Contain AI in list */
 	LinkedList<GameCharacter> AI = new LinkedList<>();
 	
-	/**  flag for thread true(not hazard), false(hazard) */
+	/**  flag for thread true(not harmful place), false(harmful) */
 	private boolean flag = true;
 	
 	/**
@@ -164,7 +164,7 @@ public class map
 	}
 	
 	/**
-	 *  false hazard, true safe.
+	 *  false harmful place, true safe.
 	 * @return flag
 	 */
 	public boolean getFlag()

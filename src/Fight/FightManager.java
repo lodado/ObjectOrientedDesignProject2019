@@ -229,7 +229,7 @@ public class FightManager extends JFrame {
 	public void isEnd(GameCharacter player, GameCharacter AI, LinkedList<GameCharacter> AInum, JFrame Fightframe,boolean ending) {
 		if(ending == true) return;
 		if (playerturn == 0 && player.getHp() >= 0) {
-			System.out.print("턴 끝");// mapManger 호출
+		// mapManger 호출
 			JOptionPane.showMessageDialog(null, "전투종료!", "!!", JOptionPane.CLOSED_OPTION);
 			/* 돌릴때 실행할 부분 */
 			manager.setPointer(null);
@@ -243,8 +243,7 @@ public class FightManager extends JFrame {
 			
 		}
 		else if (player.getHp() <= 0) {
-			user.updateMyScore(user.getWin(), user.getLose() + 1);
-			System.out.print("플레이어 사망 끝");// 사망
+			user.updateMyScore(user.getWin(), user.getLose() + 1);// 사망
 			JFrame frame = new JFrame("END");
 			Toolkit tk = Toolkit.getDefaultToolkit();
 			Dimension screenSize = tk.getScreenSize();
@@ -580,7 +579,6 @@ public class FightManager extends JFrame {
 								button[i].addMouseListener(new MouseListener() {
 									public void mouseClicked(MouseEvent e) {
 										if (e.getClickCount() == 2) { // 더블클릭 했을때
-											System.out.println("click");
 											player.setEquip(temp);
 											JFrame frame = new JFrame("장착완료");
 											frame.setSize(200, 200);
@@ -601,7 +599,6 @@ public class FightManager extends JFrame {
 
 											frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 											frame.setVisible(true);
-											System.out.print(player.getEquip()[0].getName());
 										}
 									}
 
@@ -634,7 +631,6 @@ public class FightManager extends JFrame {
 								button[i].addMouseListener(new MouseListener() {
 									public void mouseClicked(MouseEvent e) {
 										if (e.getClickCount() == 2) {
-											System.out.println("click");
 											if (id[mynum] == 6) { // 물약일때
 												int hp = player.getHp();
 												effect = temp.getEffect();

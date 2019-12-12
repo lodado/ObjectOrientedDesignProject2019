@@ -108,7 +108,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	/**  print total playtime */
 	private JLabel Mytime = new JLabel("                   " + timer);
 
-	/** LinkedList to know this place is hazard or not */
+	/** LinkedList to know this place is critical field or not */
 	LinkedList<Integer> list;
 
 	/**
@@ -334,7 +334,7 @@ public class Mapmanager extends JFrame implements Runnable {
 	}
 
 	/**
-	 * (private) player gets damaged when he enters hazard field
+	 * (private) player gets damaged when he enters harmful field
 	 *
 	 * @param count       the count. i used this to use reference in Cplusplus               
 	 * @param m the map

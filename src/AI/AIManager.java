@@ -73,7 +73,7 @@ public class AIManager {
 	 * use this when AI moves.
 	 *
 	 * @param worldMap contain whole map
-	 * @param list (not hazard place)
+	 * @param list (not harmful place)
 	 */
 	
 	public void MoveAlgorithm(map[] worldMap,final LinkedList<Integer> list) 

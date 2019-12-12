@@ -70,7 +70,6 @@ public class Itemview extends JFrame {
 			frame.add(button[i]);
 			Font f1 = new Font("πŸ≈¡", Font.PLAIN, 10);
 			final int mynum = i;
-			System.out.println(mynum);
 			des.setBounds(300,0,200,400);
 			
 			button[i].addMouseListener(new MouseListener() {
@@ -78,7 +77,7 @@ public class Itemview extends JFrame {
 
                 	if(e.getClickCount()==2) //¥ı∫Ì≈¨∏ØΩ√ ¿Â¬¯
                 		if(id[mynum]==1||id[mynum]==2||id[mynum]==3||id[mynum]==4||id[mynum]==5||id[mynum]==9||id[mynum]==10||id[mynum]==11) {
-					{	System.out.println("click");
+					{	
 						player.setEquip(temp);
 						JFrame frame= new JFrame("¿Â¬¯øœ∑·");
 						frame.setSize(200,200);
@@ -104,7 +103,6 @@ public class Itemview extends JFrame {
 						
 						frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						frame.setVisible(true);
-						System.out.print(player.getEquip()[0].getName());
 					}
                 }
                 }
