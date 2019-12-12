@@ -171,6 +171,7 @@ public class UserInfo {
          rs.close();
          stmt.close();
          conn.close();
+         System.out.println("종료 완료");
       } catch (SQLException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();

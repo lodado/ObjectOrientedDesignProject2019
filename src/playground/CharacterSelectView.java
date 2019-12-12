@@ -38,6 +38,20 @@ public class CharacterSelectView{
 		frame.setTitle("Text Battle");
 		frame.setSize(500, 500);
 		frame.setResizable(false);
+		/*
+		ImageIcon ic1 = new ImageIcon("./cha1.jpg");
+		ImageIcon ic2 = new ImageIcon("./cha2.jpg");
+		ImageIcon ic3 = new ImageIcon("./cha3.jpg");
+		Image im1 = ic1.getImage();
+		Image im2 = ic2.getImage();
+		Image im3 = ic3.getImage();
+		Image nim1 = im1.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		Image nim2 = im2.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		Image nim3 = im3.getScaledInstance(150, 300, Image.SCALE_DEFAULT);
+		ImageIcon icon1 = new ImageIcon(nim1);
+		ImageIcon icon2 = new ImageIcon(nim2);
+		ImageIcon icon3 = new ImageIcon(nim3);
+		*/
 
 		ImageIcon ic1 = (new ImageIcon(getClass().getClassLoader().getResource("image/cha1.png")));
 		ImageIcon ic2  = (new ImageIcon(getClass().getClassLoader().getResource("image/cha2.png")));
@@ -80,7 +94,6 @@ public class CharacterSelectView{
 		contentPane.add(lbImage2);
 		contentPane.add(lbImage3);
 		contentPane.add(buttonPanel);
-
 		frame.setVisible(true);
 	}
 }
@@ -113,6 +126,7 @@ class ButtonPanel extends JPanel implements ActionListener {
 		cha2 = new GameCharacter("공격형", 80, 15, 5, 10, "image/cha2.png");
 		cha3 = new GameCharacter("방어형", 120, 5, 15, 10, "image/cha3.png");
 
+		// create buttons
 		selectButton1 = new JButton("Select");
 		selectButton2 = new JButton("Select");
 		selectButton3 = new JButton("Select");
@@ -123,7 +137,7 @@ class ButtonPanel extends JPanel implements ActionListener {
 		selectButton1.setLocation(0, 370);
 		selectButton2.setLocation(175, 370);
 		selectButton3.setLocation(325, 370);
-
+		// add buttons to panel
 		selectButton1.addActionListener(this);
 		selectButton2.addActionListener(this);
 		selectButton3.addActionListener(this);
