@@ -219,8 +219,12 @@ public class MinigameManager extends JFrame implements Runnable {
 		
 		
 		int currentgame = (int)(Math.random()*10)%(miniGames.size());
-		
+		//if(currentMap.getLoc() == 7) currentgame = 6;	
+		//if(currentMap.getLoc() == 8 ) currentgame = 3;
 		currentMinigame = (miniGames.get(currentgame)); //지금게임 Pointer
+		
+		
+		
 		if(currentgame<=5)
 		{
 		

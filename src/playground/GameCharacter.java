@@ -35,6 +35,9 @@ public class GameCharacter {
       this.image = image;
       this.equip[0] = new Item(-3);
       this.equip[1] = new Item(-4);
+      this.inventory.pushItem(new Item(6));
+      this.inventory.pushItem(new Item(7));
+      this.inventory.pushItem(new Item(8));
    }
 
    public String getName() {

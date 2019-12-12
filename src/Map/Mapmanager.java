@@ -142,7 +142,7 @@ public class Mapmanager extends JFrame implements Runnable {
 			{
 				new MinigameManager(mv, Mapmanager.this,player.getStatus());
 			} else {
-					System.out.println(mv.getAINumber());
+					
 					pointer = m[myLocation].getAI().get((int)Math.random()*m[myLocation].getAINumber());
 				new FightManager(player.getStatus(), pointer,Mapmanager.this,m[myLocation],AI.getList(), user);// fight manager();
 			}

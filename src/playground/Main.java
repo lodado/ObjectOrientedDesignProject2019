@@ -11,12 +11,12 @@ public class Main {
 		StatusManager player = new StatusManager();
 
 		 //DB없이 시작하고싶으면 이것 삽입 
+		/*
 		player.setStatus(new GameCharacter("PlayerName", 100, 10, 20, 45, "image/cha3.png"));
 		WaitingRoomView wv = new WaitingRoomView(user, player);
-		wv.gamestart();
-		
+		wv.gamestart();	
 		LaunchManager lm = new LaunchManager(user, player);
-	
+		*/
 		// WaitPlay w = new WaitPlay();
 		// w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// w.setVisible(true);

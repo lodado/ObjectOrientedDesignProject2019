@@ -73,8 +73,8 @@ public class Item {
 		} else if (result == 5) {
 			itemId = 5;
 			name = "AWP";
-			manual = new ImageIcon(getClass().getClassLoader().getResource("image/w5.png"));
-			image = new ImageIcon(getClass().getClassLoader().getResource("image/des5.png"));
+			manual = new ImageIcon(getClass().getClassLoader().getResource("image/des5.png"));
+			image = new ImageIcon(getClass().getClassLoader().getResource("image/w5.png"));
 			prob = 6;
 			effect = 30;// 아이템 무기 5번
 		} else if (result == 6) {

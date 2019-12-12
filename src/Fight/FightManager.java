@@ -226,10 +226,12 @@ public class FightManager extends JFrame {
 	 * @param AInum
 	 * @param Fightframe
 	 */
-	public void isEnd(GameCharacter player, GameCharacter AI, LinkedList<GameCharacter> AInum, JFrame Fightframe,boolean ending) {
-		if(ending == true) return;
+	public void isEnd(GameCharacter player, GameCharacter AI, LinkedList<GameCharacter> AInum, JFrame Fightframe,
+			boolean ending) {
+		if (ending == true)
+			return;
 		if (playerturn == 0 && player.getHp() >= 0) {
-		// mapManger 호출
+			// mapManger 호출
 			JOptionPane.showMessageDialog(null, "전투종료!", "!!", JOptionPane.CLOSED_OPTION);
 			/* 돌릴때 실행할 부분 */
 			manager.setPointer(null);
@@ -240,9 +242,8 @@ public class FightManager extends JFrame {
 			/**/
 			Fightframe.dispose();
 			frame.dispose();
-			
-		}
-		else if (player.getHp() <= 0) {
+
+		} else if (player.getHp() <= 0) {
 			user.updateMyScore(user.getWin(), user.getLose() + 1);// 사망
 			JFrame frame = new JFrame("END");
 			Toolkit tk = Toolkit.getDefaultToolkit();
@@ -257,10 +258,10 @@ public class FightManager extends JFrame {
 			end.setBounds(0, 50, 200, 50);
 			JButton out = new JButton("나가기");
 			out = new JButton("나가기");
-			ending=true;
+			ending = true;
 			out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 				public void actionPerformed(ActionEvent e) {
-					
+
 					Fightframe.dispose();
 					frame.dispose();
 					System.exit(0);
@@ -273,7 +274,7 @@ public class FightManager extends JFrame {
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
 		}
-		
+
 		else if (AI.getHp() <= 0) {
 
 			for (int x = 0; x < AInum.size(); x++) {
@@ -294,7 +295,7 @@ public class FightManager extends JFrame {
 				end2.setBounds(0, 50, 200, 50);
 				JButton out2 = new JButton("나가기");
 				out2.setBounds(50, 100, 100, 50);
-				ending=true;
+				ending = true;
 				out2.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 					public void actionPerformed(ActionEvent e) {
 						Fightframe.dispose();
@@ -303,7 +304,7 @@ public class FightManager extends JFrame {
 					}
 				});
 				end2.setBounds(0, 50, 200, 50);
-				ending=true;
+				ending = true;
 				end_frame.setSize(200, 200);
 				end_frame.setLayout(null);
 
@@ -359,14 +360,13 @@ public class FightManager extends JFrame {
 		JLabel Image3 = new JLabel(bk);
 		Image3.setLayout(null);
 		Image3.setBounds(0, -70, 700, 700);
-		
+
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension screenSize = tk.getScreenSize();
 		int screenHeight = screenSize.height;
 		int screenWidth = screenSize.width;
 		frame.setLocation(screenWidth / 4, screenHeight / 10);
-		
-		
+
 		// 밑바탕
 		frame.setSize(940, 940);
 		frame.setLayout(null);
@@ -376,7 +376,7 @@ public class FightManager extends JFrame {
 		textarea.setFont(f1);
 		String playerimage = player.getImage();
 		String aiimage = AI.getImage();
-		ImageIcon playericon = new ImageIcon(getClass().getClassLoader().getResource(playerimage));
+		ImageIcon playericon = new	ImageIcon(getClass().getClassLoader().getResource(playerimage));
 		ImageIcon AIicon = new ImageIcon(getClass().getClassLoader().getResource(aiimage));
 		JLabel Image = new JLabel(playericon);
 		Image.setBounds(0, 153, 230, 459);
@@ -476,32 +476,32 @@ public class FightManager extends JFrame {
 				if (player.getHp() > 0 && AI.getHp() > 0 && playerturn > 0) {
 					if (button1.getText().equals("공격하기")) {
 						int effect = playerAttack(player);
-						
+
 						if (effect == 0) {
 							textarea.append(playerturn + "라운드: player 공격 실패\n");
 							playerturn--;
-							if(AI.getHp()>0) {
-							AIoperate(player, textarea, frame);// 텍스트로 공격 실패
-							isEnd(player, AI, AInumber, frame,ending);
-							label1.setText("         체력 :" + player.getHp());
+							if (AI.getHp() > 0) {
+								AIoperate(player, textarea, frame);// 텍스트로 공격 실패
+								isEnd(player, AI, AInumber, frame, ending);
+								label1.setText("         체력 :" + player.getHp());
 							}
 						} else {
-							if(player.getHp()>0) {
-							int AIhp = AI.getHp(); // AI hp 가져오기
-							AIhp = AIhp - effect;
-							AI.setHp(AIhp); // 공격 효과 세팅
-							isEnd(player, AI, AInumber, frame,ending);
-							label3.setText("         체력 :" + AI.getHp());
-							textarea.append(playerturn + "라운드: player" + effect + "의 공격 성공\n");
-							playerturn--;
+							if (player.getHp() > 0) {
+								int AIhp = AI.getHp(); // AI hp 가져오기
+								AIhp = AIhp - effect;
+								AI.setHp(AIhp); // 공격 효과 세팅
+								isEnd(player, AI, AInumber, frame, ending);
+								label3.setText("         체력 :" + AI.getHp());
+								textarea.append(playerturn + "라운드: player" + effect + "의 공격 성공\n");
+								playerturn--;
 							}
-							if(AI.getHp() >0) {
-							AIoperate(player, textarea, frame);// 텍스트로 공격 성공 얼마나 공격을 입혓는지 텍스트 입력
-							isEnd(player, AI, AInumber, frame,ending);
-							label1.setText("         체력 :" + player.getHp());
+							if (AI.getHp() > 0) {
+								AIoperate(player, textarea, frame);// 텍스트로 공격 성공 얼마나 공격을 입혓는지 텍스트 입력
+								isEnd(player, AI, AInumber, frame, ending);
+								label1.setText("         체력 :" + player.getHp());
 							}
 						}
-						//isEnd(player, AI, AInumber, frame,ending);
+						// isEnd(player, AI, AInumber, frame,ending);
 					}
 				}
 			}
@@ -515,255 +515,265 @@ public class FightManager extends JFrame {
 						textarea.append(playerturn + "라운드: player 방어선택\n");
 						playerturn--;
 						AIoperate(player, player_defence, textarea, frame);
-						isEnd(player, AI, AInumber, frame,ending);
+						isEnd(player, AI, AInumber, frame, ending);
 						label1.setText("         체력 :" + player.getHp());
 					}
 				}
-				//isEnd(player, AI, AInumber, frame);
+				// isEnd(player, AI, AInumber, frame);
 			}
 		});
 		button3.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 			public void actionPerformed(ActionEvent e) {
 				JButton button1 = (JButton) e.getSource();
 				if (button1.getText().equals("아이템 사용")) {
-					if (player.getHp() >= 0 && AI.getHp() >= 0 && playerturn > 0) {
-						Inventory inventory = new Inventory();
-						inventory = player.getInventory();
-						JFrame frame = new JFrame("Inventory screen"); // 아이템 창 열기
-						frame.setSize(520, 540);
-						frame.setLayout(null);
-						Toolkit tk = Toolkit.getDefaultToolkit();
-						Dimension screenSize = tk.getScreenSize();
-						int screenHeight = screenSize.height;
-						int screenWidth = screenSize.width;
-						frame.setLocation(screenWidth / 4, screenHeight / 10);
-						JButton[] button = new JButton[15];
-						JButton out = new JButton();
-						ImageIcon[] image = new ImageIcon[11];
-						ImageIcon[] manual = new ImageIcon[11];
-						final int[] id = new int[10];
-						ArrayList<Item> playerinventory = new ArrayList<Item>();
-						playerinventory = inventory.getItemlist();
-						for (int i = 0; i < playerinventory.size(); i++) {
 
-							Item temp = playerinventory.get(i);
-							image[i] = temp.getImage();
-							manual[i] = temp.getManual();
-							String name = temp.getName();
-							id[i] = temp.getItemId();
-							final int mynum = i;
+					Inventory inventory = new Inventory();
+					inventory = player.getInventory();
+					JFrame frame = new JFrame("Inventory screen"); // 아이템 창 열기
+					frame.setSize(520, 540);
+					frame.setLayout(null);
+					Toolkit tk = Toolkit.getDefaultToolkit();
+					Dimension screenSize = tk.getScreenSize();
+					int screenHeight = screenSize.height;
+					int screenWidth = screenSize.width;
+					frame.setLocation(screenWidth / 4, screenHeight / 10);
+					JButton[] button = new JButton[15];
+					JButton out = new JButton();
+					ImageIcon[] image = new ImageIcon[11];
+					ImageIcon[] manual = new ImageIcon[11];
+					final int[] id = new int[10];
+					ArrayList<Item> playerinventory = new ArrayList<Item>();
+					playerinventory = inventory.getItemlist();
+					for (int i = 0; i < playerinventory.size(); i++) {
 
-							des.setBounds(300, 0, 200, 400);
+						Item temp = playerinventory.get(i);
+						image[i] = temp.getImage();
+						manual[i] = temp.getManual();
+						String name = temp.getName();
+						id[i] = temp.getItemId();
+						final int mynum = i;
 
-							button[i] = new JButton(name, image[i]);
-							button[i].setLayout(null);
-							if (i <= 2)
-								button[i].setBounds(100 * (i), 0, 100, 100);
-							if (2 < i && i < 6)
-								button[i].setBounds(100 * (i - 3), 100, 100, 100);
-							if (6 <= i && i < 9)
-								button[i].setBounds(100 * (i - 6), 200, 100, 100);
-							if (9 <= i && i < 12)
-								button[i].setBounds(100 * (i - 9), 200, 100, 100);
-							frame.add(button[i]);
-							button[i].addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
-								public void actionPerformed(ActionEvent e) {
+						des.setBounds(300, 0, 200, 400);
 
-									des.setIcon(manual[mynum]);
-
-								}
-							});
-							frame.add(des);
-							if (id[mynum] == 1 || id[mynum] == 2 || id[mynum] == 3 || id[mynum] == 4 || id[mynum] == 5
-									|| id[mynum] == 9 || id[mynum] == 10 || id[mynum] == 11) {
-								button[i].addMouseListener(new MouseListener() {
-									public void mouseClicked(MouseEvent e) {
-										if (e.getClickCount() == 2) { // 더블클릭 했을때
-											player.setEquip(temp);
-											JFrame frame = new JFrame("장착완료");
-											frame.setSize(200, 200);
-											frame.setLayout(null);
-											JLabel set = new JLabel("             장착 완료했습니다");
-											set.setLayout(null);
-											set.setBounds(0, 10, 200, 100);
-											frame.add(set);
-											JButton ok = new JButton("완료");
-											ok.setLayout(null);
-											ok.setBounds(50, 100, 100, 50);
-											frame.add(ok);
-											ok.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
-												public void actionPerformed(ActionEvent e) {
-													frame.dispose();
-												}
-											});
-
-											frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-											frame.setVisible(true);
-										}
-									}
-
-									@Override
-									public void mousePressed(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseReleased(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseEntered(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseExited(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-								});
-							} else if (id[mynum] == 6 || id[mynum] == 7 || id[mynum] == 8) {
-								button[i].addMouseListener(new MouseListener() {
-									public void mouseClicked(MouseEvent e) {
-										if (e.getClickCount() == 2) {
-											if (id[mynum] == 6) { // 물약일때
-												int hp = player.getHp();
-												effect = temp.getEffect();
-												Inventory inventory = player.getInventory();
-												inventory.itemUse(temp);
-												player.setInventory(inventory);
-												frame.remove(button[mynum]);
-												hp = hp + effect;
-												player.setHp(hp);
-												textarea.append(playerturn + "라운드: player가" + effect + "의 회복 물약사용\n");
-												playerturn--;
-												label1.setText("         체력 :" + player.getHp());
-												if(AI.getHp()>0) {
-												AIoperate(player, textarea, frame);
-												isEnd(player, AI, AInumber, frame,ending);
-												}
-											} else if (id[mynum] == 7) { // 수류탄 일때
-												int random = (int) (Math.random() * 10);
-												if (temp.getProb() > random) {
-													int hp = AI.getHp();
-													effect = temp.getEffect();
-													hp = hp - effect;
-													Inventory inventory = player.getInventory();
-													inventory.itemUse(temp);
-													player.setInventory(inventory);
-													frame.remove(button[mynum]);
-													AI.setHp(hp);
-													textarea.append(
-															playerturn + "라운드: player 수류탄으로 " + effect + "의 공격\n");
-													isEnd(player, AI, AInumber, frame,ending);
-													playerturn--;
-													label3.setText("         체력 :" + AI.getHp());
-													if(AI.getHp()>0) {
-													AIoperate(player, textarea, frame);
-													label1.setText("         체력 :" + player.getHp());
-													isEnd(player, AI, AInumber, frame,ending);
-													}
-												} else {
-													textarea.append(playerturn + "라운드: player 수류탄 공격실패\n");
-													playerturn--;
-													if(AI.getHp()>0) {
-													AIoperate(player, textarea, frame);
-													label1.setText("         체력 :" + player.getHp());
-													isEnd(player, AI, AInumber, frame,ending);
-													}
-													// text로 사용실패띄워주기
-												}
-											} else if (id[mynum] == 8) { // 연막탄일때
-												int random = (int) (Math.random() * 10);
-												if (temp.getProb() > random) {
-													textarea.append(playerturn + "라운드: player 연막탄사용 AI 1턴 삭제 n");
-													Inventory inventory = player.getInventory();
-													inventory.itemUse(temp);
-													player.setInventory(inventory);
-													playerturn--;
-													// text로 연막탄 사용성공,한턴 무효화
-												} else {
-													textarea.append(playerturn + "라운드: player 연막탄실패 \n");
-													playerturn--;
-													if(AI.getHp()>0) {
-													AIoperate(player, textarea, frame);
-													isEnd(player, AI, AInumber, frame,ending);
-													}
-												}
-
-											}
-											JFrame frame = new JFrame("사용완료");
-											frame.setSize(200, 200);
-											frame.setLayout(null);
-											JLabel set = new JLabel("             사용했습니다");
-											set.setLayout(null);
-											set.setBounds(0, 10, 200, 100);
-											frame.add(set);
-											JButton ok = new JButton("완료");
-											ok.setLayout(null);
-											ok.setBounds(50, 100, 100, 50);
-											frame.add(ok);
-											ok.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
-												public void actionPerformed(ActionEvent e) {
-													frame.dispose();
-												}
-											});
-
-											frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-											frame.setVisible(true);
-										}
-									}
-
-									@Override
-									public void mousePressed(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseReleased(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseEntered(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void mouseExited(MouseEvent e) {
-										// TODO Auto-generated method stub
-
-									}
-
-								});
-
-							}
-						}
-
-						out = new JButton("나가기");
-						out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
+						button[i] = new JButton(name, image[i]);
+						button[i].setLayout(null);
+						if (i <= 2)
+							button[i].setBounds(100 * (i), 0, 100, 100);
+						if (2 < i && i < 6)
+							button[i].setBounds(100 * (i - 3), 100, 100, 100);
+						if (6 <= i && i < 9)
+							button[i].setBounds(100 * (i - 6), 200, 100, 100);
+						if (9 <= i && i < 12)
+							button[i].setBounds(100 * (i - 9), 200, 100, 100);
+						frame.add(button[i]);
+						button[i].addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 							public void actionPerformed(ActionEvent e) {
-								frame.dispose();
+
+								des.setIcon(manual[mynum]);
+
 							}
 						});
+						frame.add(des);
+						if (id[mynum] == 1 || id[mynum] == 2 || id[mynum] == 3 || id[mynum] == 4 || id[mynum] == 5
+								|| id[mynum] == 9 || id[mynum] == 10 || id[mynum] == 11) {
+							button[i].addMouseListener(new MouseListener() {
+								public void mouseClicked(MouseEvent e) {
+									if (e.getClickCount() == 2) { // 더블클릭 했을때
+										player.setEquip(temp);
+										JFrame frame = new JFrame("장착완료");
+										frame.setSize(200, 200);
+										frame.setLayout(null);
+										JLabel set = new JLabel("             장착 완료했습니다");
+										set.setLayout(null);
+										set.setBounds(0, 10, 200, 100);
+										frame.add(set);
+										JButton ok = new JButton("완료");
+										ok.setLayout(null);
+										ok.setBounds(50, 100, 100, 50);
+										frame.add(ok);
+										ok.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
+											public void actionPerformed(ActionEvent e) {
+												frame.dispose();
+											}
+										});
 
-						out.setLayout(null);
-						out.setBounds(300, 400, 200, 100);
-						frame.add(out);
-						frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-						frame.setVisible(true);
+										Toolkit tk = Toolkit.getDefaultToolkit();
+										Dimension screenSize = tk.getScreenSize();
+										int screenHeight = screenSize.height;
+										int screenWidth = screenSize.width;
+										
+										frame.setLocation(screenWidth / 4, screenHeight / 10);
+										frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+										frame.setVisible(true);
+									}
+								}
+
+								@Override
+								public void mousePressed(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseReleased(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseEntered(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseExited(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+							});
+						} else if (id[mynum] == 6 || id[mynum] == 7 || id[mynum] == 8) {
+							button[i].addMouseListener(new MouseListener() {
+								public void mouseClicked(MouseEvent e) {
+									if (e.getClickCount() == 2) {
+										Inventory inventory = player.getInventory();
+										if (id[mynum] == 6) { // 물약일때
+											int hp = player.getHp();
+											effect = temp.getEffect();
+											inventory.itemUse(temp);
+											player.setInventory(inventory);
+											frame.remove(button[mynum]);
+											hp = hp + effect;
+											player.setHp(hp);
+											textarea.append(playerturn + "라운드: player가" + effect + "의 회복 물약사용\n");
+											playerturn--;
+											label1.setText("         체력 :" + player.getHp());
+											if (AI.getHp() > 0) {
+												AIoperate(player, textarea, frame);
+												isEnd(player, AI, AInumber, frame, ending);
+											}
+										}  if (id[mynum] == 7) { // 수류탄 일때
+											int random = (int) (Math.random() * 10);
+											inventory.itemUse(temp);
+											player.setInventory(inventory);
+											frame.remove(button[mynum]);
+											if (temp.getProb() > random) {
+												int hp = AI.getHp();
+												effect = temp.getEffect();
+												hp = hp - effect;
+												AI.setHp(hp);
+												textarea.append(playerturn + "라운드: player 수류탄으로 " + effect + "의 공격\n");
+												isEnd(player, AI, AInumber, frame, ending);
+												playerturn--;
+												label3.setText("         체력 :" + AI.getHp());
+												if (AI.getHp() > 0) {
+													AIoperate(player, textarea, frame);
+													label1.setText("         체력 :" + player.getHp());
+													isEnd(player, AI, AInumber, frame, ending);
+												}
+											} else {
+												textarea.append(playerturn + "라운드: player 수류탄 공격실패\n");
+												playerturn--;
+												if (AI.getHp() > 0) {
+													AIoperate(player, textarea, frame);
+													label1.setText("         체력 :" + player.getHp());
+													isEnd(player, AI, AInumber, frame, ending);
+												}
+												// text로 사용실패띄워주기
+											}
+										} if (id[mynum] == 8) { // 연막탄일때
+											int random = (int) (Math.random() * 10);
+											inventory.itemUse(temp);
+											player.setInventory(inventory);
+											frame.remove(button[mynum]);
+											if (temp.getProb() > random) {
+												textarea.append(playerturn + "라운드: player 연막탄사용 AI 1턴 삭제 \n");
+
+												playerturn--;
+												// text로 연막탄 사용성공,한턴 무효화
+											} else {
+												textarea.append(playerturn + "라운드: player 연막탄실패 \n");
+												playerturn--;
+												if (AI.getHp() > 0) {
+													AIoperate(player, textarea, frame);
+													isEnd(player, AI, AInumber, frame, ending);
+												}
+											}
+
+										}
+										JFrame frame = new JFrame("사용완료");
+										frame.setSize(200, 200);
+										frame.setLayout(null);
+										JLabel set = new JLabel("             사용했습니다");
+										set.setLayout(null);
+										set.setBounds(0, 10, 200, 100);
+										frame.add(set);
+										JButton ok = new JButton("완료");
+										ok.setLayout(null);
+										ok.setBounds(50, 100, 100, 50);
+										frame.add(ok);
+										ok.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
+											public void actionPerformed(ActionEvent e) {
+												frame.dispose();
+											}
+										});
+										Toolkit tk = Toolkit.getDefaultToolkit();
+										Dimension screenSize = tk.getScreenSize();
+										int screenHeight = screenSize.height;
+										int screenWidth = screenSize.width;
+										
+										frame.setLocation(screenWidth / 4, screenHeight / 10);
+										frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+										frame.setVisible(true);
+									}
+								}
+
+								@Override
+								public void mousePressed(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseReleased(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseEntered(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void mouseExited(MouseEvent e) {
+									// TODO Auto-generated method stub
+
+								}
+
+							});
+
+						}
 					}
-					//isEnd(player, AI, AInumber, frame,ending);
+
+					out = new JButton("나가기");
+					out.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
+						public void actionPerformed(ActionEvent e) {
+							frame.dispose();
+						}
+					});
+
+					out.setLayout(null);
+					out.setBounds(300, 400, 200, 100);
+					frame.add(out);
+					frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					frame.setVisible(true);
 				}
+				// isEnd(player, AI, AInumber, frame,ending);
 			}
+
 		});
 		button4.addActionListener(new ActionListener() { // 익명클래스로 리스너 작성
 			public void actionPerformed(ActionEvent e) {
@@ -784,14 +794,14 @@ public class FightManager extends JFrame {
 						} else {
 							textarea.append(playerturn + "라운드: player 도망 실패\n");
 							playerturn--;
-							if(AI.getHp()>0) {
-							AIoperate(player, textarea, frame);
-							label1.setText("         체력 :" + player.getHp());
-							isEnd(player, AI, AInumber, frame,ending);
+							if (AI.getHp() > 0) {
+								AIoperate(player, textarea, frame);
+								label1.setText("         체력 :" + player.getHp());
+								isEnd(player, AI, AInumber, frame, ending);
 							}
 						}
 					}
-					//isEnd(player, AI, AInumber, frame);
+					// isEnd(player, AI, AInumber, frame);
 				}
 			}
 		});

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Inventory {
 	private ArrayList<Item> itemlist = new ArrayList<>(); // inventory를 만들기위한 ArrayList
 	Item temp; // 아이템 임시저장
-
+	
 	/**
 	 * 인벤토리에 아이템을 넣는 메소드
 	 * 
@@ -32,8 +32,11 @@ public class Inventory {
 		int i;
 		int id = I.getItemId();
 		for (i = 0; i < itemlist.size(); i++) {
-			if ((id == 6 && itemlist.get(i) == I)
-					|| (id == 7 && itemlist.get(i) == I) && (id == 8 && itemlist.get(i) == I))
+			if (id == 6 && itemlist.get(i) == I)
+				itemlist.remove(i);
+			if(id == 7 && itemlist.get(i) == I)
+				itemlist.remove(i);
+			if (id == 8 && itemlist.get(i) == I)
 				itemlist.remove(i);
 		}
 
