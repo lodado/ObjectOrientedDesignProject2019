@@ -385,7 +385,7 @@ public class FightManager extends JFrame {
 		Image1.setBounds(690, 153, 230, 459);
 
 		JLabel label1 = new JLabel(player.getName() + ": " + player.getHp());
-		JLabel label2 = new JLabel("                        " + playerturn + "라운드");
+		JLabel label2 = new JLabel("                      총  " + playerturn + "라운드");
 		JLabel label3 = new JLabel(player.getName() + ": " + AI.getHp());
 
 		JProgressBar ChaHp = new JProgressBar(0, 100);
@@ -691,6 +691,7 @@ public class FightManager extends JFrame {
 												textarea.append(playerturn + "라운드: player 연막탄사용 AI 1턴 삭제 \n");
 
 												playerturn--;
+												isEnd(player, AI, AInumber, frame, ending);
 												// text로 연막탄 사용성공,한턴 무효화
 											} else {
 												textarea.append(playerturn + "라운드: player 연막탄실패 \n");
