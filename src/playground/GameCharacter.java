@@ -49,11 +49,17 @@ public class GameCharacter {
    }
 
    public int getHp() {
-      return hp;
+
+	   synchronized(this)
+	   {
+		   return hp;
+	   }
    }
 
    public void setHp(int hp) {
-      this.hp = hp;
+	   synchronized (this){
+		      this.hp = hp;
+	   }
    }
 
    public int getOff() {

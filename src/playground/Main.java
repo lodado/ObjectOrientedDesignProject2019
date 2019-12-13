@@ -13,6 +13,7 @@ public class Main {
 		WaitingRoomView wv = new WaitingRoomView(user, player);
 		wv.gamestart();	
 		*/
+		
 		LaunchManager lm = new LaunchManager(user, player);
 		
 	}

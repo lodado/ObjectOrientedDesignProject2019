@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author Chungheon Yi
+ * @author jung
  *
  */
 package playground;
