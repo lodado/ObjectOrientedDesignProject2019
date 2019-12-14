@@ -27,8 +27,11 @@ public class UserInfo {
 	/** 쿼리 실행 결과 */
 	ResultSet rs;
 
-	UserInfo(String id) {
+	UserInfo(String id, String nickname, int win, int lose) {
 		this.id = id;
+		this.nickname = nickname;
+		this.win = win;
+		this.lose = lose;
 	}
 
 	/** DB와 연결한다. */

@@ -5,13 +5,9 @@ public class Main {
 
 	public static void main(String args[]) {
 		//without login
-		UserInfo user = new UserInfo("default");
+		UserInfo user = new UserInfo("default", "default", 1, 1);
 		StatusManager player = new StatusManager();
 		
 		CharacterSelectView cv = new CharacterSelectView(user, player);
-		
-		
-		
-		
 	}
 }
